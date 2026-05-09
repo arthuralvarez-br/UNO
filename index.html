@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO Agent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #f8f9fa;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+        
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            margin-bottom: 40px;
+        }
+        
+        .header-content {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            border-left: 4px solid #0052cc;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #0052cc;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-top: 30px;
+        }
+        
+        .stat {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0052cc;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .loading {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 8px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .error {
+            background: #fee;
+            border-left: 4px solid #dc2626;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            color: #991b1b;
+            font-size: 14px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f8f9fa;
+        }
+        
+        .card-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+        .item {
+            padding: 16px;
+            border-left: 3px solid #e5e7eb;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            background: #f8f9fa;
+            transition: all 0.2s;
+        }
+        
+        .item:hover {
+            background: #f0f1f3;
+            border-left-color: #0052cc;
+        }
+        
+        .item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .item.critica {
+            border-left-color: #dc2626;
+            background: #fee;
+        }
+        
+        .item.critica:hover {
+            background: #fdd;
+        }
+        
+        .item.alta {
+            border-left-color: #ea580c;
+            background: #fef3e2;
+        }
+        
+        .item.alta:hover {
+            background: #fed5b5;
+        }
+        
+        .item.media {
+            border-left-color: #ca8a04;
+            background: #fffaeb;
+        }
+        
+        .item.media:hover {
+            background: #fef3c7;
+        }
+        
+        .item.baixa {
+            border-left-color: #15803d;
+            background: #f0fdf4;
+        }
+        
+        .item.baixa:hover {
+            background: #dcfce7;
+        }
+        
+        .item-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .item-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-critica {
+            background: #dc2626;
+            color: white;
+        }
+        
+        .badge-alta {
+            background: #ea580c;
+            color: white;
+        }
+        
+        .badge-media {
+            background: #ca8a04;
+            color: white;
+        }
+        
+        .badge-baixa {
+            background: #15803d;
+            color: white;
+        }
+        
+        .badge-status {
+            background: #0052cc;
+            color: white;
+        }
+        
+        .item-score {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .empty {
+            text-align: center;
+            padding: 32px;
+            color: #999;
+            font-size: 14px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: #999;
+            font-size: 12px;
+            margin-top: 40px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        @media (max-width: 768px) {
+            .page {
+                padding: 20px 12px;
+            }
+            
+            .header-content {
+                padding: 24px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div class="header-content">
+                <h1>UNO Agent</h1>
+                <p class="subtitle">Visualização em tempo real da sua Matriz UNO</p>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <div class="stat-value" id="total">-</div>
+                        <div class="stat-label">Total</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="emExecucao">-</div>
+                        <div class="stat-label">Em Execução</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="criticas">-</div>
+                        <div class="stat-label">Críticas</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="altas">-</div>
+                        <div class="stat-label">Altas</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div id="loading" class="loading">
+            Carregando seus itens...
+        </div>
+        
+        <div id="error" class="error hidden"></div>
+        
+        <div id="content" class="hidden">
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🎯 Próximas Ações</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="proximasAcoes"></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🔴 Itens Críticos</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="criticos"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            UNO Agent · Dados atualizados em tempo real
+        </footer>
+    </div>
+    
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwCKGnK1ZAUHA3xbpQnpgB8R-QVjzOaxlJWmiFjJWON8Y9F348rZlUoim-WvvS77DgjUA/exec";
+        
+        async function carregarDados() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error("Erro na resposta da API");
+                
+                const itens = await response.json();
+                processarDados(itens);
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('content').classList.remove('hidden');
+                
+            } catch (error) {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('error').classList.remove('hidden');
+                document.getElementById('error').textContent = "⚠️ Erro ao carregar dados: " + error.message;
+                console.error(error);
+            }
+        }
+        
+        function processarDados(itens) {
+            document.getElementById('total').textContent = itens.length;
+            
+            const emExecucao = itens.filter(i => i.status === 'EM_EXECUÇÃO');
+            document.getElementById('emExecucao').textContent = emExecucao.length;
+            
+            const criticas = itens.filter(i => i.prioridade && i.prioridade.includes('CRÍTICA'));
+            document.getElementById('criticas').textContent = criticas.length;
+            
+            const altas = itens.filter(i => i.prioridade && i.prioridade.includes('ALTA'));
+            document.getElementById('altas').textContent = altas.length;
+            
+            // Próximas ações
+            const proximasOrdenadas = emExecucao.sort((a, b) => {
+                const ordem = { '🔴 CRÍTICA': 1, '🟠 ALTA': 2, '🟡 MÉDIA': 3, '🟢 BAIXA': 4 };
+                return (ordem[a.prioridade] || 5) - (ordem[b.prioridade] || 5);
+            });
+            
+            const proximasHtml = proximasOrdenadas.length > 0
+                ? proximasOrdenadas.map(item => `
+                    <div class="item ${getClassePrioridade(item.prioridade)}">
+                        <div class="item-title">${item.acao}</div>
+                        <div class="item-meta">
+                            <span class="badge badge-${getClassePrioridade(item.prioridade)}">${item.prioridade}</span>
+                            <span class="badge badge-status">${item.id}</span>
+                        </div>
+                        <div class="item-score">Score: ${item.total}/60</div>
+                    </div>
+                `).join('')
+                : '<div class="empty">Nenhum item em execução</div>';
+            
+            document.getElementById('proximasAcoes').innerHTML = proximasHtml;
+            
+            // Itens críticos
+            const criticosHtml = criticas.length > 0
+                ? criticas.map(item => `
+                    <div class="item critica">
+                        <div class="item-title">${item.acao}</div>
+                        <div class="item-meta">
+                            <span class="badge badge-critica">${item.prioridade}</span>
+                            <span class="badge badge-status">${item.status}</span>
+                        </div>
+                        <div class="item-score">Score: ${item.total}/60</div>
+                    </div>
+                `).join('')
+                : '<div class="empty">Nenhum item crítico no momento</div>';
+            
+            document.getElementById('criticos').innerHTML = criticosHtml;
+        }
+        
+        function getClassePrioridade(prioridade) {
+            if (!prioridade) return '';
+            if (prioridade.includes('CRÍTICA')) return 'critica';
+            if (prioridade.includes('ALTA')) return 'alta';
+            if (prioridade.includes('MÉDIA')) return 'media';
+            return 'baixa';
+        }
+        
+        // Carregar ao abrir
+        carregarDados();
+        
+        // Atualizar a cada 30 segundos
+        setInterval(carregarDados, 30000);
+    </script>
+</body>
+</html>
