@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNO Agent • Priorização Inteligente</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://accounts.google.com/gapi/client"></script>
     <style>
         * {
             margin: 0;
@@ -18,7 +20,6 @@
             --text-primary: #f5f5f7;
             --text-secondary: #a0a0a5;
             --accent-cyan: #00d9ff;
-            --accent-cyan-dim: #00d9ff22;
             --border-color: #2a2f3a;
             --pareto-color: #ff6b35;
             --success: #4caf50;
@@ -39,22 +40,10 @@
             flex-direction: column;
         }
 
-        /* HEADER */
         header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
             padding: 3rem 4rem;
-            position: relative;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
         }
 
         .header-content {
@@ -67,17 +56,14 @@
             font-weight: 300;
             letter-spacing: -1px;
             margin-bottom: 0.75rem;
-            color: var(--text-primary);
         }
 
         .subtitle {
             font-size: 1.1rem;
             color: var(--text-secondary);
             font-weight: 300;
-            letter-spacing: 0.3px;
         }
 
-        /* MAIN */
         main {
             flex: 1;
             max-width: 1300px;
@@ -86,7 +72,6 @@
             padding: 4rem;
         }
 
-        /* ETAPAS */
         .etapas {
             display: flex;
             gap: 1rem;
@@ -104,9 +89,7 @@
             cursor: pointer;
             font-size: 1.1rem;
             font-weight: 600;
-            letter-spacing: 0.3px;
             transition: all 0.25s ease;
-            position: relative;
             white-space: nowrap;
             border-radius: 8px;
             text-transform: uppercase;
@@ -137,44 +120,28 @@
             to { opacity: 1; }
         }
 
-        /* FORM */
-        .form-group {
-            margin-bottom: 2.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            letter-spacing: 0.2px;
-        }
-
-        textarea, input[type="text"], input[type="date"] {
-            width: 100%;
-            padding: 1rem;
+        .card-explicativo {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 1.05rem;
-            transition: all 0.25s ease;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
             border-radius: 8px;
         }
 
-        textarea:focus, input:focus {
-            outline: none;
-            border-color: var(--accent-cyan);
-            background: var(--bg-tertiary);
+        .card-explicativo h2 {
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 700;
         }
 
-        textarea {
-            min-height: 140px;
-            resize: vertical;
+        .card-explicativo p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 0.75rem;
         }
 
-        /* SAÚDES */
         .saudes-reference {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -189,7 +156,6 @@
             font-size: 1.15rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .saudes-grid {
@@ -202,7 +168,6 @@
             padding: 1rem;
             background: var(--bg-dark);
             border: 1px solid var(--border-color);
-            font-size: 1rem;
             text-align: center;
             font-weight: 600;
             border-radius: 8px;
@@ -215,8 +180,71 @@
             color: var(--accent-cyan);
         }
 
-        /* AÇÕES LIST */
-        .acoes-list {
+        .form-group {
+            margin-bottom: 2.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+        }
+
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1.05rem;
+            transition: all 0.25s ease;
+            border-radius: 8px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            background: var(--bg-tertiary);
+        }
+
+        button {
+            padding: 0.9rem 2rem;
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+            border-radius: 8px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        .acoes-adicionadas {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             padding: 2rem;
@@ -224,7 +252,7 @@
             border-radius: 8px;
         }
 
-        .acoes-list h3 {
+        .acoes-adicionadas h3 {
             color: var(--accent-cyan);
             margin-bottom: 1.5rem;
             font-size: 1.2rem;
@@ -241,12 +269,7 @@
             border: 1px solid var(--border-color);
             margin-bottom: 0.8rem;
             border-radius: 8px;
-            transition: all 0.25s ease;
             font-size: 1.05rem;
-        }
-
-        .acao-item:hover {
-            border-color: var(--accent-cyan);
         }
 
         .acao-remove {
@@ -256,42 +279,28 @@
             font-size: 1.3rem;
         }
 
-        /* BOTÕES */
-        button {
-            padding: 0.9rem 2rem;
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-            border: none;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-radius: 8px;
+        .contador-acoes {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
         }
 
-        button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        .input-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
         }
 
-        button:active {
-            transform: translateY(0);
+        .input-container input {
+            flex: 1;
         }
 
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 1px solid var(--accent-cyan);
+        .input-container button {
+            padding: 0.9rem 2.5rem;
+            white-space: nowrap;
         }
 
-        .btn-secondary:hover {
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-        }
-
-        /* ETAPA 2 */
         .perguntas-container {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
@@ -300,35 +309,23 @@
             border-radius: 8px;
         }
 
-        .acao-navegacao {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .acao-header {
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--border-color);
         }
 
-        .acao-navegacao h2 {
+        .acao-header h2 {
             font-size: 1.6rem;
             color: var(--text-primary);
             font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
         .acao-contador {
             color: var(--text-secondary);
             font-size: 1rem;
             font-weight: 600;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .nav-buttons button {
-            padding: 0.7rem 1.5rem;
-            font-size: 1rem;
         }
 
         .dimensao {
@@ -341,7 +338,6 @@
             color: var(--accent-cyan);
             margin-bottom: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .pergunta {
@@ -350,11 +346,6 @@
             margin-bottom: 1rem;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            transition: all 0.25s ease;
-        }
-
-        .pergunta:hover {
-            border-color: var(--accent-cyan);
         }
 
         .pergunta-texto {
@@ -395,11 +386,6 @@
             border-radius: 50%;
             background: var(--accent-cyan);
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
         }
 
         input[type="range"]::-moz-range-thumb {
@@ -420,7 +406,37 @@
             font-family: 'Courier New', monospace;
         }
 
-        /* ETAPA 3 */
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .nav-buttons button {
+            flex: 1;
+        }
+
+        .pareto-info {
+            background: var(--bg-secondary);
+            border: 1px solid var(--pareto-color);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .pareto-info h2 {
+            color: var(--pareto-color);
+            margin-bottom: 0.75rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .pareto-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
         .ranking-list {
             display: flex;
             flex-direction: column;
@@ -437,10 +453,6 @@
             align-items: center;
             transition: all 0.25s ease;
             border-radius: 8px;
-        }
-
-        .ranking-item:hover {
-            border-color: var(--accent-cyan);
         }
 
         .ranking-item.pareto {
@@ -487,43 +499,15 @@
             font-size: 0.95rem;
             margin-top: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             border-radius: 6px;
         }
 
-        .pareto-info {
-            background: var(--bg-secondary);
-            border: 1px solid var(--pareto-color);
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            text-align: center;
-            border-radius: 8px;
-        }
-
-        .pareto-info h2 {
-            color: var(--pareto-color);
-            margin-bottom: 0.75rem;
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        .pareto-info p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        /* ETAPA 4 */
         .plano-item {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             padding: 2rem;
             margin-bottom: 2rem;
             border-radius: 8px;
-            transition: all 0.25s ease;
-        }
-
-        .plano-item:hover {
-            border-color: var(--accent-cyan);
         }
 
         .plano-titulo {
@@ -595,28 +579,36 @@
             font-size: 1.15rem;
         }
 
-        @media (max-width: 768px) {
-            main {
-                padding: 2rem;
-            }
+        .botoes-finais {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
 
-            h1 {
-                font-size: 2.2rem;
-            }
+        .botoes-finais button {
+            flex: 1;
+            min-width: 200px;
+        }
 
-            .plano-grid {
-                grid-template-columns: 1fr;
-            }
+        #pdf-content {
+            display: none;
+        }
 
-            .acao-navegacao {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: flex-start;
-            }
-
+        @media print {
             body {
-                font-size: 16px;
+                background: white;
             }
+            .etapas, .sucesso, .botoes-finais {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            main { padding: 2rem; }
+            h1 { font-size: 2.2rem; }
+            .plano-grid { grid-template-columns: 1fr; }
+            body { font-size: 16px; }
         }
     </style>
 </head>
@@ -638,53 +630,61 @@
 
         <!-- ETAPA 1 -->
         <div class="etapa-content active" id="etapa-1">
-            <div class="form-group">
-                <label>Que ações você quer realizar nos próximos 1, 2 ou 3 meses?</label>
-                
-                <div class="saudes-reference">
-                    <h3>Referência: 7 Áreas da Vida</h3>
-                    <div class="saudes-grid">
-                        <div class="saude-item">🧘 Pessoal</div>
-                        <div class="saude-item">💼 Profissional</div>
-                        <div class="saude-item">🙏 Religioso</div>
-                        <div class="saude-item">👥 Social</div>
-                        <div class="saude-item">👨‍👩‍👧 Familiar</div>
-                        <div class="saude-item">🧠 Intelectual</div>
-                        <div class="saude-item">💰 Financeiro</div>
-                    </div>
-                </div>
-
-                <label style="margin-top: 2rem;">Escreva suas ações (uma por linha)</label>
-                <textarea id="acoes-input" placeholder="Exemplo:&#10;- Voltar a viver minha vida individualmente&#10;- Ser menos indeciso&#10;- Organizar minhas finanças"></textarea>
-
-                <button style="margin-top: 1.5rem; width: 100%;" onclick="adicionarAcoes()">Adicionar Ações</button>
+            <div class="card-explicativo">
+                <h2>Como funciona?</h2>
+                <p>Você vai escolher <strong>de 5 a 20 ações</strong> que deseja realizar nos próximos 1, 2 ou 3 meses.</p>
+                <p>Pense nas 7 áreas da sua vida como referência. Após adicionar todas as ações, você vai avaliá-las usando a Matriz UNO.</p>
             </div>
 
-            <div class="acoes-list" id="acoes-list-container" style="display: none;">
+            <div class="saudes-reference">
+                <h3>Referência: 7 Áreas da Vida</h3>
+                <div class="saudes-grid">
+                    <div class="saude-item">🧘 Pessoal</div>
+                    <div class="saude-item">💼 Profissional</div>
+                    <div class="saude-item">🙏 Religioso</div>
+                    <div class="saude-item">👥 Social</div>
+                    <div class="saude-item">👨‍👩‍👧 Familiar</div>
+                    <div class="saude-item">🧠 Intelectual</div>
+                    <div class="saude-item">💰 Financeiro</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="label-acao">Escreva sua primeira ação</label>
+                <div class="input-container">
+                    <input type="text" id="acao-input" placeholder="Ex: Voltar a viver minha vida individualmente">
+                    <button onclick="adicionarAcao()">Adicionar</button>
+                </div>
+                <div class="contador-acoes"><span id="contador">0</span>/20 ações adicionadas</div>
+            </div>
+
+            <div class="acoes-adicionadas" id="acoes-adicionadas-container" style="display: none;">
                 <h3>Suas Ações</h3>
-                <div id="acoes-list"></div>
-                <button style="margin-top: 1.5rem; width: 100%;" onclick="irParaEtapa(2)">Prosseguir para Matriz UNO →</button>
+                <div id="acoes-lista"></div>
+                <button style="width: 100%; margin-top: 2rem;" onclick="validarAcoesEIrParaEtapa2()" id="btn-prosseguir" style="display: none;">Prosseguir para Matriz UNO →</button>
             </div>
         </div>
 
         <!-- ETAPA 2 -->
         <div class="etapa-content" id="etapa-2">
+            <div class="card-explicativo">
+                <h2>Como avaliar?</h2>
+                <p>Você vai dar uma <strong>nota de 0 a 10</strong> para cada ação em 9 perguntas diferentes.</p>
+                <p><strong>0 = Muito baixo impacto</strong> | <strong>10 = Alto impacto</strong></p>
+                <p>As perguntas estão divididas em 3 dimensões: Urgente, Necessário e Oportuno. Responda com sinceridade para cada ação.</p>
+            </div>
+
             <div class="perguntas-container">
-                <div class="acao-navegacao">
-                    <div>
-                        <h2 id="acao-atual-titulo">-</h2>
-                        <p class="acao-contador"><span id="acao-idx">1</span> de <span id="acao-total">-</span></p>
-                    </div>
-                    <div class="nav-buttons">
-                        <button class="btn-secondary" onclick="acaoAnterior()" id="btn-anterior" style="display: none;">← Anterior</button>
-                        <button class="btn-secondary" id="btn-proxima" onclick="proximaAcao()">Próxima →</button>
-                    </div>
+                <div class="acao-header">
+                    <h2 id="acao-atual-titulo">-</h2>
+                    <p class="acao-contador"><span id="acao-idx">1</span> de <span id="acao-total">-</span></p>
                 </div>
 
                 <div id="perguntas-content"></div>
 
-                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                    <button style="flex: 1;" onclick="calcularScores()">Finalizar e Ver Ranking</button>
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="acaoAnterior()" id="btn-anterior" style="display: none;">← Anterior</button>
+                    <button class="btn-secondary" id="btn-proxima" onclick="proximaAcao()">Próxima →</button>
                 </div>
             </div>
         </div>
@@ -703,19 +703,38 @@
 
         <!-- ETAPA 4 -->
         <div class="etapa-content" id="etapa-4">
+            <div class="card-explicativo">
+                <h2>Plano de Ação</h2>
+                <p>Agora você vai detalhar como executar cada uma das suas ações TOP 20% (as destacadas em laranja).</p>
+                <p>Responda as 5 perguntas para cada ação e crie seu plano de execução.</p>
+            </div>
+
             <div id="planos-container"></div>
             <div class="sucesso" id="sucesso-message">
                 <h2>✓ Plano de Ação Criado!</h2>
                 <p>Suas prioridades estão definidas. Agora é só executar! 💪</p>
+                
+                <div class="botoes-finais">
+                    <button onclick="gerarPDF()">📄 Baixar como PDF</button>
+                    <button onclick="sincronizarGoogleCalendar()" class="btn-secondary">📅 Sincronizar Google Calendar</button>
+                </div>
             </div>
         </div>
     </main>
+
+    <div id="pdf-content" style="display: none; padding: 40px; background: white; color: black; font-family: Arial;">
+        <h1 style="text-align: center; color: #0f1419;">Plano de Ação - UNO Agent</h1>
+        <p style="text-align: center; color: #666;">Prioridades e Execução</p>
+        <hr style="border: none; border-top: 2px solid #0f1419; margin: 30px 0;">
+        <div id="pdf-acoes"></div>
+    </div>
 
     <script>
         let acoes = [];
         let respostas = {};
         let acaoAtualIdx = 0;
         let scores = {};
+        let planoData = {};
 
         const perguntas = {
             urgente: [
@@ -735,46 +754,67 @@
             ]
         };
 
-        function adicionarAcoes() {
-            const texto = document.getElementById('acoes-input').value;
-            acoes = texto.split('\n').map(a => a.trim()).filter(a => a.length > 0).map(a => a.replace(/^[-•*]\s*/, ''));
+        function adicionarAcao() {
+            const input = document.getElementById('acao-input');
+            const acao = input.value.trim();
 
-            if (acoes.length === 0) {
-                alert('Digite pelo menos uma ação!');
+            if (!acao) {
+                alert('Digite uma ação!');
                 return;
             }
 
-            renderizarAcoes();
-            document.getElementById('acoes-list-container').style.display = 'block';
+            if (acoes.length >= 20) {
+                alert('Máximo de 20 ações atingido!');
+                return;
+            }
+
+            acoes.push(acao);
+            input.value = '';
+            atualizarListaAcoes();
+
+            if (acoes.length === 20) {
+                document.getElementById('acao-input').disabled = true;
+                document.querySelector('.input-container button').disabled = true;
+            }
+
+            document.getElementById('label-acao').textContent = `Escreva sua ${acoes.length + 1}ª ação`;
         }
 
-        function renderizarAcoes() {
-            const list = document.getElementById('acoes-list');
-            list.innerHTML = acoes.map((acao, i) => `
+        function atualizarListaAcoes() {
+            document.getElementById('contador').textContent = acoes.length;
+            const lista = document.getElementById('acoes-lista');
+
+            lista.innerHTML = acoes.map((acao, i) => `
                 <div class="acao-item">
-                    <span>${acao}</span>
+                    <span>${i + 1}. ${acao}</span>
                     <span class="acao-remove" onclick="removerAcao(${i})">✕</span>
                 </div>
             `).join('');
+
+            if (acoes.length >= 5) {
+                document.getElementById('acoes-adicionadas-container').style.display = 'block';
+                document.getElementById('btn-prosseguir').style.display = 'block';
+            } else {
+                document.getElementById('acoes-adicionadas-container').style.display = 'none';
+                document.getElementById('btn-prosseguir').style.display = 'none';
+            }
         }
 
         function removerAcao(idx) {
             acoes.splice(idx, 1);
-            if (acoes.length === 0) {
-                document.getElementById('acoes-list-container').style.display = 'none';
-            }
-            renderizarAcoes();
+            atualizarListaAcoes();
+            document.getElementById('acao-input').disabled = false;
+            document.querySelector('.input-container button').disabled = false;
+            document.getElementById('label-acao').textContent = `Escreva sua ${acoes.length + 1}ª ação`;
         }
 
-        function irParaEtapa(num) {
-            if (num === 2 && acoes.length === 0) {
-                alert('Adicione ações primeiro!');
+        function validarAcoesEIrParaEtapa2() {
+            if (acoes.length < 5) {
+                alert('Você precisa adicionar pelo menos 5 ações!');
                 return;
             }
-            mudarEtapa(num);
-            if (num === 2) renderizarPerguntas();
-            if (num === 3) renderizarRanking();
-            if (num === 4) renderizarPlanoAcao();
+            irParaEtapa(2);
+            renderizarPerguntas();
         }
 
         function renderizarPerguntas() {
@@ -789,7 +829,7 @@
             document.getElementById('acao-idx').textContent = acaoAtualIdx + 1;
 
             document.getElementById('btn-anterior').style.display = acaoAtualIdx > 0 ? 'block' : 'none';
-            document.getElementById('btn-proxima').textContent = acaoAtualIdx === acoes.length - 1 ? 'Concluir' : 'Próxima →';
+            document.getElementById('btn-proxima').textContent = acaoAtualIdx === acoes.length - 1 ? 'Finalizar e Ver Ranking' : 'Próxima →';
 
             let html = '';
             ['urgente', 'necessario', 'oportuno'].forEach(dimensao => {
@@ -844,6 +884,7 @@
                 scores[acao] = { u, n, o, total: u + n + o };
             });
             irParaEtapa(3);
+            renderizarRanking();
         }
 
         function renderizarRanking() {
@@ -884,24 +925,24 @@
                         <div class="plano-titulo">${acao}</div>
                         <div class="plano-grid">
                             <div class="plano-field">
-                                <label>Como farei cada ação?</label>
-                                <textarea placeholder="Detalhe os passos..." onchange="salvarPlano('${acao}', 'como', this.value)"></textarea>
+                                <label>Como farei?</label>
+                                <textarea placeholder="Detalhe os passos..." data-acao="${acao}" data-campo="como"></textarea>
                             </div>
                             <div class="plano-field">
                                 <label>Quando começo?</label>
-                                <input type="date" onchange="salvarPlano('${acao}', 'inicio', this.value)">
+                                <input type="date" data-acao="${acao}" data-campo="inicio">
                             </div>
                             <div class="plano-field">
-                                <label>Quando checo/controlo?</label>
-                                <input type="date" onchange="salvarPlano('${acao}', 'controle', this.value)">
+                                <label>Quando checo?</label>
+                                <input type="date" data-acao="${acao}" data-campo="controle">
                             </div>
                             <div class="plano-field">
-                                <label>O que não tenho ainda?</label>
-                                <textarea placeholder="Recursos, pessoas, materiais..." onchange="salvarPlano('${acao}', 'falta', this.value)"></textarea>
+                                <label>O que falta?</label>
+                                <textarea placeholder="Recursos, pessoas, materiais..." data-acao="${acao}" data-campo="falta"></textarea>
                             </div>
                             <div class="plano-field">
                                 <label>Quando finalizo?</label>
-                                <input type="date" onchange="salvarPlano('${acao}', 'fim', this.value)">
+                                <input type="date" data-acao="${acao}" data-campo="fim">
                             </div>
                         </div>
                     </div>
@@ -909,6 +950,16 @@
             });
 
             document.getElementById('planos-container').innerHTML = html;
+
+            // Adicionar listeners para salvar dados
+            document.querySelectorAll('[data-acao]').forEach(el => {
+                el.addEventListener('change', function() {
+                    const acao = this.dataset.acao;
+                    const campo = this.dataset.campo;
+                    if (!planoData[acao]) planoData[acao] = {};
+                    planoData[acao][campo] = this.value;
+                });
+            });
 
             const btn = document.createElement('button');
             btn.textContent = 'Concluir Plano de Ação';
@@ -918,8 +969,9 @@
             document.getElementById('planos-container').appendChild(btn);
         }
 
-        function salvarPlano(acao, campo, valor) {
-            console.log(`Plano ${acao} - ${campo}: ${valor}`);
+        function irParaEtapa(num) {
+            mudarEtapa(num);
+            if (num === 4) renderizarPlanoAcao();
         }
 
         function mudarEtapa(num) {
@@ -929,12 +981,69 @@
             document.querySelector(`[data-etapa="${num}"]`).classList.add('active');
         }
 
+        function gerarPDF() {
+            const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
+            const topCount = Math.ceil(acoes.length * 0.2);
+            const top20 = sorted.slice(0, topCount);
+
+            let pdfHtml = '<h2 style="color: #0f1419; margin-top: 30px;">Plano de Ação Detalhado</h2>';
+            
+            top20.forEach((item, idx) => {
+                const [acao, score] = item;
+                const data = planoData[acao] || {};
+                pdfHtml += `
+                    <div style="page-break-inside: avoid; margin-top: 30px; border: 1px solid #ddd; padding: 20px;">
+                        <h3 style="color: #ff6b35; margin: 0 0 15px 0;">${idx + 1}. ${acao}</h3>
+                        <p><strong>Pontuação:</strong> ${score.total}/90 (U: ${score.u} | N: ${score.n} | O: ${score.o})</p>
+                        <p><strong>Como farei:</strong> ${data.como || '(não preenchido)'}</p>
+                        <p><strong>Início:</strong> ${data.inicio || '(não preenchido)'}</p>
+                        <p><strong>Acompanhamento:</strong> ${data.controle || '(não preenchido)'}</p>
+                        <p><strong>O que falta:</strong> ${data.falta || '(não preenchido)'}</p>\n                        <p><strong>Finalização:</strong> ${data.fim || '(não preenchido)'}</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('pdf-acoes').innerHTML = pdfHtml;
+
+            const element = document.getElementById('pdf-content');
+            const opt = {
+                margin: 10,
+                filename: 'plano-acao-uno.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function sincronizarGoogleCalendar() {
+            const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
+            const topCount = Math.ceil(acoes.length * 0.2);
+            const top20 = sorted.slice(0, topCount);
+
+            // Informações para criar eventos
+            let resumo = 'Ações do seu Plano UNO:\n\n';
+            top20.forEach(item => {
+                const [acao, score] = item;
+                const data = planoData[acao] || {};
+                resumo += `• ${acao} (início: ${data.inicio || 'não informado'})\n`;
+            });
+
+            alert(`Para sincronizar com Google Calendar, você precisa:\n\n1. Fazer login com sua conta Google\n2. Autorizar acesso ao seu calendário\n3. Os eventos serão criados às 08h em vermelho\n\n${resumo}\n\nNota: Integração em desenvolvimento. Por enquanto, você pode criar manualmente no Google Calendar usando as datas do seu plano.`);
+        }
+
+        document.getElementById('acao-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') adicionarAcao();
+        });
+
         document.querySelectorAll('.etapa-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const etapa = parseInt(btn.dataset.etapa);
-                if (etapa <= 1 || (etapa === 2 && acoes.length > 0) || (etapa >= 3 && Object.keys(scores).length > 0)) {
-                    irParaEtapa(etapa);
-                }
+                if (etapa === 1) mudarEtapa(1);
+                else if (etapa === 2 && acoes.length >= 5) mudarEtapa(2);
+                else if (etapa === 3 && Object.keys(scores).length > 0) mudarEtapa(3);
+                else if (etapa === 4 && Object.keys(scores).length > 0) irParaEtapa(4);
             });
         });
     </script>
