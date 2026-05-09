@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNO Agent • 4 Etapas de Priorização</title>
+    <title>UNO Agent • Priorização Inteligente</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +18,7 @@
             --text-primary: #f5f5f7;
             --text-secondary: #a0a0a5;
             --accent-cyan: #00d9ff;
-            --accent-cyan-dim: #00d9ff33;
+            --accent-cyan-dim: #00d9ff22;
             --border-color: #2a2f3a;
             --pareto-color: #ff6b35;
             --success: #4caf50;
@@ -31,6 +31,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+            font-size: 18px;
         }
 
         body {
@@ -38,10 +39,11 @@
             flex-direction: column;
         }
 
+        /* HEADER */
         header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
-            padding: 2rem 3rem;
+            padding: 3rem 4rem;
             position: relative;
         }
 
@@ -61,51 +63,53 @@
         }
 
         h1 {
-            font-size: 2.5rem;
-            font-weight: 400;
-            letter-spacing: -0.5px;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 3.3rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
         }
 
         .subtitle {
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             color: var(--text-secondary);
             font-weight: 300;
+            letter-spacing: 0.3px;
         }
 
+        /* MAIN */
         main {
             flex: 1;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             width: 100%;
-            padding: 3rem;
+            padding: 4rem;
         }
 
+        /* ETAPAS */
         .etapas {
             display: flex;
             gap: 1rem;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 2rem;
             overflow-x: auto;
         }
 
         .etapa-btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.9rem 2rem;
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            transition: all 0.25s ease;
             position: relative;
             white-space: nowrap;
+            border-radius: 8px;
+            text-transform: uppercase;
         }
 
         .etapa-btn:hover {
@@ -114,18 +118,9 @@
         }
 
         .etapa-btn.active {
-            color: var(--accent-cyan);
-            border-color: var(--accent-cyan);
-        }
-
-        .etapa-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2rem;
-            left: 0;
-            right: 0;
-            height: 2px;
+            color: var(--bg-dark);
             background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
         }
 
         .etapa-content {
@@ -142,16 +137,18 @@
             to { opacity: 1; }
         }
 
+        /* FORM */
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         label {
             display: block;
-            margin-bottom: 0.75rem;
-            font-weight: 500;
+            margin-bottom: 1rem;
+            font-weight: 700;
             color: var(--text-primary);
-            font-size: 1.1rem;
+            font-size: 1.25rem;
+            letter-spacing: 0.2px;
         }
 
         textarea, input[type="text"], input[type="date"] {
@@ -161,62 +158,77 @@
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             font-family: inherit;
-            font-size: 1rem;
-            transition: border 0.3s ease;
+            font-size: 1.05rem;
+            transition: all 0.25s ease;
+            border-radius: 8px;
         }
 
         textarea:focus, input:focus {
             outline: none;
             border-color: var(--accent-cyan);
+            background: var(--bg-tertiary);
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 140px;
             resize: vertical;
         }
 
+        /* SAÚDES */
         .saudes-reference {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            border-radius: 8px;
         }
 
         .saudes-reference h3 {
             color: var(--accent-cyan);
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .saudes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
         }
 
         .saude-item {
-            padding: 0.75rem;
+            padding: 1rem;
             background: var(--bg-dark);
             border: 1px solid var(--border-color);
-            font-size: 0.85rem;
+            font-size: 1rem;
             text-align: center;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            cursor: pointer;
         }
 
+        .saude-item:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        /* AÇÕES LIST */
         .acoes-list {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            margin-top: 2rem;
+            padding: 2rem;
+            margin-top: 2.5rem;
+            border-radius: 8px;
         }
 
         .acoes-list h3 {
             color: var(--accent-cyan);
             margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 1.2rem;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
@@ -227,30 +239,45 @@
             padding: 1rem;
             background: var(--bg-dark);
             border: 1px solid var(--border-color);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.8rem;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            font-size: 1.05rem;
+        }
+
+        .acao-item:hover {
+            border-color: var(--accent-cyan);
         }
 
         .acao-remove {
             color: #ff4757;
             cursor: pointer;
             font-weight: bold;
+            font-size: 1.3rem;
         }
 
+        /* BOTÕES */
         button {
-            padding: 0.75rem 2rem;
+            padding: 0.9rem 2rem;
             background: var(--accent-cyan);
             color: var(--bg-dark);
             border: none;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            border-radius: 8px;
         }
 
         button:hover {
             opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         .btn-secondary {
@@ -264,12 +291,13 @@
             color: var(--bg-dark);
         }
 
-        /* ETAPA 2: PERGUNTAS */
+        /* ETAPA 2 */
         .perguntas-container {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             padding: 2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            border-radius: 8px;
         }
 
         .acao-navegacao {
@@ -282,13 +310,15 @@
         }
 
         .acao-navegacao h2 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--text-primary);
+            font-weight: 600;
         }
 
         .acao-contador {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
         }
 
         .nav-buttons {
@@ -297,19 +327,19 @@
         }
 
         .nav-buttons button {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
         }
 
         .dimensao {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .dimensao-titulo {
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--accent-cyan);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -319,16 +349,23 @@
             padding: 1.5rem;
             margin-bottom: 1rem;
             border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .pergunta:hover {
+            border-color: var(--accent-cyan);
         }
 
         .pergunta-texto {
             margin-bottom: 0.75rem;
             color: var(--text-primary);
-            font-weight: 500;
+            font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .pergunta-exemplo {
-            font-size: 0.85rem;
+            font-size: 1rem;
             color: var(--text-secondary);
             margin-bottom: 1rem;
             font-style: italic;
@@ -337,7 +374,7 @@
         .slider-container {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         input[type="range"] {
@@ -358,6 +395,11 @@
             border-radius: 50%;
             background: var(--accent-cyan);
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
         input[type="range"]::-moz-range-thumb {
@@ -370,19 +412,20 @@
         }
 
         .valor-display {
-            min-width: 50px;
+            min-width: 60px;
             text-align: center;
-            font-weight: 600;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.3rem;
             color: var(--accent-cyan);
             font-family: 'Courier New', monospace;
         }
 
-        /* ETAPA 3: RANKING */
+        /* ETAPA 3 */
         .ranking-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
+            margin-bottom: 2.5rem;
         }
 
         .ranking-item {
@@ -392,24 +435,30 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
+            border-radius: 8px;
+        }
+
+        .ranking-item:hover {
+            border-color: var(--accent-cyan);
         }
 
         .ranking-item.pareto {
             border: 2px solid var(--pareto-color);
-            background: linear-gradient(90deg, var(--bg-secondary) 0%, #ff6b3533 100%);
-            box-shadow: 0 0 20px #ff6b3520;
+            background: linear-gradient(90deg, var(--bg-secondary) 0%, #ff6b3520 100%);
         }
 
         .ranking-info h3 {
             font-size: 1.2rem;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+            font-weight: 700;
         }
 
         .ranking-info p {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
         }
 
         .ranking-score {
@@ -417,14 +466,14 @@
         }
 
         .ranking-score .valor {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--accent-cyan);
             font-family: 'Courier New', monospace;
         }
 
         .ranking-score .label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
             text-transform: uppercase;
         }
@@ -434,33 +483,47 @@
             background: var(--pareto-color);
             color: white;
             padding: 0.5rem 1rem;
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-top: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            border-radius: 6px;
         }
 
         .pareto-info {
             background: var(--bg-secondary);
-            border: 2px solid var(--pareto-color);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            border: 1px solid var(--pareto-color);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
             text-align: center;
+            border-radius: 8px;
         }
 
         .pareto-info h2 {
             color: var(--pareto-color);
-            margin-bottom: 0.5rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.6rem;
+            font-weight: 700;
         }
 
-        /* ETAPA 4: PLANO DE AÇÃO */
+        .pareto-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ETAPA 4 */
         .plano-item {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             padding: 2rem;
             margin-bottom: 2rem;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .plano-item:hover {
+            border-color: var(--accent-cyan);
         }
 
         .plano-titulo {
@@ -468,7 +531,8 @@
             color: var(--text-primary);
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid var(--pareto-color);
+            border-bottom: 1px solid var(--pareto-color);
+            font-weight: 700;
         }
 
         .plano-grid {
@@ -484,8 +548,9 @@
         }
 
         .plano-field label {
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.05rem;
+            font-weight: 700;
         }
 
         .plano-field textarea {
@@ -494,30 +559,49 @@
 
         .sucesso {
             background: var(--bg-secondary);
-            border: 2px solid var(--success);
-            padding: 2rem;
+            border: 1px solid var(--success);
+            padding: 2.5rem;
             text-align: center;
-            margin-top: 2rem;
+            margin-top: 2.5rem;
             display: none;
+            border-radius: 8px;
         }
 
         .sucesso.show {
             display: block;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .sucesso h2 {
             color: var(--success);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .sucesso p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
         }
 
         @media (max-width: 768px) {
             main {
-                padding: 1.5rem;
+                padding: 2rem;
             }
 
             h1 {
-                font-size: 1.8rem;
+                font-size: 2.2rem;
             }
 
             .plano-grid {
@@ -529,6 +613,10 @@
                 gap: 1rem;
                 align-items: flex-start;
             }
+
+            body {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
@@ -536,16 +624,16 @@
     <header>
         <div class="header-content">
             <h1>UNO Agent</h1>
-            <p class="subtitle">4 Etapas de Priorização Inteligente</p>
+            <p class="subtitle">Priorize suas ações com inteligência • 4 etapas simples</p>
         </div>
     </header>
 
     <main>
         <div class="etapas">
-            <button class="etapa-btn active" data-etapa="1">1. Minhas Ações</button>
-            <button class="etapa-btn" data-etapa="2">2. Matriz UNO</button>
+            <button class="etapa-btn active" data-etapa="1">1. Ações</button>
+            <button class="etapa-btn" data-etapa="2">2. Matriz</button>
             <button class="etapa-btn" data-etapa="3">3. Ranking</button>
-            <button class="etapa-btn" data-etapa="4">4. Plano de Ação</button>
+            <button class="etapa-btn" data-etapa="4">4. Plano</button>
         </div>
 
         <!-- ETAPA 1 -->
@@ -566,10 +654,10 @@
                     </div>
                 </div>
 
-                <label style="margin-top: 1.5rem;">Escreva suas ações (uma por linha)</label>
+                <label style="margin-top: 2rem;">Escreva suas ações (uma por linha)</label>
                 <textarea id="acoes-input" placeholder="Exemplo:&#10;- Voltar a viver minha vida individualmente&#10;- Ser menos indeciso&#10;- Organizar minhas finanças"></textarea>
 
-                <button style="margin-top: 1rem;" onclick="adicionarAcoes()">Adicionar Ações</button>
+                <button style="margin-top: 1.5rem; width: 100%;" onclick="adicionarAcoes()">Adicionar Ações</button>
             </div>
 
             <div class="acoes-list" id="acoes-list-container" style="display: none;">
@@ -604,7 +692,7 @@
         <!-- ETAPA 3 -->
         <div class="etapa-content" id="etapa-3">
             <div class="pareto-info">
-                <h2>Princípio de Pareto - 20/80</h2>
+                <h2>⭐ Princípio de Pareto - 20/80</h2>
                 <p>Foque nas ações destacadas em laranja. São apenas 20% que geram 80% de resultado.</p>
             </div>
 
@@ -647,7 +735,6 @@
             ]
         };
 
-        // ETAPA 1
         function adicionarAcoes() {
             const texto = document.getElementById('acoes-input').value;
             acoes = texto.split('\n').map(a => a.trim()).filter(a => a.length > 0).map(a => a.replace(/^[-•*]\s*/, ''));
@@ -679,7 +766,6 @@
             renderizarAcoes();
         }
 
-        // ETAPA 2
         function irParaEtapa(num) {
             if (num === 2 && acoes.length === 0) {
                 alert('Adicione ações primeiro!');
@@ -760,7 +846,6 @@
             irParaEtapa(3);
         }
 
-        // ETAPA 3
         function renderizarRanking() {
             const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
             const topCount = Math.ceil(acoes.length * 0.2);
@@ -787,7 +872,6 @@
             document.getElementById('ranking-list').innerHTML = html;
         }
 
-        // ETAPA 4
         function renderizarPlanoAcao() {
             const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
             const topCount = Math.ceil(acoes.length * 0.2);
@@ -835,11 +919,9 @@
         }
 
         function salvarPlano(acao, campo, valor) {
-            // Dados salvos no navegador
             console.log(`Plano ${acao} - ${campo}: ${valor}`);
         }
 
-        // NAVEGAÇÃO
         function mudarEtapa(num) {
             document.querySelectorAll('.etapa-content').forEach(e => e.classList.remove('active'));
             document.querySelectorAll('.etapa-btn').forEach(b => b.classList.remove('active'));
