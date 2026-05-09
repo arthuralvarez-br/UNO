@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNO Agent • Dashboard de Priorização</title>
+    <title>UNO Agent • 4 Etapas de Priorização</title>
     <style>
         * {
             margin: 0;
@@ -20,21 +20,15 @@
             --accent-cyan: #00d9ff;
             --accent-cyan-dim: #00d9ff33;
             --border-color: #2a2f3a;
-            
-            --priority-critical: #ff4757;
-            --priority-high: #ffa502;
-            --priority-medium: #00d9ff;
-            --priority-low: #6c757d;
-            
-            --font-display: 'Georgia', 'Garamond', serif;
-            --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            --pareto-color: #ff6b35;
+            --success: #4caf50;
         }
 
         html, body {
             height: 100%;
             background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f2e 100%);
             color: var(--text-primary);
-            font-family: var(--font-body);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -44,13 +38,11 @@
             flex-direction: column;
         }
 
-        /* HEADER */
         header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
-            padding: 2.5rem 3rem;
+            padding: 2rem 3rem;
             position: relative;
-            overflow: hidden;
         }
 
         header::before {
@@ -66,410 +58,476 @@
         .header-content {
             max-width: 1400px;
             margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3rem;
         }
 
-        .header-title {
-            flex: 1;
-        }
-
-        .header-title h1 {
-            font-family: var(--font-display);
-            font-size: 3rem;
+        h1 {
+            font-size: 2.5rem;
             font-weight: 400;
-            letter-spacing: -1px;
-            margin-bottom: 0.25rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .header-title p {
+        .subtitle {
             font-size: 0.95rem;
             color: var(--text-secondary);
             font-weight: 300;
-            letter-spacing: 0.5px;
         }
 
-        .header-status {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            padding-left: 2rem;
-            border-left: 1px solid var(--border-color);
-        }
-
-        .status-item {
-            text-align: center;
-        }
-
-        .status-value {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            font-family: 'Courier New', monospace;
-        }
-
-        .status-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 0.25rem;
-        }
-
-        /* MAIN CONTAINER */
         main {
             flex: 1;
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             width: 100%;
             padding: 3rem;
         }
 
-        /* FILTERS & CONTROLS */
-        .controls {
+        .etapas {
             display: flex;
             gap: 1rem;
             margin-bottom: 3rem;
-            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2rem;
+            overflow-x: auto;
         }
 
-        .filter-btn {
+        .etapa-btn {
             padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .etapa-btn:hover {
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        .etapa-btn.active {
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        .etapa-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2rem;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+
+        .etapa-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .etapa-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        textarea, input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 1rem;
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .saudes-reference {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .saudes-reference h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
             font-size: 0.9rem;
-            cursor: pointer;
-            border-radius: 0;
-            font-family: var(--font-body);
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
-            transition: all 0.25s ease;
+        }
+
+        .saudes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .saude-item {
+            padding: 0.75rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .acoes-list {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .acoes-list h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
             text-transform: uppercase;
         }
 
-        .filter-btn:hover {
-            background: var(--bg-tertiary);
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
+        .acao-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.75rem;
         }
 
-        .filter-btn.active {
+        .acao-remove {
+            color: #ff4757;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 0.75rem 2rem;
             background: var(--accent-cyan);
             color: var(--bg-dark);
-            border-color: var(--accent-cyan);
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* GRID DE CARDS */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            animation: fadeInUp 0.6s ease 0.1s both;
+        button:hover {
+            opacity: 0.9;
         }
 
-        .card {
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* ETAPA 2: PERGUNTAS */
+        .perguntas-container {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
             padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent-color, var(--accent-cyan));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            border-color: var(--accent-cyan);
-            background: var(--bg-tertiary);
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        /* CARD HEADER */
-        .card-header {
+        .acao-navegacao {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .card-title {
-            font-family: var(--font-display);
-            font-size: 1.4rem;
-            font-weight: 400;
-            line-height: 1.3;
-            flex: 1;
+        .acao-navegacao h2 {
+            font-size: 1.5rem;
             color: var(--text-primary);
         }
 
-        .priority-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 0;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            background: var(--badge-bg, var(--bg-tertiary));
-            color: var(--badge-color, var(--text-primary));
-            border: 1px solid var(--badge-border, var(--border-color));
+        .acao-contador {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
-        .badge-critical {
-            --badge-bg: #ff475733;
-            --badge-color: #ff4757;
-            --badge-border: #ff475766;
-            --accent-color: #ff4757;
-        }
-
-        .badge-high {
-            --badge-bg: #ffa50233;
-            --badge-color: #ffa502;
-            --badge-border: #ffa50266;
-            --accent-color: #ffa502;
-        }
-
-        .badge-medium {
-            --badge-bg: var(--accent-cyan-dim);
-            --badge-color: var(--accent-cyan);
-            --badge-border: var(--accent-cyan);
-        }
-
-        .badge-low {
-            --badge-bg: #6c757d33;
-            --badge-color: #a0a0a5;
-            --badge-border: #6c757d66;
-        }
-
-        /* SCORE DISPLAY */
-        .score-container {
-            background: var(--bg-dark);
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        .nav-buttons {
+            display: flex;
             gap: 1rem;
         }
 
-        .score-item {
-            text-align: center;
-            padding: 0.5rem;
+        .nav-buttons button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
         }
 
-        .score-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
+        .dimensao {
+            margin-bottom: 2rem;
+        }
+
+        .dimensao-titulo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 0.25rem;
         }
 
-        .score-value {
-            font-size: 1.6rem;
+        .pergunta {
+            background: var(--bg-dark);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .pergunta-texto {
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .pergunta-exemplo {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border-color);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent-cyan);
+            cursor: pointer;
+            border: none;
+        }
+
+        .valor-display {
+            min-width: 50px;
+            text-align: center;
             font-weight: 600;
+            font-size: 1.2rem;
             color: var(--accent-cyan);
             font-family: 'Courier New', monospace;
         }
 
-        .score-sum {
-            grid-column: 1 / -1;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-            display: grid;
-            grid-template-columns: auto 1fr;
+        /* ETAPA 3: RANKING */
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
             gap: 1rem;
+        }
+
+        .ranking-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
-        .score-sum-label {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .ranking-item.pareto {
+            border: 2px solid var(--pareto-color);
+            background: linear-gradient(90deg, var(--bg-secondary) 0%, #ff6b3533 100%);
+            box-shadow: 0 0 20px #ff6b3520;
+        }
+
+        .ranking-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .ranking-info p {
             color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
-        .score-sum-value {
+        .ranking-score {
+            text-align: right;
+        }
+
+        .ranking-score .valor {
             font-size: 2rem;
             font-weight: 700;
             color: var(--accent-cyan);
             font-family: 'Courier New', monospace;
         }
 
-        /* CRITÉRIOS */
-        .criteria-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+        .ranking-score .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
         }
 
-        .criteria-item {
-            background: var(--bg-dark);
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .criteria-key {
-            font-size: 0.75rem;
-            color: var(--accent-cyan);
+        .pareto-badge {
+            display: inline-block;
+            background: var(--pareto-color);
+            color: white;
+            padding: 0.5rem 1rem;
             font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .criteria-name {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.3;
+        .pareto-info {
+            background: var(--bg-secondary);
+            border: 2px solid var(--pareto-color);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
-        .criteria-score {
+        .pareto-info h2 {
+            color: var(--pareto-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        /* ETAPA 4: PLANO DE AÇÃO */
+        .plano-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .plano-titulo {
             font-size: 1.4rem;
-            font-weight: 600;
             color: var(--text-primary);
-            font-family: 'Courier New', monospace;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--pareto-color);
         }
 
-        /* CARD FOOTER */
-        .card-footer {
+        .plano-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .plano-field {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+            flex-direction: column;
         }
 
-        .card-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .plano-field label {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
         }
 
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--status-color, var(--accent-cyan));
+        .plano-field textarea {
+            min-height: 100px;
         }
 
-        /* EMPTY STATE */
-        .empty-state {
+        .sucesso {
+            background: var(--bg-secondary);
+            border: 2px solid var(--success);
+            padding: 2rem;
             text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-secondary);
+            margin-top: 2rem;
+            display: none;
         }
 
-        .empty-state h3 {
-            font-family: var(--font-display);
-            font-size: 1.8rem;
-            color: var(--text-primary);
+        .sucesso.show {
+            display: block;
+        }
+
+        .sucesso h2 {
+            color: var(--success);
             margin-bottom: 1rem;
-            font-weight: 400;
-        }
-
-        /* ANIMATIONS */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-secondary);
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 2px solid var(--border-color);
-            border-top-color: var(--accent-cyan);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* RESPONSIVO */
-        @media (max-width: 1024px) {
-            .header-content {
-                flex-direction: column;
-                gap: 2rem;
-            }
-
-            .header-status {
-                padding-left: 0;
-                border-left: none;
-                border-top: 1px solid var(--border-color);
-                padding-top: 2rem;
-            }
-
-            .cards-container {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
+            font-size: 1.5rem;
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 2rem 1.5rem;
-            }
-
-            .header-title h1 {
-                font-size: 2rem;
-            }
-
             main {
                 padding: 1.5rem;
             }
 
-            .cards-container {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .plano-grid {
                 grid-template-columns: 1fr;
             }
 
-            .criteria-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .header-status {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
+            .acao-navegacao {
+                flex-direction: column;
                 gap: 1rem;
+                align-items: flex-start;
             }
         }
     </style>
@@ -477,196 +535,326 @@
 <body>
     <header>
         <div class="header-content">
-            <div class="header-title">
-                <h1>UNO Agent</h1>
-                <p>Dashboard de Priorização Cognitiva • Urgente • Necessário • Oportuno</p>
-            </div>
-            <div class="header-status">
-                <div class="status-item">
-                    <div class="status-value" id="count-total">0</div>
-                    <div class="status-label">Total</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-value" id="count-critical" style="color: #ff4757;">0</div>
-                    <div class="status-label">Crítica</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-value" id="count-high" style="color: #ffa502;">0</div>
-                    <div class="status-label">Alta</div>
-                </div>
-            </div>
+            <h1>UNO Agent</h1>
+            <p class="subtitle">4 Etapas de Priorização Inteligente</p>
         </div>
     </header>
 
     <main>
-        <div class="controls">
-            <button class="filter-btn active" data-filter="all">Todos</button>
-            <button class="filter-btn" data-filter="critical">Crítica</button>
-            <button class="filter-btn" data-filter="high">Alta</button>
-            <button class="filter-btn" data-filter="medium">Média</button>
-            <button class="filter-btn" data-filter="low">Baixa</button>
+        <div class="etapas">
+            <button class="etapa-btn active" data-etapa="1">1. Minhas Ações</button>
+            <button class="etapa-btn" data-etapa="2">2. Matriz UNO</button>
+            <button class="etapa-btn" data-etapa="3">3. Ranking</button>
+            <button class="etapa-btn" data-etapa="4">4. Plano de Ação</button>
         </div>
 
-        <div id="content">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p style="margin-top: 1.5rem;">Carregando dados...</p>
+        <!-- ETAPA 1 -->
+        <div class="etapa-content active" id="etapa-1">
+            <div class="form-group">
+                <label>Que ações você quer realizar nos próximos 1, 2 ou 3 meses?</label>
+                
+                <div class="saudes-reference">
+                    <h3>Referência: 7 Áreas da Vida</h3>
+                    <div class="saudes-grid">
+                        <div class="saude-item">🧘 Pessoal</div>
+                        <div class="saude-item">💼 Profissional</div>
+                        <div class="saude-item">🙏 Religioso</div>
+                        <div class="saude-item">👥 Social</div>
+                        <div class="saude-item">👨‍👩‍👧 Familiar</div>
+                        <div class="saude-item">🧠 Intelectual</div>
+                        <div class="saude-item">💰 Financeiro</div>
+                    </div>
+                </div>
+
+                <label style="margin-top: 1.5rem;">Escreva suas ações (uma por linha)</label>
+                <textarea id="acoes-input" placeholder="Exemplo:&#10;- Voltar a viver minha vida individualmente&#10;- Ser menos indeciso&#10;- Organizar minhas finanças"></textarea>
+
+                <button style="margin-top: 1rem;" onclick="adicionarAcoes()">Adicionar Ações</button>
+            </div>
+
+            <div class="acoes-list" id="acoes-list-container" style="display: none;">
+                <h3>Suas Ações</h3>
+                <div id="acoes-list"></div>
+                <button style="margin-top: 1.5rem; width: 100%;" onclick="irParaEtapa(2)">Prosseguir para Matriz UNO →</button>
+            </div>
+        </div>
+
+        <!-- ETAPA 2 -->
+        <div class="etapa-content" id="etapa-2">
+            <div class="perguntas-container">
+                <div class="acao-navegacao">
+                    <div>
+                        <h2 id="acao-atual-titulo">-</h2>
+                        <p class="acao-contador"><span id="acao-idx">1</span> de <span id="acao-total">-</span></p>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn-secondary" onclick="acaoAnterior()" id="btn-anterior" style="display: none;">← Anterior</button>
+                        <button class="btn-secondary" id="btn-proxima" onclick="proximaAcao()">Próxima →</button>
+                    </div>
+                </div>
+
+                <div id="perguntas-content"></div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <button style="flex: 1;" onclick="calcularScores()">Finalizar e Ver Ranking</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ETAPA 3 -->
+        <div class="etapa-content" id="etapa-3">
+            <div class="pareto-info">
+                <h2>Princípio de Pareto - 20/80</h2>
+                <p>Foque nas ações destacadas em laranja. São apenas 20% que geram 80% de resultado.</p>
+            </div>
+
+            <div class="ranking-list" id="ranking-list"></div>
+
+            <button style="width: 100%; margin-top: 2rem;" onclick="irParaEtapa(4)">Criar Plano de Ação →</button>
+        </div>
+
+        <!-- ETAPA 4 -->
+        <div class="etapa-content" id="etapa-4">
+            <div id="planos-container"></div>
+            <div class="sucesso" id="sucesso-message">
+                <h2>✓ Plano de Ação Criado!</h2>
+                <p>Suas prioridades estão definidas. Agora é só executar! 💪</p>
             </div>
         </div>
     </main>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwCKGnK1ZAUHA3xbpQnpgB8R-QVjzOaxlJWmiFjJWON8Y9F348rZlUoim-WvvS77DgjUA/exec';
-        let allData = [];
-        let currentFilter = 'all';
+        let acoes = [];
+        let respostas = {};
+        let acaoAtualIdx = 0;
+        let scores = {};
 
-        // MAPEAR CRITÉRIOS PARA LABELS
-        const criteriaMap = {
-            u1: { label: 'Impacto se Falhar', key: 'U1' },
-            u2: { label: 'Tempo Disponível', key: 'U2' },
-            n1: { label: 'Alinhamento Valores', key: 'N1' },
-            n2: { label: 'Impacto Duradouro', key: 'N2' },
-            o1: { label: 'Viabilidade Recursos', key: 'O1' },
-            o2: { label: 'Alinhamento Momento', key: 'O2' }
+        const perguntas = {
+            urgente: [
+                { id: 'u1', titulo: 'U1: Vai dar problema se eu não fizer?', exemplo: 'Se eu deixar isso de lado por 3 meses, vai estragar algo?' },
+                { id: 'u2', titulo: 'U2: Tempo está acabando?', exemplo: 'Se eu esperar mais, vou perder a chance ou piorar?' },
+                { id: 'u3', titulo: 'U3: Outras coisas dependem disso?', exemplo: 'Preciso fazer isso primeiro antes de fazer outras coisas?' }
+            ],
+            necessario: [
+                { id: 'n1', titulo: 'N1: Isso é importante pro que eu sou ou quero ser?', exemplo: 'Fazer isso vai deixar eu mais feliz ou mais "eu mesmo"?' },
+                { id: 'n2', titulo: 'N2: Isso vai melhorar minha vida pra sempre?', exemplo: 'Se eu fizer isso, minha vida fica melhor pra sempre ou só um tempo?' },
+                { id: 'n3', titulo: 'N3: Faz sentido com meus sonhos?', exemplo: 'Isso está conectado com o que eu realmente quero pra mim?' }
+            ],
+            oportuno: [
+                { id: 'o1', titulo: 'O1: Tenho tudo que precisa pra fazer agora?', exemplo: 'Tenho tempo, grana, skill ou ajuda pra começar hoje?' },
+                { id: 'o2', titulo: 'O2: O momento é bom pra fazer isso?', exemplo: 'As circunstâncias da minha vida agora ajudam ou atrapalham?' },
+                { id: 'o3', titulo: 'O3: Fazer isso agora vai facilitar outras coisas?', exemplo: 'Se eu fizer isso agora, as outras coisas ficam mais fáceis depois?' }
+            ]
         };
 
-        // BUSCAR DADOS
-        async function fetchData() {
-            try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
-                allData = data.sort((a, b) => (b.total || 0) - (a.total || 0));
-                render();
-            } catch (error) {
-                console.error('Erro ao buscar dados:', error);
-                document.getElementById('content').innerHTML = `
-                    <div class="empty-state">
-                        <h3>Erro ao carregar</h3>
-                        <p>Não foi possível conectar à API. Verifique a conexão.</p>
-                    </div>
-                `;
+        // ETAPA 1
+        function adicionarAcoes() {
+            const texto = document.getElementById('acoes-input').value;
+            acoes = texto.split('\n').map(a => a.trim()).filter(a => a.length > 0).map(a => a.replace(/^[-•*]\s*/, ''));
+
+            if (acoes.length === 0) {
+                alert('Digite pelo menos uma ação!');
+                return;
+            }
+
+            renderizarAcoes();
+            document.getElementById('acoes-list-container').style.display = 'block';
+        }
+
+        function renderizarAcoes() {
+            const list = document.getElementById('acoes-list');
+            list.innerHTML = acoes.map((acao, i) => `
+                <div class="acao-item">
+                    <span>${acao}</span>
+                    <span class="acao-remove" onclick="removerAcao(${i})">✕</span>
+                </div>
+            `).join('');
+        }
+
+        function removerAcao(idx) {
+            acoes.splice(idx, 1);
+            if (acoes.length === 0) {
+                document.getElementById('acoes-list-container').style.display = 'none';
+            }
+            renderizarAcoes();
+        }
+
+        // ETAPA 2
+        function irParaEtapa(num) {
+            if (num === 2 && acoes.length === 0) {
+                alert('Adicione ações primeiro!');
+                return;
+            }
+            mudarEtapa(num);
+            if (num === 2) renderizarPerguntas();
+            if (num === 3) renderizarRanking();
+            if (num === 4) renderizarPlanoAcao();
+        }
+
+        function renderizarPerguntas() {
+            acaoAtualIdx = 0;
+            document.getElementById('acao-total').textContent = acoes.length;
+            mostrarAcao();
+        }
+
+        function mostrarAcao() {
+            const acao = acoes[acaoAtualIdx];
+            document.getElementById('acao-atual-titulo').textContent = acao;
+            document.getElementById('acao-idx').textContent = acaoAtualIdx + 1;
+
+            document.getElementById('btn-anterior').style.display = acaoAtualIdx > 0 ? 'block' : 'none';
+            document.getElementById('btn-proxima').textContent = acaoAtualIdx === acoes.length - 1 ? 'Concluir' : 'Próxima →';
+
+            let html = '';
+            ['urgente', 'necessario', 'oportuno'].forEach(dimensao => {
+                const titulo = dimensao === 'urgente' ? 'URGENTE' : dimensao === 'necessario' ? 'NECESSÁRIO' : 'OPORTUNO';
+                html += `<div class="dimensao"><div class="dimensao-titulo">${titulo}</div>`;
+
+                perguntas[dimensao].forEach(p => {
+                    const key = `${acao}_${p.id}`;
+                    const valor = respostas[key] || 5;
+                    html += `
+                        <div class="pergunta">
+                            <div class="pergunta-texto">${p.titulo}</div>
+                            <div class="pergunta-exemplo">${p.exemplo}</div>
+                            <div class="slider-container">
+                                <input type="range" min="0" max="10" value="${valor}" onchange="atualizarResposta('${key}', this.value); this.parentElement.querySelector('.valor-display').textContent = this.value;">
+                                <div class="valor-display">${valor}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            });
+
+            document.getElementById('perguntas-content').innerHTML = html;
+        }
+
+        function atualizarResposta(key, valor) {
+            respostas[key] = parseInt(valor);
+        }
+
+        function acaoAnterior() {
+            if (acaoAtualIdx > 0) {
+                acaoAtualIdx--;
+                mostrarAcao();
             }
         }
 
-        // OBTER PRIORIDADE
-        function getPriority(total) {
-            if (total >= 55) return { level: 'critical', label: 'Crítica' };
-            if (total >= 45) return { level: 'high', label: 'Alta' };
-            if (total >= 35) return { level: 'medium', label: 'Média' };
-            return { level: 'low', label: 'Baixa' };
+        function proximaAcao() {
+            if (acaoAtualIdx < acoes.length - 1) {
+                acaoAtualIdx++;
+                mostrarAcao();
+            } else {
+                calcularScores();
+            }
         }
 
-        // RENDERIZAR CARD
-        function createCard(item) {
-            const priority = getPriority(item.total || 0);
-            const total = item.total || 0;
-            
-            return `
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">${item.title || 'Sem título'}</h2>
-                        <div class="priority-badge badge-${priority.level}">${priority.label}</div>
-                    </div>
-
-                    <div class="score-container">
-                        <div class="score-item">
-                            <div class="score-label">U1 + U2</div>
-                            <div class="score-value">${(item.u1 || 0) + (item.u2 || 0)}</div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-label">N1 + N2</div>
-                            <div class="score-value">${(item.n1 || 0) + (item.n2 || 0)}</div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-label">O1 + O2</div>
-                            <div class="score-value">${(item.o1 || 0) + (item.o2 || 0)}</div>
-                        </div>
-                        <div class="score-sum">
-                            <div class="score-sum-label">Total</div>
-                            <div class="score-sum-value">${total} / 60</div>
-                        </div>
-                    </div>
-
-                    <div class="criteria-grid">
-                        <div class="criteria-item">
-                            <div class="criteria-key">U1</div>
-                            <div class="criteria-name">Impacto se Falhar</div>
-                            <div class="criteria-score">${item.u1 || 0}</div>
-                        </div>
-                        <div class="criteria-item">
-                            <div class="criteria-key">U2</div>
-                            <div class="criteria-name">Tempo Disponível</div>
-                            <div class="criteria-score">${item.u2 || 0}</div>
-                        </div>
-                        <div class="criteria-item">
-                            <div class="criteria-key">N1</div>
-                            <div class="criteria-name">Alinhamento Valores</div>
-                            <div class="criteria-score">${item.n1 || 0}</div>
-                        </div>
-                        <div class="criteria-item">
-                            <div class="criteria-key">N2</div>
-                            <div class="criteria-name">Impacto Duradouro</div>
-                            <div class="criteria-score">${item.n2 || 0}</div>
-                        </div>
-                        <div class="criteria-item">
-                            <div class="criteria-key">O1</div>
-                            <div class="criteria-name">Viabilidade Recursos</div>
-                            <div class="criteria-score">${item.o1 || 0}</div>
-                        </div>
-                        <div class="criteria-item">
-                            <div class="criteria-key">O2</div>
-                            <div class="criteria-name">Alinhamento Momento</div>
-                            <div class="criteria-score">${item.o2 || 0}</div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <div class="card-status">
-                            <div class="status-dot"></div>
-                            <span>${item.status || 'Planejado'}</span>
-                        </div>
-                        <span>${item.date || 'Sem data'}</span>
-                    </div>
-                </div>
-            `;
+        function calcularScores() {
+            acoes.forEach(acao => {
+                const u = (respostas[`${acao}_u1`] || 0) + (respostas[`${acao}_u2`] || 0) + (respostas[`${acao}_u3`] || 0);
+                const n = (respostas[`${acao}_n1`] || 0) + (respostas[`${acao}_n2`] || 0) + (respostas[`${acao}_n3`] || 0);
+                const o = (respostas[`${acao}_o1`] || 0) + (respostas[`${acao}_o2`] || 0) + (respostas[`${acao}_o3`] || 0);
+                scores[acao] = { u, n, o, total: u + n + o };
+            });
+            irParaEtapa(3);
         }
 
-        // RENDERIZAR
-        function render() {
-            const filtered = currentFilter === 'all' 
-                ? allData 
-                : allData.filter(item => getPriority(item.total || 0).level === currentFilter);
+        // ETAPA 3
+        function renderizarRanking() {
+            const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
+            const topCount = Math.ceil(acoes.length * 0.2);
 
-            const counts = {
-                total: allData.length,
-                critical: allData.filter(item => getPriority(item.total || 0).level === 'critical').length,
-                high: allData.filter(item => getPriority(item.total || 0).level === 'high').length
-            };
+            let html = '';
+            sorted.forEach((item, idx) => {
+                const [acao, score] = item;
+                const isPareto = idx < topCount;
+                html += `
+                    <div class="ranking-item ${isPareto ? 'pareto' : ''}">
+                        <div class="ranking-info">
+                            <h3>${acao}</h3>
+                            <p>U: ${score.u} | N: ${score.n} | O: ${score.o}</p>
+                            ${isPareto ? '<div class="pareto-badge">⭐ TOP 20%</div>' : ''}
+                        </div>
+                        <div class="ranking-score">
+                            <div class="label">Pontuação</div>
+                            <div class="valor">${score.total}</div>
+                        </div>
+                    </div>
+                `;
+            });
 
-            document.getElementById('count-total').textContent = counts.total;
-            document.getElementById('count-critical').textContent = counts.critical;
-            document.getElementById('count-high').textContent = counts.high;
-
-            const html = filtered.length > 0
-                ? `<div class="cards-container">${filtered.map(createCard).join('')}</div>`
-                : `<div class="empty-state"><h3>Sem itens</h3><p>Nenhum item nesta categoria.</p></div>`;
-
-            document.getElementById('content').innerHTML = html;
+            document.getElementById('ranking-list').innerHTML = html;
         }
 
-        // EVENT LISTENERS
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                currentFilter = e.target.dataset.filter;
-                render();
+        // ETAPA 4
+        function renderizarPlanoAcao() {
+            const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
+            const topCount = Math.ceil(acoes.length * 0.2);
+            const top20 = sorted.slice(0, topCount).map(item => item[0]);
+
+            let html = '';
+            top20.forEach(acao => {
+                html += `
+                    <div class="plano-item">
+                        <div class="plano-titulo">${acao}</div>
+                        <div class="plano-grid">
+                            <div class="plano-field">
+                                <label>Como farei cada ação?</label>
+                                <textarea placeholder="Detalhe os passos..." onchange="salvarPlano('${acao}', 'como', this.value)"></textarea>
+                            </div>
+                            <div class="plano-field">
+                                <label>Quando começo?</label>
+                                <input type="date" onchange="salvarPlano('${acao}', 'inicio', this.value)">
+                            </div>
+                            <div class="plano-field">
+                                <label>Quando checo/controlo?</label>
+                                <input type="date" onchange="salvarPlano('${acao}', 'controle', this.value)">
+                            </div>
+                            <div class="plano-field">
+                                <label>O que não tenho ainda?</label>
+                                <textarea placeholder="Recursos, pessoas, materiais..." onchange="salvarPlano('${acao}', 'falta', this.value)"></textarea>
+                            </div>
+                            <div class="plano-field">
+                                <label>Quando finalizo?</label>
+                                <input type="date" onchange="salvarPlano('${acao}', 'fim', this.value)">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('planos-container').innerHTML = html;
+
+            const btn = document.createElement('button');
+            btn.textContent = 'Concluir Plano de Ação';
+            btn.style.width = '100%';
+            btn.style.marginTop = '2rem';
+            btn.onclick = () => document.getElementById('sucesso-message').classList.add('show');
+            document.getElementById('planos-container').appendChild(btn);
+        }
+
+        function salvarPlano(acao, campo, valor) {
+            // Dados salvos no navegador
+            console.log(`Plano ${acao} - ${campo}: ${valor}`);
+        }
+
+        // NAVEGAÇÃO
+        function mudarEtapa(num) {
+            document.querySelectorAll('.etapa-content').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.etapa-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`etapa-${num}`).classList.add('active');
+            document.querySelector(`[data-etapa="${num}"]`).classList.add('active');
+        }
+
+        document.querySelectorAll('.etapa-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const etapa = parseInt(btn.dataset.etapa);
+                if (etapa <= 1 || (etapa === 2 && acoes.length > 0) || (etapa >= 3 && Object.keys(scores).length > 0)) {
+                    irParaEtapa(etapa);
+                }
             });
         });
-
-        // INICIAR
-        fetchData();
-        setInterval(fetchData, 30000); // Refresh a cada 30 segundos
     </script>
 </body>
 </html>
