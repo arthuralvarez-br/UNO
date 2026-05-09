@@ -3,418 +3,670 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNO Agent</title>
+    <title>UNO Agent • Dashboard de Priorização</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-            background: #f8f9fa;
-            color: #1a1a1a;
+
+        :root {
+            --bg-dark: #0f1419;
+            --bg-secondary: #1a1f28;
+            --bg-tertiary: #242b38;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a0a0a5;
+            --accent-cyan: #00d9ff;
+            --accent-cyan-dim: #00d9ff33;
+            --border-color: #2a2f3a;
+            
+            --priority-critical: #ff4757;
+            --priority-high: #ffa502;
+            --priority-medium: #00d9ff;
+            --priority-low: #6c757d;
+            
+            --font-display: 'Georgia', 'Garamond', serif;
+            --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f2e 100%);
+            color: var(--text-primary);
+            font-family: var(--font-body);
             line-height: 1.6;
+            overflow-x: hidden;
         }
-        
-        .page {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
+
+        body {
+            display: flex;
+            flex-direction: column;
         }
-        
+
+        /* HEADER */
         header {
-            margin-bottom: 40px;
-        }
-        
-        .header-content {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            border-left: 4px solid #0052cc;
-        }
-        
-        h1 {
-            font-size: 32px;
-            font-weight: 600;
-            color: #0052cc;
-            margin-bottom: 8px;
-        }
-        
-        .subtitle {
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 16px;
-            margin-top: 30px;
-        }
-        
-        .stat {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 6px;
-            text-align: center;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #0052cc;
-            margin-bottom: 4px;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .loading {
-            background: white;
-            padding: 60px 40px;
-            border-radius: 8px;
-            text-align: center;
-            color: #666;
-        }
-        
-        .error {
-            background: #fee;
-            border-left: 4px solid #dc2626;
-            padding: 20px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            color: #991b1b;
-            font-size: 14px;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2.5rem 3rem;
+            position: relative;
             overflow: hidden;
         }
-        
-        .card-header {
-            padding: 24px;
-            border-bottom: 1px solid #e5e7eb;
-            background: #f8f9fa;
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
         }
-        
-        .card-header h2 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-        
-        .card-body {
-            padding: 24px;
-        }
-        
-        .item {
-            padding: 16px;
-            border-left: 3px solid #e5e7eb;
-            margin-bottom: 12px;
-            border-radius: 4px;
-            background: #f8f9fa;
-            transition: all 0.2s;
-        }
-        
-        .item:hover {
-            background: #f0f1f3;
-            border-left-color: #0052cc;
-        }
-        
-        .item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .item.critica {
-            border-left-color: #dc2626;
-            background: #fee;
-        }
-        
-        .item.critica:hover {
-            background: #fdd;
-        }
-        
-        .item.alta {
-            border-left-color: #ea580c;
-            background: #fef3e2;
-        }
-        
-        .item.alta:hover {
-            background: #fed5b5;
-        }
-        
-        .item.media {
-            border-left-color: #ca8a04;
-            background: #fffaeb;
-        }
-        
-        .item.media:hover {
-            background: #fef3c7;
-        }
-        
-        .item.baixa {
-            border-left-color: #15803d;
-            background: #f0fdf4;
-        }
-        
-        .item.baixa:hover {
-            background: #dcfce7;
-        }
-        
-        .item-title {
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        .item-meta {
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 8px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
         }
-        
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 11px;
+
+        .header-title {
+            flex: 1;
+        }
+
+        .header-title h1 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: -1px;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-title p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding-left: 2rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            font-family: 'Courier New', monospace;
+        }
+
+        .status-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+
+        /* MAIN CONTAINER */
+        main {
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 3rem;
+        }
+
+        /* FILTERS & CONTROLS */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 0;
+            font-family: var(--font-body);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+        }
+
+        .filter-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .filter-btn.active {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            border-color: var(--accent-cyan);
+        }
+
+        /* GRID DE CARDS */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-color, var(--accent-cyan));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-cyan);
+            background: var(--bg-tertiary);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* CARD HEADER */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 400;
+            line-height: 1.3;
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .priority-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 0;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            background: var(--badge-bg, var(--bg-tertiary));
+            color: var(--badge-color, var(--text-primary));
+            border: 1px solid var(--badge-border, var(--border-color));
+        }
+
+        .badge-critical {
+            --badge-bg: #ff475733;
+            --badge-color: #ff4757;
+            --badge-border: #ff475766;
+            --accent-color: #ff4757;
+        }
+
+        .badge-high {
+            --badge-bg: #ffa50233;
+            --badge-color: #ffa502;
+            --badge-border: #ffa50266;
+            --accent-color: #ffa502;
+        }
+
+        .badge-medium {
+            --badge-bg: var(--accent-cyan-dim);
+            --badge-color: var(--accent-cyan);
+            --badge-border: var(--accent-cyan);
+        }
+
+        .badge-low {
+            --badge-bg: #6c757d33;
+            --badge-color: #a0a0a5;
+            --badge-border: #6c757d66;
+        }
+
+        /* SCORE DISPLAY */
+        .score-container {
+            background: var(--bg-dark);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .score-item {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .score-value {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            font-family: 'Courier New', monospace;
+        }
+
+        .score-sum {
+            grid-column: 1 / -1;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .score-sum-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .score-sum-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* CRITÉRIOS */
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .criteria-item {
+            background: var(--bg-dark);
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .criteria-key {
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
-        .badge-critica {
-            background: #dc2626;
-            color: white;
+
+        .criteria-name {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.3;
         }
-        
-        .badge-alta {
-            background: #ea580c;
-            color: white;
+
+        .criteria-score {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
         }
-        
-        .badge-media {
-            background: #ca8a04;
-            color: white;
+
+        /* CARD FOOTER */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
-        
-        .badge-baixa {
-            background: #15803d;
-            color: white;
+
+        .card-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        
-        .badge-status {
-            background: #0052cc;
-            color: white;
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--status-color, var(--accent-cyan));
         }
-        
-        .item-score {
-            font-size: 12px;
-            color: #666;
-        }
-        
-        .empty {
+
+        /* EMPTY STATE */
+        .empty-state {
             text-align: center;
-            padding: 32px;
-            color: #999;
-            font-size: 14px;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
         }
-        
-        footer {
-            text-align: center;
-            padding: 24px;
-            color: #999;
-            font-size: 12px;
-            margin-top: 40px;
+
+        .empty-state h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-weight: 400;
         }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        @media (max-width: 768px) {
-            .page {
-                padding: 20px 12px;
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-            
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 1024px) {
             .header-content {
-                padding: 24px;
+                flex-direction: column;
+                gap: 2rem;
             }
-            
-            h1 {
-                font-size: 24px;
+
+            .header-status {
+                padding-left: 0;
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+                padding-top: 2rem;
             }
-            
-            .grid {
+
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 2rem 1.5rem;
+            }
+
+            .header-title h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 1.5rem;
+            }
+
+            .cards-container {
                 grid-template-columns: 1fr;
+            }
+
+            .criteria-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-status {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="page">
-        <header>
-            <div class="header-content">
+    <header>
+        <div class="header-content">
+            <div class="header-title">
                 <h1>UNO Agent</h1>
-                <p class="subtitle">Visualização em tempo real da sua Matriz UNO</p>
-                <div class="stats-grid">
-                    <div class="stat">
-                        <div class="stat-value" id="total">-</div>
-                        <div class="stat-label">Total</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="emExecucao">-</div>
-                        <div class="stat-label">Em Execução</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="criticas">-</div>
-                        <div class="stat-label">Críticas</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value" id="altas">-</div>
-                        <div class="stat-label">Altas</div>
-                    </div>
-                </div>
+                <p>Dashboard de Priorização Cognitiva • Urgente • Necessário • Oportuno</p>
             </div>
-        </header>
-        
-        <div id="loading" class="loading">
-            Carregando seus itens...
-        </div>
-        
-        <div id="error" class="error hidden"></div>
-        
-        <div id="content" class="hidden">
-            <div class="grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>🎯 Próximas Ações</h2>
-                    </div>
-                    <div class="card-body">
-                        <div id="proximasAcoes"></div>
-                    </div>
+            <div class="header-status">
+                <div class="status-item">
+                    <div class="status-value" id="count-total">0</div>
+                    <div class="status-label">Total</div>
                 </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h2>🔴 Itens Críticos</h2>
-                    </div>
-                    <div class="card-body">
-                        <div id="criticos"></div>
-                    </div>
+                <div class="status-item">
+                    <div class="status-value" id="count-critical" style="color: #ff4757;">0</div>
+                    <div class="status-label">Crítica</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value" id="count-high" style="color: #ffa502;">0</div>
+                    <div class="status-label">Alta</div>
                 </div>
             </div>
         </div>
-        
-        <footer>
-            UNO Agent · Dados atualizados em tempo real
-        </footer>
-    </div>
-    
+    </header>
+
+    <main>
+        <div class="controls">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="critical">Crítica</button>
+            <button class="filter-btn" data-filter="high">Alta</button>
+            <button class="filter-btn" data-filter="medium">Média</button>
+            <button class="filter-btn" data-filter="low">Baixa</button>
+        </div>
+
+        <div id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 1.5rem;">Carregando dados...</p>
+            </div>
+        </div>
+    </main>
+
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwCKGnK1ZAUHA3xbpQnpgB8R-QVjzOaxlJWmiFjJWON8Y9F348rZlUoim-WvvS77DgjUA/exec";
-        
-        async function carregarDados() {
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwCKGnK1ZAUHA3xbpQnpgB8R-QVjzOaxlJWmiFjJWON8Y9F348rZlUoim-WvvS77DgjUA/exec';
+        let allData = [];
+        let currentFilter = 'all';
+
+        // MAPEAR CRITÉRIOS PARA LABELS
+        const criteriaMap = {
+            u1: { label: 'Impacto se Falhar', key: 'U1' },
+            u2: { label: 'Tempo Disponível', key: 'U2' },
+            n1: { label: 'Alinhamento Valores', key: 'N1' },
+            n2: { label: 'Impacto Duradouro', key: 'N2' },
+            o1: { label: 'Viabilidade Recursos', key: 'O1' },
+            o2: { label: 'Alinhamento Momento', key: 'O2' }
+        };
+
+        // BUSCAR DADOS
+        async function fetchData() {
             try {
                 const response = await fetch(API_URL);
-                if (!response.ok) throw new Error("Erro na resposta da API");
-                
-                const itens = await response.json();
-                processarDados(itens);
-                
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-                
+                const data = await response.json();
+                allData = data.sort((a, b) => (b.total || 0) - (a.total || 0));
+                render();
             } catch (error) {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('error').classList.remove('hidden');
-                document.getElementById('error').textContent = "⚠️ Erro ao carregar dados: " + error.message;
-                console.error(error);
+                console.error('Erro ao buscar dados:', error);
+                document.getElementById('content').innerHTML = `
+                    <div class="empty-state">
+                        <h3>Erro ao carregar</h3>
+                        <p>Não foi possível conectar à API. Verifique a conexão.</p>
+                    </div>
+                `;
             }
         }
-        
-        function processarDados(itens) {
-            document.getElementById('total').textContent = itens.length;
+
+        // OBTER PRIORIDADE
+        function getPriority(total) {
+            if (total >= 55) return { level: 'critical', label: 'Crítica' };
+            if (total >= 45) return { level: 'high', label: 'Alta' };
+            if (total >= 35) return { level: 'medium', label: 'Média' };
+            return { level: 'low', label: 'Baixa' };
+        }
+
+        // RENDERIZAR CARD
+        function createCard(item) {
+            const priority = getPriority(item.total || 0);
+            const total = item.total || 0;
             
-            const emExecucao = itens.filter(i => i.status === 'EM_EXECUÇÃO');
-            document.getElementById('emExecucao').textContent = emExecucao.length;
-            
-            const criticas = itens.filter(i => i.prioridade && i.prioridade.includes('CRÍTICA'));
-            document.getElementById('criticas').textContent = criticas.length;
-            
-            const altas = itens.filter(i => i.prioridade && i.prioridade.includes('ALTA'));
-            document.getElementById('altas').textContent = altas.length;
-            
-            // Próximas ações
-            const proximasOrdenadas = emExecucao.sort((a, b) => {
-                const ordem = { '🔴 CRÍTICA': 1, '🟠 ALTA': 2, '🟡 MÉDIA': 3, '🟢 BAIXA': 4 };
-                return (ordem[a.prioridade] || 5) - (ordem[b.prioridade] || 5);
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">${item.title || 'Sem título'}</h2>
+                        <div class="priority-badge badge-${priority.level}">${priority.label}</div>
+                    </div>
+
+                    <div class="score-container">
+                        <div class="score-item">
+                            <div class="score-label">U1 + U2</div>
+                            <div class="score-value">${(item.u1 || 0) + (item.u2 || 0)}</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">N1 + N2</div>
+                            <div class="score-value">${(item.n1 || 0) + (item.n2 || 0)}</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">O1 + O2</div>
+                            <div class="score-value">${(item.o1 || 0) + (item.o2 || 0)}</div>
+                        </div>
+                        <div class="score-sum">
+                            <div class="score-sum-label">Total</div>
+                            <div class="score-sum-value">${total} / 60</div>
+                        </div>
+                    </div>
+
+                    <div class="criteria-grid">
+                        <div class="criteria-item">
+                            <div class="criteria-key">U1</div>
+                            <div class="criteria-name">Impacto se Falhar</div>
+                            <div class="criteria-score">${item.u1 || 0}</div>
+                        </div>
+                        <div class="criteria-item">
+                            <div class="criteria-key">U2</div>
+                            <div class="criteria-name">Tempo Disponível</div>
+                            <div class="criteria-score">${item.u2 || 0}</div>
+                        </div>
+                        <div class="criteria-item">
+                            <div class="criteria-key">N1</div>
+                            <div class="criteria-name">Alinhamento Valores</div>
+                            <div class="criteria-score">${item.n1 || 0}</div>
+                        </div>
+                        <div class="criteria-item">
+                            <div class="criteria-key">N2</div>
+                            <div class="criteria-name">Impacto Duradouro</div>
+                            <div class="criteria-score">${item.n2 || 0}</div>
+                        </div>
+                        <div class="criteria-item">
+                            <div class="criteria-key">O1</div>
+                            <div class="criteria-name">Viabilidade Recursos</div>
+                            <div class="criteria-score">${item.o1 || 0}</div>
+                        </div>
+                        <div class="criteria-item">
+                            <div class="criteria-key">O2</div>
+                            <div class="criteria-name">Alinhamento Momento</div>
+                            <div class="criteria-score">${item.o2 || 0}</div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="card-status">
+                            <div class="status-dot"></div>
+                            <span>${item.status || 'Planejado'}</span>
+                        </div>
+                        <span>${item.date || 'Sem data'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // RENDERIZAR
+        function render() {
+            const filtered = currentFilter === 'all' 
+                ? allData 
+                : allData.filter(item => getPriority(item.total || 0).level === currentFilter);
+
+            const counts = {
+                total: allData.length,
+                critical: allData.filter(item => getPriority(item.total || 0).level === 'critical').length,
+                high: allData.filter(item => getPriority(item.total || 0).level === 'high').length
+            };
+
+            document.getElementById('count-total').textContent = counts.total;
+            document.getElementById('count-critical').textContent = counts.critical;
+            document.getElementById('count-high').textContent = counts.high;
+
+            const html = filtered.length > 0
+                ? `<div class="cards-container">${filtered.map(createCard).join('')}</div>`
+                : `<div class="empty-state"><h3>Sem itens</h3><p>Nenhum item nesta categoria.</p></div>`;
+
+            document.getElementById('content').innerHTML = html;
+        }
+
+        // EVENT LISTENERS
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.filter;
+                render();
             });
-            
-            const proximasHtml = proximasOrdenadas.length > 0
-                ? proximasOrdenadas.map(item => `
-                    <div class="item ${getClassePrioridade(item.prioridade)}">
-                        <div class="item-title">${item.acao}</div>
-                        <div class="item-meta">
-                            <span class="badge badge-${getClassePrioridade(item.prioridade)}">${item.prioridade}</span>
-                            <span class="badge badge-status">${item.id}</span>
-                        </div>
-                        <div class="item-score">Score: ${item.total}/60</div>
-                    </div>
-                `).join('')
-                : '<div class="empty">Nenhum item em execução</div>';
-            
-            document.getElementById('proximasAcoes').innerHTML = proximasHtml;
-            
-            // Itens críticos
-            const criticosHtml = criticas.length > 0
-                ? criticas.map(item => `
-                    <div class="item critica">
-                        <div class="item-title">${item.acao}</div>
-                        <div class="item-meta">
-                            <span class="badge badge-critica">${item.prioridade}</span>
-                            <span class="badge badge-status">${item.status}</span>
-                        </div>
-                        <div class="item-score">Score: ${item.total}/60</div>
-                    </div>
-                `).join('')
-                : '<div class="empty">Nenhum item crítico no momento</div>';
-            
-            document.getElementById('criticos').innerHTML = criticosHtml;
-        }
-        
-        function getClassePrioridade(prioridade) {
-            if (!prioridade) return '';
-            if (prioridade.includes('CRÍTICA')) return 'critica';
-            if (prioridade.includes('ALTA')) return 'alta';
-            if (prioridade.includes('MÉDIA')) return 'media';
-            return 'baixa';
-        }
-        
-        // Carregar ao abrir
-        carregarDados();
-        
-        // Atualizar a cada 30 segundos
-        setInterval(carregarDados, 30000);
+        });
+
+        // INICIAR
+        fetchData();
+        setInterval(fetchData, 30000); // Refresh a cada 30 segundos
     </script>
 </body>
 </html>
