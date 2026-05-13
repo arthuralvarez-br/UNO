@@ -3,65 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UNO Agent • Priorização Inteligente</title>
+    <title>UNO • Matriz de Decisões</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://accounts.google.com/gapi/client"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg-dark: #0f1419;
-            --bg-secondary: #1a1f28;
-            --bg-tertiary: #242b38;
-            --text-primary: #f5f5f7;
-            --text-secondary: #a0a0a5;
-            --accent-cyan: #00d9ff;
-            --border-color: #2a2f3a;
+            --bg-dark: #0a0a1f;
+            --bg-secondary: #11111f;
+            --bg-tertiary: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --accent: #ffcc00;
+            --border-color: #222233;
             --pareto-color: #ff6b35;
             --success: #4caf50;
         }
 
         html, body {
             height: 100%;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f2e 100%);
+            background: #0a0a1f;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 70px 70px;
             color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
-            font-size: 18px;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
         }
 
         header {
-            background: var(--bg-secondary);
+            background: rgba(10, 10, 31, 0.95);
             border-bottom: 1px solid var(--border-color);
             padding: 3rem 4rem;
+            text-align: center;
         }
 
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
+        .header-content { max-width: 1400px; margin: 0 auto; }
+
+        .badge {
+            display: inline-block;
+            background: rgba(0, 255, 120, 0.15);
+            color: #00ff88;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 50px;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
         }
 
-        h1 {
-            font-size: 3.3rem;
-            font-weight: 300;
-            letter-spacing: -1px;
-            margin-bottom: 0.75rem;
+        .logo {
+            font-size: 5.8rem;
+            font-weight: 800;
+            letter-spacing: -5px;
+            background: linear-gradient(90deg, #ffffff, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
         }
 
         .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            font-weight: 300;
+            font-size: 1.35rem;
+            color: #aaaaaa;
         }
 
         main {
@@ -80,7 +87,6 @@
             padding-bottom: 2rem;
             overflow-x: auto;
         }
-
         .etapa-btn {
             padding: 0.9rem 2rem;
             background: transparent;
@@ -94,529 +100,40 @@
             border-radius: 8px;
             text-transform: uppercase;
         }
+        .etapa-btn:hover { color: var(--accent); border-color: var(--accent); }
+        .etapa-btn.active { color: #000; background: var(--accent); border-color: var(--accent); }
 
-        .etapa-btn:hover {
-            color: var(--accent-cyan);
-            border-color: var(--accent-cyan);
-        }
-
-        .etapa-btn.active {
-            color: var(--bg-dark);
-            background: var(--accent-cyan);
-            border-color: var(--accent-cyan);
-        }
-
-        .etapa-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .etapa-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .card-explicativo {
+        .card-explicativo, .saudes-reference, .acoes-adicionadas, .perguntas-container,
+        .pareto-info, .ranking-item, .plano-item, .sucesso {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
+            border-radius: 8px;
             padding: 2rem;
-            margin-bottom: 2.5rem;
-            border-radius: 8px;
         }
 
-        .card-explicativo h2 {
-            color: var(--accent-cyan);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
+        button, .etapa-btn.active { background: var(--accent); color: #000; }
+        input[type="range"]::-webkit-slider-thumb,
+        input[type="range"]::-moz-range-thumb { background: var(--accent); }
 
-        .card-explicativo p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            line-height: 1.8;
-            margin-bottom: 0.75rem;
-        }
-
-        .saudes-reference {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            border-radius: 8px;
-        }
-
-        .saudes-reference h3 {
-            color: var(--accent-cyan);
-            margin-bottom: 1.5rem;
-            font-size: 1.15rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .saudes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .saude-item {
-            padding: 1rem;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            text-align: center;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.25s ease;
-            cursor: pointer;
-        }
-
-        .saude-item:hover {
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-        }
-
-        .form-group {
-            margin-bottom: 2.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 1.25rem;
-        }
-
+        /* Estilos originais mantidos */
+        .saudes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+        .saude-item { padding: 1rem; background: var(--bg-dark); border: 1px solid var(--border-color); text-align: center; font-weight: 600; border-radius: 8px; transition: all 0.25s ease; cursor: pointer; }
+        .saude-item:hover { border-color: var(--accent); color: var(--accent); }
+        .form-group { margin-bottom: 2.5rem; }
         input[type="text"], input[type="date"], textarea {
-            width: 100%;
-            padding: 1rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 1.05rem;
-            transition: all 0.25s ease;
-            border-radius: 8px;
+            width: 100%; padding: 1rem; background: var(--bg-secondary); border: 1px solid var(--border-color);
+            color: var(--text-primary); font-size: 1.05rem; border-radius: 8px;
         }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: var(--accent-cyan);
-            background: var(--bg-tertiary);
-        }
-
-        button {
-            padding: 0.9rem 2rem;
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-            border: none;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-transform: uppercase;
-            border-radius: 8px;
-        }
-
-        button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 1px solid var(--accent-cyan);
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            background: var(--accent-cyan);
-            color: var(--bg-dark);
-        }
-
-        .acoes-adicionadas {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            padding: 2rem;
-            margin-top: 2.5rem;
-            border-radius: 8px;
-        }
-
-        .acoes-adicionadas h3 {
-            color: var(--accent-cyan);
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .acao-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            margin-bottom: 0.8rem;
-            border-radius: 8px;
-            font-size: 1.05rem;
-        }
-
-        .acao-remove {
-            color: #ff4757;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.3rem;
-        }
-
-        .contador-acoes {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-container {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .input-container input {
-            flex: 1;
-        }
-
-        .input-container button {
-            padding: 0.9rem 2.5rem;
-            white-space: nowrap;
-        }
-
-        .perguntas-container {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            border-radius: 8px;
-        }
-
-        .acao-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .acao-header h2 {
-            font-size: 1.6rem;
-            color: var(--text-primary);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .acao-contador {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .dimensao {
-            margin-bottom: 2.5rem;
-        }
-
-        .dimensao-titulo {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-        }
-
-        .pergunta {
-            background: var(--bg-dark);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-
-        .pergunta-texto {
-            margin-bottom: 0.75rem;
-            color: var(--text-primary);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .pergunta-exemplo {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            font-style: italic;
-        }
-
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        input[type="range"] {
-            flex: 1;
-            height: 6px;
-            border-radius: 3px;
-            background: var(--border-color);
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent-cyan);
-            cursor: pointer;
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent-cyan);
-            cursor: pointer;
-            border: none;
-        }
-
-        .valor-display {
-            min-width: 60px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: var(--accent-cyan);
-            font-family: 'Courier New', monospace;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .nav-buttons button {
-            flex: 1;
-        }
-
-        .pareto-info {
-            background: var(--bg-secondary);
-            border: 1px solid var(--pareto-color);
-            padding: 2rem;
-            margin-bottom: 2.5rem;
-            text-align: center;
-            border-radius: 8px;
-        }
-
-        .pareto-info h2 {
-            color: var(--pareto-color);
-            margin-bottom: 0.75rem;
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        .pareto-info p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .ranking-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .ranking-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.25s ease;
-            border-radius: 8px;
-        }
-
-        .ranking-item.pareto {
-            border: 2px solid var(--pareto-color);
-            background: linear-gradient(90deg, var(--bg-secondary) 0%, #ff6b3520 100%);
-        }
-
-        .ranking-info h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-
-        .ranking-info p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .ranking-score {
-            text-align: right;
-        }
-
-        .ranking-score .valor {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            font-family: 'Courier New', monospace;
-        }
-
-        .ranking-score .label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-        }
-
-        .pareto-badge {
-            display: inline-block;
-            background: var(--pareto-color);
-            color: white;
-            padding: 0.5rem 1rem;
-            font-weight: 700;
-            font-size: 0.95rem;
-            margin-top: 0.75rem;
-            text-transform: uppercase;
-            border-radius: 6px;
-        }
-
-        .plano-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
-
-        .plano-titulo {
-            font-size: 1.4rem;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--pareto-color);
-            font-weight: 700;
-        }
-
-        .plano-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .plano-field {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .plano-field label {
-            margin-bottom: 0.75rem;
-            font-size: 1.05rem;
-            font-weight: 700;
-        }
-
-        .plano-field textarea {
-            min-height: 100px;
-        }
-
-        .sucesso {
-            background: var(--bg-secondary);
-            border: 1px solid var(--success);
-            padding: 2.5rem;
-            text-align: center;
-            margin-top: 2.5rem;
-            display: none;
-            border-radius: 8px;
-        }
-
-        .sucesso.show {
-            display: block;
-            animation: slideUp 0.4s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .sucesso h2 {
-            color: var(--success);
-            margin-bottom: 0.75rem;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .sucesso p {
-            color: var(--text-secondary);
-            font-size: 1.15rem;
-        }
-
-        .botoes-finais {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .botoes-finais button {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        #pdf-content {
-            display: none;
-        }
-
-        @media print {
-            body {
-                background: white;
-            }
-            .etapas, .sucesso, .botoes-finais {
-                display: none !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            main { padding: 2rem; }
-            h1 { font-size: 2.2rem; }
-            .plano-grid { grid-template-columns: 1fr; }
-            body { font-size: 16px; }
-        }
+        input:focus, textarea:focus { border-color: var(--accent); }
     </style>
 </head>
 <body>
     <header>
         <div class="header-content">
-            <h1>UNO Agent</h1>
-            <p class="subtitle">Priorize suas ações com inteligência • 4 etapas simples</p>
+            <div class="badge">● TRÍADE DA NOVA LIDERANÇA</div>
+            <div class="logo">UNO</div>
+            <p class="subtitle">Urgência • Necessidade • Oportunidade</p>
+            <p style="font-size:1.1rem; color:#aaaaaa; margin-top:10px;">Priorize suas ações com inteligência • 4 etapas simples</p>
         </div>
     </header>
 
@@ -635,7 +152,6 @@
                 <p>Você vai escolher <strong>de 5 a 20 ações</strong> que deseja realizar nos próximos 1, 2 ou 3 meses.</p>
                 <p>Pense nas 7 áreas da sua vida como referência. Após adicionar todas as ações, você vai avaliá-las usando a Matriz UNO.</p>
             </div>
-
             <div class="saudes-reference">
                 <h3>Referência: 7 Áreas da Vida</h3>
                 <div class="saudes-grid">
@@ -648,7 +164,6 @@
                     <div class="saude-item">💰 Financeiro</div>
                 </div>
             </div>
-
             <div class="form-group">
                 <label id="label-acao">Escreva sua primeira ação</label>
                 <div class="input-container">
@@ -657,7 +172,6 @@
                 </div>
                 <div class="contador-acoes"><span id="contador">0</span>/20 ações adicionadas</div>
             </div>
-
             <div class="acoes-adicionadas" id="acoes-adicionadas-container" style="display: none;">
                 <h3>Suas Ações</h3>
                 <div id="acoes-lista"></div>
@@ -673,15 +187,12 @@
                 <p><strong>0 = Muito baixo impacto</strong> | <strong>10 = Alto impacto</strong></p>
                 <p>As perguntas estão divididas em 3 dimensões: Urgente, Necessário e Oportuno. Responda com sinceridade para cada ação.</p>
             </div>
-
             <div class="perguntas-container">
                 <div class="acao-header">
                     <h2 id="acao-atual-titulo">-</h2>
                     <p class="acao-contador"><span id="acao-idx">1</span> de <span id="acao-total">-</span></p>
                 </div>
-
                 <div id="perguntas-content"></div>
-
                 <div class="nav-buttons">
                     <button class="btn-secondary" onclick="acaoAnterior()" id="btn-anterior" style="display: none;">← Anterior</button>
                     <button class="btn-secondary" id="btn-proxima" onclick="proximaAcao()">Próxima →</button>
@@ -695,9 +206,7 @@
                 <h2>⭐ Princípio de Pareto - 20/80</h2>
                 <p>Foque nas ações destacadas em laranja. São apenas 20% que geram 80% de resultado.</p>
             </div>
-
             <div class="ranking-list" id="ranking-list"></div>
-
             <button style="width: 100%; margin-top: 2rem;" onclick="irParaEtapa(4)">Criar Plano de Ação →</button>
         </div>
 
@@ -708,12 +217,10 @@
                 <p>Agora você vai detalhar como executar cada uma das suas ações TOP 20% (as destacadas em laranja).</p>
                 <p>Responda as 5 perguntas para cada ação e crie seu plano de execução.</p>
             </div>
-
             <div id="planos-container"></div>
             <div class="sucesso" id="sucesso-message">
                 <h2>✓ Plano de Ação Criado!</h2>
                 <p>Suas prioridades estão definidas. Agora é só executar! 💪</p>
-                
                 <div class="botoes-finais">
                     <button onclick="gerarPDF()">📄 Baixar como PDF</button>
                     <button onclick="sincronizarGoogleCalendar()" class="btn-secondary">📅 Sincronizar Google Calendar</button>
@@ -757,40 +264,33 @@
         function adicionarAcao() {
             const input = document.getElementById('acao-input');
             const acao = input.value.trim();
-
             if (!acao) {
                 alert('Digite uma ação!');
                 return;
             }
-
             if (acoes.length >= 20) {
                 alert('Máximo de 20 ações atingido!');
                 return;
             }
-
             acoes.push(acao);
             input.value = '';
             atualizarListaAcoes();
-
             if (acoes.length === 20) {
                 document.getElementById('acao-input').disabled = true;
                 document.querySelector('.input-container button').disabled = true;
             }
-
             document.getElementById('label-acao').textContent = `Escreva sua ${acoes.length + 1}ª ação`;
         }
 
         function atualizarListaAcoes() {
             document.getElementById('contador').textContent = acoes.length;
             const lista = document.getElementById('acoes-lista');
-
             lista.innerHTML = acoes.map((acao, i) => `
                 <div class="acao-item">
                     <span>${i + 1}. ${acao}</span>
                     <span class="acao-remove" onclick="removerAcao(${i})">✕</span>
                 </div>
             `).join('');
-
             if (acoes.length >= 5) {
                 document.getElementById('acoes-adicionadas-container').style.display = 'block';
                 document.getElementById('btn-prosseguir').style.display = 'block';
@@ -827,7 +327,6 @@
             const acao = acoes[acaoAtualIdx];
             document.getElementById('acao-atual-titulo').textContent = acao;
             document.getElementById('acao-idx').textContent = acaoAtualIdx + 1;
-
             document.getElementById('btn-anterior').style.display = acaoAtualIdx > 0 ? 'block' : 'none';
             document.getElementById('btn-proxima').textContent = acaoAtualIdx === acoes.length - 1 ? 'Finalizar e Ver Ranking' : 'Próxima →';
 
@@ -835,7 +334,6 @@
             ['urgente', 'necessario', 'oportuno'].forEach(dimensao => {
                 const titulo = dimensao === 'urgente' ? 'URGENTE' : dimensao === 'necessario' ? 'NECESSÁRIO' : 'OPORTUNO';
                 html += `<div class="dimensao"><div class="dimensao-titulo">${titulo}</div>`;
-
                 perguntas[dimensao].forEach(p => {
                     const key = `${acao}_${p.id}`;
                     const valor = respostas[key] || 5;
@@ -852,7 +350,6 @@
                 });
                 html += '</div>';
             });
-
             document.getElementById('perguntas-content').innerHTML = html;
         }
 
@@ -890,7 +387,6 @@
         function renderizarRanking() {
             const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
             const topCount = Math.ceil(acoes.length * 0.2);
-
             let html = '';
             sorted.forEach((item, idx) => {
                 const [acao, score] = item;
@@ -909,7 +405,6 @@
                     </div>
                 `;
             });
-
             document.getElementById('ranking-list').innerHTML = html;
         }
 
@@ -917,7 +412,6 @@
             const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
             const topCount = Math.ceil(acoes.length * 0.2);
             const top20 = sorted.slice(0, topCount).map(item => item[0]);
-
             let html = '';
             top20.forEach(acao => {
                 html += `
@@ -948,10 +442,8 @@
                     </div>
                 `;
             });
-
             document.getElementById('planos-container').innerHTML = html;
 
-            // Adicionar listeners para salvar dados
             document.querySelectorAll('[data-acao]').forEach(el => {
                 el.addEventListener('change', function() {
                     const acao = this.dataset.acao;
@@ -985,9 +477,8 @@
             const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
             const topCount = Math.ceil(acoes.length * 0.2);
             const top20 = sorted.slice(0, topCount);
-
             let pdfHtml = '<h2 style="color: #0f1419; margin-top: 30px;">Plano de Ação Detalhado</h2>';
-            
+           
             top20.forEach((item, idx) => {
                 const [acao, score] = item;
                 const data = planoData[acao] || {};
@@ -998,13 +489,12 @@
                         <p><strong>Como farei:</strong> ${data.como || '(não preenchido)'}</p>
                         <p><strong>Início:</strong> ${data.inicio || '(não preenchido)'}</p>
                         <p><strong>Acompanhamento:</strong> ${data.controle || '(não preenchido)'}</p>
-                        <p><strong>O que falta:</strong> ${data.falta || '(não preenchido)'}</p>\n                        <p><strong>Finalização:</strong> ${data.fim || '(não preenchido)'}</p>
+                        <p><strong>O que falta:</strong> ${data.falta || '(não preenchido)'}</p>
+                        <p><strong>Finalização:</strong> ${data.fim || '(não preenchido)'}</p>
                     </div>
                 `;
             });
-
             document.getElementById('pdf-acoes').innerHTML = pdfHtml;
-
             const element = document.getElementById('pdf-content');
             const opt = {
                 margin: 10,
@@ -1013,7 +503,6 @@
                 html2canvas: { scale: 2 },
                 jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
             };
-
             html2pdf().set(opt).from(element).save();
         }
 
@@ -1021,18 +510,16 @@
             const sorted = Object.entries(scores).sort((a, b) => b[1].total - a[1].total);
             const topCount = Math.ceil(acoes.length * 0.2);
             const top20 = sorted.slice(0, topCount);
-
-            // Informações para criar eventos
             let resumo = 'Ações do seu Plano UNO:\n\n';
             top20.forEach(item => {
                 const [acao, score] = item;
                 const data = planoData[acao] || {};
                 resumo += `• ${acao} (início: ${data.inicio || 'não informado'})\n`;
             });
-
             alert(`Para sincronizar com Google Calendar, você precisa:\n\n1. Fazer login com sua conta Google\n2. Autorizar acesso ao seu calendário\n3. Os eventos serão criados às 08h em vermelho\n\n${resumo}\n\nNota: Integração em desenvolvimento. Por enquanto, você pode criar manualmente no Google Calendar usando as datas do seu plano.`);
         }
 
+        // Inicialização
         document.getElementById('acao-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') adicionarAcao();
         });
