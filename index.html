@@ -1,237 +1,958 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UNO • Brainstorm</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNO — O método que revela prioridade | Arthur Alvarez</title>
+<meta name="description" content="O UNO não organiza tarefas. Ele revela prioridade. Método autoral de Arthur Alvarez (Zoraxx). Mentorias, times e palestras.">
+<meta name="author" content="Arthur Alvarez (Zoraxx)">
+<meta property="og:title" content="UNO — O método que revela prioridade">
+<meta property="og:description" content="Urgente. Necessário. Oportuno. Aplicado por Arthur Alvarez onde a decisão importa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.unooficial.com.br">
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-    body {
-      background: #0a0a1f; /* Azul bem escuro como o VocacionAI */
-      color: #ffffff;
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      background-image: 
-        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-      background-size: 70px 70px;
-    }
+<style>
+:root {
+  --ink:        #0c0c0d;
+  --ink-2:      #131316;
+  --ink-3:      #1a1a1e;
+  --line:       #26262c;
+  --line-soft:  #1e1e23;
+  --cream:      #f0ead6;
+  --cream-soft: #e5dfc8;
+  --cream-dim:  #b8b29c;
+  --cream-mute: #7a7464;
+  --amber:      #d4a017;
+  --amber-lt:   #e5b528;
+  --amber-glow: rgba(212,160,23,.07);
+  --serif: 'Fraunces', Georgia, serif;
+  --sans:  'Manrope', system-ui, sans-serif;
+  --mono:  'JetBrains Mono', monospace;
+}
 
-    .header {
-      text-align: center;
-      padding: 40px 20px 10px;
-    }
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:110%; }
 
-    .badge {
-      display: inline-block;
-      background: rgba(0, 255, 120, 0.15);
-      color: #00ff88;
-      font-size: 0.85rem;
-      font-weight: 700;
-      padding: 6px 18px;
-      border-radius: 50px;
-      letter-spacing: 1.5px;
-      margin-bottom: 20px;
-    }
+body {
+  background:var(--ink); color:var(--cream); font-family:var(--sans);
+  font-weight:400; line-height:1.65; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
 
-    .logo {
-      font-size: 5.8rem;           /* Maior e mais impactante */
-      font-weight: 800;
-      letter-spacing: -4px;        /* Tipografia igual ao VocacionAI */
-      background: linear-gradient(90deg, #ffffff, #ffcc00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-    }
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+body::after {
+  content:''; position:fixed; top:-30%; right:-20%; width:70vw; height:70vw;
+  pointer-events:none; z-index:0;
+  background:radial-gradient(circle,var(--amber-glow) 0%,transparent 55%);
+}
 
-    .subtitle {
-      font-size: 1.35rem;
-      color: #aaaaaa;
-      margin-bottom: 60px;
-    }
+.z2 { position:relative; z-index:2; }
+.container { max-width:1280px; margin:0 auto; padding:0 2.5rem; }
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+/* ===== NAV ===== */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  padding:1.2rem 0; background:rgba(12,12,13,.88);
+  backdrop-filter:blur(18px); border-bottom:1px solid var(--line-soft);
+}
+.nav-inner {
+  display:flex; justify-content:space-between; align-items:center;
+  max-width:1280px; margin:0 auto; padding:0 2.5rem;
+}
+.brand { display:flex; align-items:baseline; gap:.55rem; text-decoration:none; color:var(--cream); }
+.bmark { font-family:var(--serif); font-size:1.65rem; font-weight:500; letter-spacing:-.04em; font-style:italic; }
+.bmark b { color:var(--amber); font-weight:500; }
+.btag { font-family:var(--mono); font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--cream-mute); }
+.nav-links { display:flex; gap:2.25rem; list-style:none; align-items:center; }
+.nav-links a { color:var(--cream-dim); text-decoration:none; font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; transition:color .3s; }
+.nav-links a:hover { color:var(--amber); }
+.nav-cta { background:var(--amber)!important; color:var(--ink)!important; padding:.65rem 1.5rem; border-radius:50px; font-weight:700!important; transition:background .3s,transform .3s!important; }
+.nav-cta:hover { background:var(--amber-lt)!important; transform:translateY(-1px); }
 
-    h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 16px;
-    }
+/* ===== BUTTONS ===== */
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:.75rem;
+  padding:1.1rem 2.2rem; font-family:var(--mono); font-size:.8rem; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; text-decoration:none;
+  border-radius:50px; cursor:pointer; transition:all .35s cubic-bezier(.2,.8,.2,1);
+  border:1.5px solid transparent; background:transparent;
+}
+.btn-primary { background:var(--amber); color:var(--ink); border-color:var(--amber); }
+.btn-primary:hover { background:var(--amber-lt); border-color:var(--amber-lt); transform:translateY(-3px); box-shadow:0 10px 36px rgba(212,160,23,.3); }
+.btn-ghost { color:var(--cream); border-color:rgba(240,234,214,.22); }
+.btn-ghost:hover { border-color:var(--amber); color:var(--amber); }
+.btn-amber { color:var(--amber); border-color:var(--amber); }
+.btn-amber:hover { background:var(--amber); color:var(--ink); transform:translateY(-2px); }
 
-    .description {
-      text-align: center;
-      font-size: 1.25rem;
-      color: #cccccc;
-      max-width: 720px;
-      margin: 0 auto 70px;
-    }
+/* ===== HERO ===== */
+.hero { padding:10rem 0 5rem; min-height:96vh; display:flex; align-items:center; }
 
-    .area-title {
-      text-align: center;
-      font-size: 1.4rem;
-      margin-bottom: 40px;
-      color: #ddd;
-    }
+.hero-meta {
+  display:flex; align-items:center; gap:1.2rem; font-family:var(--mono);
+  font-size:.7rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--cream-mute); margin-bottom:2.75rem;
+}
+.hml { flex:0 0 56px; height:1px; background:var(--amber); }
+.am { color:var(--amber); }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
+.hero-title {
+  font-family:var(--serif); font-size:clamp(4rem,10vw,9.5rem);
+  line-height:.93; font-weight:300; letter-spacing:-.045em; margin-bottom:1.75rem;
+  font-variation-settings:"opsz" 144,"SOFT" 30;
+}
+.it { font-style:italic; font-weight:400; color:var(--amber); }
+.pt { color:var(--amber); font-style:italic; }
 
-    .card {
-      background: #11111f;
-      border: 1px solid #222233;
-      border-radius: 20px;
-      padding: 32px 24px;
-      text-align: center;
-      transition: all 0.4s ease;
-      cursor: pointer;
-    }
+/* FRASE CENTRAL — a mais importante do site */
+.hero-tagline {
+  font-family:var(--serif); font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:300; font-style:italic; color:var(--cream-soft);
+  max-width:720px; line-height:1.4; margin-bottom:1.25rem;
+  letter-spacing:-.02em;
+}
+.hero-tagline strong { font-style:normal; font-weight:500; color:var(--amber); }
 
-    .card:hover {
-      border-color: #ffcc00;
-      transform: translateY(-12px);
-      box-shadow: 0 25px 50px rgba(255, 204, 0, 0.25);
-    }
+.hero-sub {
+  font-family:var(--sans); font-size:1.08rem; font-weight:400;
+  color:var(--cream-dim); max-width:560px; line-height:1.72; margin-bottom:2.75rem;
+}
 
-    .card-icon {
-      font-size: 3.2rem;
-      margin-bottom: 18px;
-    }
+.hero-cta { display:flex; gap:1rem; flex-wrap:wrap; }
 
-    .card-title {
-      font-size: 1.35rem;
-      font-weight: 600;
-    }
+/* ===== U N O BLOCOS — identidade visual ===== */
+.uno-blocks {
+  margin-top:5.5rem; display:grid; grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--line);
+}
+.ub {
+  padding:3rem 2.5rem 3rem 0; border-right:1px solid var(--line);
+  transition:background .4s; cursor:default;
+}
+.ub:last-child { border-right:none; }
+.ub:not(:first-child) { padding-left:2.5rem; }
+.ub:hover { background:rgba(212,160,23,.03); }
 
-    .brainstorm-area {
-      display: none;
-      margin-top: 60px;
-    }
+.ub-num { font-family:var(--mono); font-size:.65rem; letter-spacing:.25em; color:var(--cream-mute); margin-bottom:.75rem; }
 
-    textarea {
-      width: 100%;
-      min-height: 380px;
-      background: #11111f;
-      border: 1px solid #333344;
-      border-radius: 16px;
-      padding: 28px;
-      color: #fff;
-      font-size: 1.15rem;
-      resize: vertical;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
+/* letra U / N / O — máximo impacto visual */
+.ub-L {
+  font-family:var(--serif);
+  font-size:clamp(6rem,9.5vw,10rem);
+  font-style:italic; font-weight:700; color:var(--amber);
+  line-height:.88; letter-spacing:-.045em;
+  text-shadow:0 0 120px rgba(212,160,23,.22);
+  display:block; margin-bottom:.6rem;
+}
+.ub-concept {
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--amber); margin-bottom:.6rem;
+}
+.ub-name { font-family:var(--serif); font-size:1.75rem; font-weight:400; color:var(--cream); margin-bottom:.5rem; letter-spacing:-.015em; }
+.ub-def { font-size:.98rem; color:var(--cream-dim); line-height:1.58; font-style:italic; }
 
-    .actions {
-      text-align: center;
-      margin-top: 40px;
-    }
+/* ===== SECTIONS ===== */
+section { padding:8rem 0; }
+.stag {
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--amber); margin-bottom:1.75rem; display:flex; align-items:center; gap:1rem;
+}
+.stag::before { content:''; width:26px; height:1px; background:var(--amber); }
+.sh {
+  font-family:var(--serif); font-size:clamp(2.6rem,5.5vw,4.6rem);
+  font-weight:300; line-height:1.02; letter-spacing:-.035em;
+  margin-bottom:2rem; max-width:920px; font-variation-settings:"opsz" 144;
+}
+.sh em { font-style:italic; color:var(--amber); font-weight:400; }
 
-    button {
-      background: #ffcc00;
-      color: #000;
-      border: none;
-      padding: 18px 56px;
-      font-size: 1.2rem;
-      font-weight: 700;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+/* ===== O PROBLEMA ===== */
+.problema { background:var(--ink-2); border-top:1px solid var(--line-soft); }
+.prob-quote {
+  font-family:var(--serif); font-size:clamp(1.75rem,4vw,3rem);
+  font-weight:300; font-style:italic; color:var(--cream);
+  line-height:1.3; letter-spacing:-.025em; max-width:900px;
+  border-left:3px solid var(--amber); padding-left:2.5rem;
+  margin:3rem 0;
+}
+.prob-quote strong { color:var(--amber); font-weight:400; }
+.prob-body { display:grid; grid-template-columns:1fr 1fr; gap:4rem; margin-top:3rem; }
+.prob-col p { font-family:var(--serif); font-size:1.4rem; font-weight:300; line-height:1.6; color:var(--cream-dim); margin-bottom:1.25rem; }
+.prob-col p strong { color:var(--cream); font-weight:400; }
 
-    button:hover {
-      background: #ffdd33;
-      transform: scale(1.05);
-    }
+/* ===== O MÉTODO ===== */
+.metodo { background:var(--ink); border-top:1px solid var(--line-soft); }
+.met-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:4rem; }
+.met-card {
+  background:var(--ink-2); border:1px solid var(--line); padding:3rem 2.5rem;
+  position:relative; transition:all .5s cubic-bezier(.2,.8,.2,1);
+}
+.met-card:hover { border-color:var(--amber); transform:translateY(-4px); }
+.met-card::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--amber); transform:scaleX(0); transform-origin:left; transition:transform .4s;
+}
+.met-card:hover::after { transform:scaleX(1); }
 
-    .back-btn {
-      background: transparent;
-      color: #aaa;
-      border: 1px solid #555566;
-      padding: 14px 32px;
-      margin-right: 20px;
-      border-radius: 60px;
-    }
-  </style>
+/* U / N / O nos cards do método */
+.mc-L {
+  font-family:var(--serif); font-size:clamp(4rem,6vw,7.5rem);
+  font-style:italic; font-weight:700; color:var(--amber);
+  line-height:.85; letter-spacing:-.04em;
+  text-shadow:0 0 60px rgba(212,160,23,.18);
+  display:block; margin-bottom:.75rem;
+}
+.mc-tag { font-family:var(--mono); font-size:.68rem; letter-spacing:.22em; color:var(--cream-mute); margin-bottom:1.5rem; }
+.met-card h3 { font-family:var(--serif); font-size:2rem; font-weight:400; color:var(--cream); margin-bottom:.75rem; letter-spacing:-.02em; }
+.mc-q { font-family:var(--serif); font-size:1.1rem; font-style:italic; color:var(--cream-soft); margin-bottom:1.25rem; line-height:1.45; border-left:2px solid var(--amber); padding-left:1rem; }
+.met-card > p { color:var(--cream-dim); font-size:.95rem; line-height:1.7; }
+.criteria { margin-top:1.75rem; padding-top:1.75rem; border-top:1px solid var(--line); counter-reset:crit; }
+.cl { font-family:var(--mono); font-size:.65rem; letter-spacing:.22em; color:var(--cream-mute); margin-bottom:1rem; }
+.ci { display:flex; gap:.75rem; margin-bottom:.85rem; font-size:.93rem; color:var(--cream-dim); line-height:1.55; }
+.ci::before { content:counter(crit,decimal-leading-zero); counter-increment:crit; flex-shrink:0; font-family:var(--mono); font-size:.68rem; color:var(--amber); margin-top:.2rem; letter-spacing:.1em; }
+
+/* ===== PARA QUEM ===== */
+.para-quem { background:var(--ink-2); border-top:1px solid var(--line-soft); }
+.pq-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; margin-top:3rem; }
+.pq-left p { font-family:var(--serif); font-size:1.5rem; font-weight:300; line-height:1.6; color:var(--cream-soft); font-style:italic; }
+.pq-list { list-style:none; }
+.pq-item { display:flex; gap:1.25rem; padding:1.25rem 0; border-bottom:1px solid var(--line-soft); align-items:flex-start; }
+.pq-item:last-child { border-bottom:none; }
+.pq-arrow { color:var(--amber); font-family:var(--mono); font-size:.8rem; margin-top:.1rem; flex-shrink:0; }
+.pq-text { font-size:1rem; color:var(--cream-dim); line-height:1.6; }
+
+/* ===== DEMO GEMINI — controlada ===== */
+.demo-section { background:var(--ink); border-top:1px solid var(--line-soft); }
+.demo-wrap { max-width:840px; margin:0 auto; }
+.demo-context {
+  background:rgba(212,160,23,.06); border:1px solid rgba(212,160,23,.2);
+  padding:1.5rem 2rem; margin-bottom:3rem;
+  font-family:var(--serif); font-size:1.15rem; font-style:italic;
+  color:var(--cream-soft); line-height:1.55;
+}
+.demo-context strong { font-style:normal; color:var(--amber); font-weight:500; }
+
+.demo-box { background:var(--ink-2); border:1px solid var(--line); border-top:3px solid var(--amber); padding:2.75rem; }
+.dlabel { font-family:var(--mono); font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--cream-mute); margin-bottom:.75rem; display:block; }
+.demo-textarea {
+  width:100%; min-height:130px; background:var(--ink); border:1px solid var(--line);
+  color:var(--cream); padding:1.2rem 1.35rem; font-family:var(--sans); font-size:1rem;
+  line-height:1.7; resize:vertical; border-radius:8px; transition:border-color .3s; margin-bottom:1.25rem;
+}
+.demo-textarea:focus { outline:none; border-color:var(--amber); }
+.demo-textarea::placeholder { color:var(--cream-mute); font-style:italic; }
+.demo-run {
+  width:100%; background:var(--amber); color:var(--ink); border:none; padding:1.15rem;
+  border-radius:50px; font-family:var(--mono); font-size:.82rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase; cursor:pointer;
+  transition:all .35s cubic-bezier(.2,.8,.2,1);
+}
+.demo-run:hover:not(:disabled) { background:var(--amber-lt); transform:translateY(-2px); box-shadow:0 10px 36px rgba(212,160,23,.28); }
+.demo-run:disabled { opacity:.5; cursor:not-allowed; }
+
+/* loading */
+.demo-loading { display:none; justify-content:center; align-items:center; gap:.5rem; padding:2rem 0; font-family:var(--mono); font-size:.78rem; letter-spacing:.12em; color:var(--cream-mute); }
+.demo-loading.on { display:flex; }
+.dot { width:6px; height:6px; background:var(--amber); border-radius:50%; animation:pulse 1.4s ease-in-out infinite; }
+.dot:nth-child(2) { animation-delay:.2s; } .dot:nth-child(3) { animation-delay:.4s; }
+@keyframes pulse { 0%,80%,100%{opacity:.25;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }
+
+/* resultado controlado */
+.demo-result { display:none; margin-top:2rem; border-top:1px solid var(--line); padding-top:2rem; }
+.demo-result.on { display:block; }
+.dr-head { font-family:var(--mono); font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px dashed var(--line); }
+.dr-body { font-family:var(--serif); font-size:1.12rem; line-height:1.75; color:var(--cream-soft); }
+.dr-body strong { color:var(--amber); font-style:italic; font-weight:500; }
+
+/* CTA pós-demo — o mais importante */
+.demo-cta-box {
+  display:none; margin-top:2.5rem; padding:2.5rem;
+  background:var(--ink-3); border:1px solid var(--amber);
+  text-align:center;
+}
+.demo-cta-box.on { display:block; }
+.dcta-eyebrow { font-family:var(--mono); font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin-bottom:1.25rem; }
+.dcta-title { font-family:var(--serif); font-size:1.75rem; font-weight:300; font-style:italic; color:var(--cream); margin-bottom:.75rem; letter-spacing:-.02em; }
+.dcta-sub { color:var(--cream-dim); font-size:.98rem; max-width:540px; margin:0 auto 2rem; line-height:1.68; }
+.dcta-disclaimer {
+  font-family:var(--mono); font-size:.65rem; color:var(--cream-mute);
+  letter-spacing:.08em; margin-top:1.75rem; padding-top:1.5rem;
+  border-top:1px dashed var(--line); line-height:1.7;
+}
+
+/* aviso ético */
+.demo-aviso {
+  margin-top:1.5rem; padding:1.25rem 1.5rem;
+  background:rgba(212,160,23,.04); border-left:2px solid rgba(212,160,23,.3);
+  font-family:var(--mono); font-size:.65rem; color:var(--cream-mute);
+  letter-spacing:.06em; line-height:1.75;
+}
+
+/* ===== O QUE VOCÊ RECEBE ===== */
+.recebe { background:var(--ink-2); border-top:1px solid var(--line-soft); }
+.rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; margin-top:3rem; }
+.rec-left p { font-family:var(--serif); font-size:1.5rem; font-weight:300; line-height:1.6; color:var(--cream-soft); font-style:italic; margin-bottom:1.5rem; }
+.rec-list { list-style:none; }
+.rec-item { display:flex; gap:1.25rem; padding:1.25rem 0; border-bottom:1px solid var(--line); align-items:flex-start; }
+.rec-item:last-child { border-bottom:none; }
+.rec-num { font-family:var(--mono); font-size:.72rem; color:var(--amber); letter-spacing:.1em; flex-shrink:0; min-width:28px; }
+.rec-text { font-size:1rem; color:var(--cream-dim); line-height:1.6; }
+.rec-text strong { color:var(--cream); font-weight:500; }
+
+/* scoring box */
+.sc-box { background:var(--ink); border:1px solid var(--line); padding:2.75rem; position:relative; }
+.sc-mark { position:absolute; top:1.2rem; right:1.5rem; font-family:var(--mono); font-size:.62rem; color:var(--cream-mute); letter-spacing:.2em; }
+.sc-head { font-family:var(--mono); font-size:.7rem; letter-spacing:.25em; text-transform:uppercase; color:var(--amber); margin-bottom:2.25rem; padding-bottom:1.2rem; border-bottom:1px solid var(--line); }
+.sc-row { display:grid; grid-template-columns:88px 1fr auto; gap:1.5rem; padding:1.35rem 0; border-bottom:1px dashed var(--line); align-items:center; }
+.sc-row:last-child { border-bottom:none; }
+.sc-pts { font-family:var(--serif); font-size:2.6rem; font-style:italic; font-weight:300; color:var(--amber); letter-spacing:-.03em; line-height:1; }
+.sc-lbl { font-family:var(--serif); font-size:1.1rem; color:var(--cream); font-weight:400; margin-bottom:.15rem; }
+.sc-sub { color:var(--cream-mute); font-size:.85rem; }
+.sc-tag { font-family:var(--mono); font-size:.62rem; letter-spacing:.18em; text-transform:uppercase; color:var(--cream-mute); padding:.32rem .7rem; border:1px solid var(--line); border-radius:50px; }
+.sc-tag.go { color:var(--amber); border-color:var(--amber); }
+.sc-tag.med { color:var(--cream-soft); border-color:var(--cream-mute); }
+
+/* ===== MODALIDADES ===== */
+.modalidades { background:var(--ink); border-top:1px solid var(--line-soft); }
+.mod-intro { font-family:var(--serif); font-size:1.3rem; font-style:italic; color:var(--cream-dim); max-width:640px; line-height:1.6; margin-bottom:4rem; }
+.mod-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+.mod-card {
+  background:var(--ink-2); border:1px solid var(--line); padding:3rem 2.5rem;
+  display:flex; flex-direction:column; position:relative;
+  transition:all .45s cubic-bezier(.2,.8,.2,1);
+}
+.mod-card:hover { border-color:var(--amber); transform:translateY(-6px); box-shadow:0 20px 60px rgba(0,0,0,.4); }
+.mod-badge {
+  display:inline-flex; align-items:center; font-family:var(--mono);
+  font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--cream-mute); border:1px solid var(--line); padding:.3rem .7rem;
+  border-radius:50px; margin-bottom:2rem; width:fit-content;
+}
+.mod-icon { font-family:var(--serif); font-size:3.5rem; font-style:italic; font-weight:300; color:var(--amber); line-height:1; margin-bottom:1.5rem; opacity:.7; }
+.mod-card h3 { font-family:var(--serif); font-size:1.9rem; font-weight:400; color:var(--cream); margin-bottom:.65rem; letter-spacing:-.02em; }
+.mod-card > p { color:var(--cream-dim); font-size:.96rem; line-height:1.72; flex:1; margin-bottom:2rem; }
+.mod-details { border-top:1px solid var(--line); padding-top:1.5rem; margin-bottom:2rem; }
+.mod-detail { display:flex; gap:.75rem; font-size:.9rem; color:var(--cream-dim); margin-bottom:.65rem; line-height:1.45; }
+.mod-detail::before { content:'—'; color:var(--amber); flex-shrink:0; }
+.mod-cta-note { font-family:var(--mono); font-size:.68rem; color:var(--cream-mute); letter-spacing:.08em; margin-bottom:1rem; }
+
+/* ===== COMO FUNCIONA ===== */
+.como { background:var(--ink-2); border-top:1px solid var(--line-soft); }
+.como-grid { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); margin-top:4rem; }
+.como-item { padding:2.5rem 2rem 2.5rem 0; border-right:1px solid var(--line); }
+.como-item:last-child { border-right:none; }
+.como-item:not(:first-child) { padding-left:2rem; }
+.como-n { font-family:var(--serif); font-size:3.75rem; font-style:italic; font-weight:300; color:var(--amber); opacity:.28; line-height:1; margin-bottom:1.25rem; letter-spacing:-.04em; }
+.como-item h4 { font-family:var(--serif); font-size:1.4rem; font-weight:400; color:var(--cream); margin-bottom:.7rem; letter-spacing:-.01em; }
+.como-item p { color:var(--cream-dim); font-size:.95rem; line-height:1.65; }
+
+/* ===== AUTHOR ===== */
+.author { background:var(--ink); border-top:1px solid var(--line-soft); }
+.au-grid { display:grid; grid-template-columns:.85fr 1.5fr; gap:5rem; align-items:center; }
+.au-portrait { aspect-ratio:3/4; background:linear-gradient(135deg,rgba(212,160,23,.05),transparent 60%),var(--ink-2); border:1px solid var(--line); position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; padding:2rem; }
+.au-portrait::before { content:''; position:absolute; inset:0; pointer-events:none; background-image:repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(212,160,23,.04) 30px,rgba(212,160,23,.04) 31px); }
+.au-pm { font-family:var(--mono); font-size:.62rem; letter-spacing:.25em; color:var(--cream-mute); z-index:1; }
+.au-pn { font-family:var(--serif); font-size:3.75rem; font-style:italic; font-weight:300; color:var(--amber); line-height:.95; letter-spacing:-.03em; z-index:1; }
+.au-pn span { display:block; font-size:.95rem; font-style:normal; color:var(--cream-dim); font-family:var(--mono); letter-spacing:.2em; margin-top:1rem; text-transform:uppercase; }
+.au-info h2 { font-family:var(--serif); font-size:clamp(2.2rem,4vw,3.3rem); font-weight:300; letter-spacing:-.025em; margin-bottom:.7rem; line-height:1.05; }
+.au-info h2 em { font-style:italic; color:var(--amber); font-weight:400; }
+.au-cred { font-family:var(--mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--cream-mute); margin-bottom:1.85rem; line-height:1.8; }
+.au-info p { color:var(--cream-dim); margin-bottom:1.15rem; font-size:1.02rem; line-height:1.78; }
+.au-info p strong { color:var(--amber); font-weight:500; font-style:italic; }
+.au-book { margin-top:2.25rem; padding-top:1.85rem; border-top:1px solid var(--line); display:flex; gap:1.5rem; align-items:center; }
+.au-bm { font-family:var(--mono); font-size:.62rem; letter-spacing:.25em; color:var(--cream-mute); text-transform:uppercase; }
+.au-bt { font-family:var(--serif); font-size:1.22rem; font-style:italic; color:var(--cream); }
+.au-bt span { color:var(--amber); }
+
+/* ===== CTA FINAL ===== */
+.cta-final { background:var(--ink-2); padding:9rem 0; text-align:center; border-top:1px solid var(--line-soft); position:relative; overflow:hidden; }
+.cta-final::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:80vw; height:80vw; background:radial-gradient(circle,rgba(212,160,23,.06) 0%,transparent 50%); pointer-events:none; }
+.cta-inner { position:relative; z-index:2; max-width:840px; margin:0 auto; }
+.cta-final h2 { font-family:var(--serif); font-size:clamp(2.75rem,5.5vw,4.8rem); font-weight:300; line-height:1.05; letter-spacing:-.035em; margin-bottom:1.4rem; }
+.cta-final h2 em { font-style:italic; color:var(--amber); font-weight:400; }
+.cta-final p { color:var(--cream-dim); font-size:1.18rem; max-width:560px; margin:0 auto 3rem; line-height:1.68; }
+.cta-final .btn { padding:1.35rem 3rem; font-size:.86rem; }
+
+/* ===== LEAD CAPTURE ===== */
+.capture { background:var(--ink); border-top:1px solid var(--line-soft); }
+.cap-inner { max-width:780px; margin:0 auto; }
+.cap-head { text-align:center; margin-bottom:4rem; }
+.cap-head .stag { justify-content:center; }
+.cap-head h2 { font-family:var(--serif); font-size:clamp(2.2rem,4.5vw,3.5rem); font-weight:300; letter-spacing:-.03em; line-height:1.1; margin-bottom:1.2rem; }
+.cap-head h2 em { font-style:italic; color:var(--amber); font-weight:400; }
+.cap-head p { color:var(--cream-dim); font-size:1.05rem; max-width:540px; margin:0 auto; line-height:1.72; }
+.lead-form { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+.lf-full { grid-column:1/-1; }
+.ig label { display:block; font-family:var(--mono); font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--cream-mute); margin-bottom:.58rem; }
+.ig input,.ig select,.ig textarea { width:100%; background:var(--ink-2); border:1px solid var(--line); color:var(--cream); padding:.95rem 1.1rem; font-family:var(--sans); font-size:.98rem; border-radius:8px; transition:border-color .3s; }
+.ig input:focus,.ig select:focus,.ig textarea:focus { outline:none; border-color:var(--amber); }
+.ig textarea { resize:vertical; min-height:96px; font-family:var(--sans); }
+.lf-submit { grid-column:1/-1; background:var(--amber); color:var(--ink); border:none; padding:1.2rem; font-family:var(--mono); font-size:.82rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; cursor:pointer; border-radius:50px; transition:all .3s; margin-top:.75rem; }
+.lf-submit:hover:not(:disabled) { background:var(--amber-lt); transform:translateY(-2px); box-shadow:0 10px 36px rgba(212,160,23,.28); }
+.lf-submit:disabled { opacity:.5; cursor:not-allowed; }
+.lf-status { grid-column:1/-1; font-family:var(--mono); font-size:.82rem; text-align:center; min-height:1.5rem; letter-spacing:.05em; margin-top:.4rem; }
+.lf-status.ok { color:var(--amber); } .lf-status.err { color:#e07060; }
+.privacy { font-family:var(--mono); font-size:.62rem; color:var(--cream-mute); letter-spacing:.15em; margin-top:1.75rem; text-align:center; text-transform:uppercase; }
+
+/* ===== FOOTER ===== */
+footer { padding:5rem 0 2.5rem; border-top:1px solid var(--line); background:var(--ink-2); }
+.ft-grid { display:grid; grid-template-columns:2.2fr 1fr 1fr; gap:4rem; margin-bottom:3.5rem; }
+.ft-brand { font-family:var(--serif); font-size:2.4rem; font-style:italic; font-weight:400; margin-bottom:1.2rem; letter-spacing:-.03em; }
+.ft-brand b { color:var(--amber); font-weight:400; }
+.ft-tag { color:var(--cream-dim); max-width:380px; font-size:.96rem; line-height:1.72; }
+.ft-col h4 { font-family:var(--mono); font-size:.66rem; letter-spacing:.25em; text-transform:uppercase; color:var(--amber); margin-bottom:1.4rem; }
+.ft-col ul { list-style:none; } .ft-col li { margin-bottom:.82rem; }
+.ft-col a { color:var(--cream-dim); text-decoration:none; font-size:.94rem; transition:color .3s; }
+.ft-col a:hover { color:var(--amber); }
+.ft-bottom { padding-top:2.25rem; border-top:1px solid var(--line-soft); display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:.68rem; color:var(--cream-mute); letter-spacing:.15em; text-transform:uppercase; }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px) { .como-grid { grid-template-columns:repeat(2,1fr); } }
+@media(max-width:960px) {
+  .container { padding:0 1.5rem; }
+  nav .nav-inner { padding:0 1.5rem; }
+  .nav-links { display:none; }
+  .hero { padding:8rem 0 4rem; min-height:auto; }
+  .uno-blocks,.met-grid,.mod-grid { grid-template-columns:1fr; }
+  .ub { border-right:none; border-bottom:1px solid var(--line); padding:2.5rem 0; }
+  .ub:last-child { border-bottom:none; }
+  .ub:not(:first-child) { padding-left:0; }
+  .prob-body,.pq-grid,.rec-grid,.au-grid { grid-template-columns:1fr; gap:3rem; }
+  .como-grid { grid-template-columns:1fr; }
+  .como-item { border-right:none; border-bottom:1px solid var(--line); padding:2rem 0; }
+  .como-item:last-child { border-bottom:none; }
+  .lead-form { grid-template-columns:1fr; }
+  .ft-grid { grid-template-columns:1fr; gap:2.5rem; }
+  .ft-bottom { flex-direction:column; gap:1rem; text-align:center; }
+  section { padding:5rem 0; }
+  .hero-cta { justify-content:center; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+.fu { animation:fadeUp 1s cubic-bezier(.2,.8,.2,1) forwards; opacity:0; }
+.d1{animation-delay:.1s} .d2{animation-delay:.25s} .d3{animation-delay:.4s} .d4{animation-delay:.55s} .d5{animation-delay:.7s}
+.reveal { opacity:0; transform:translateY(32px); transition:opacity .9s ease,transform .9s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+</style>
 </head>
 <body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <span class="bmark">UNO<b>.</b></span>
+      <span class="btag">Arthur Alvarez</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#metodo">Método</a></li>
+      <li><a href="#demo">Experimente</a></li>
+      <li><a href="#modalidades">Modalidades</a></li>
+      <li><a href="#autor">Autor</a></li>
+      <li><a href="#contato" class="nav-cta">Contratar</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero z2">
   <div class="container">
-    <div class="header">
-      <div class="badge">● BRAIN STORM • TRÍADE UNO</div>
-      <div class="logo">UNO</div>
-      <p class="subtitle">Urgência • Necessidade • Oportunidade</p>
+    <div class="hero-meta fu">
+      <span class="hml"></span>
+      <span>Tríade da Nova Liderança</span>
+      <span class="am">·</span>
+      <span class="am">Pós-IA</span>
     </div>
 
-    <h1>Brainstorm</h1>
-    <p class="description">Descarregue tudo que está ocupando espaço na sua mente.<br>Sem filtro. Sem julgamento.</p>
+    <h1 class="hero-title fu d1">
+      <span class="it">Urgente</span><span class="pt">.</span><br>
+      <span class="it">Necessário</span><span class="pt">.</span><br>
+      <span class="it">Oportuno</span><span class="pt">.</span>
+    </h1>
 
-    <!-- Seleção de Áreas -->
-    <div id="area-selection">
-      <p class="area-title">Em qual área da sua vida você quer trabalhar hoje?</p>
-      
-      <div class="grid">
-        <div class="card" onclick="selectArea('Saúde Física e Energia')"><div class="card-icon">🏋️</div><div class="card-title">Saúde Física e Energia</div></div>
-        <div class="card" onclick="selectArea('Saúde Mental')"><div class="card-icon">🧠</div><div class="card-title">Saúde Mental</div></div>
-        <div class="card" onclick="selectArea('Família')"><div class="card-icon">👨‍👩‍👧</div><div class="card-title">Família</div></div>
-        <div class="card" onclick="selectArea('Relacionamentos')"><div class="card-icon">❤️</div><div class="card-title">Relacionamentos</div></div>
-        <div class="card" onclick="selectArea('Finanças')"><div class="card-icon">💰</div><div class="card-title">Finanças</div></div>
-        <div class="card" onclick="selectArea('Carreira e Negócios')"><div class="card-icon">💼</div><div class="card-title">Carreira e Negócios</div></div>
-        <div class="card" onclick="selectArea('Intelectual e Aprendizado')"><div class="card-icon">📚</div><div class="card-title">Intelectual e Aprendizado</div></div>
-        <div class="card" onclick="selectArea('Espiritualidade e Propósito')"><div class="card-icon">🌌</div><div class="card-title">Espiritualidade e Propósito</div></div>
-        <div class="card" onclick="selectArea('Lazer e Bem-estar')"><div class="card-icon">🌊</div><div class="card-title">Lazer e Bem-estar</div></div>
+    <p class="hero-tagline fu d2">
+      <strong>O UNO não organiza tarefas.</strong><br>Ele revela prioridade.
+    </p>
+
+    <p class="hero-sub fu d3">
+      Um método aplicado por Arthur Alvarez em líderes, times e organizações que precisam distinguir o que pressiona, o que sustenta e o que abre janela real de avanço.
+    </p>
+
+    <div class="hero-cta fu d4">
+      <a href="#contato" class="btn btn-primary">Quero contratar</a>
+      <a href="#demo" class="btn btn-ghost">Ver em ação</a>
+    </div>
+
+    <!-- U N O BLOCOS -->
+    <div class="uno-blocks fu d5">
+      <div class="ub">
+        <div class="ub-num">01</div>
+        <span class="ub-L">U</span>
+        <div class="ub-concept">Urgente</div>
+        <div class="ub-name">O que cobra resposta.</div>
+        <div class="ub-def">Tem janela de tempo. Adiar custa mais que agir.</div>
       </div>
-    </div>
-
-    <!-- Área de Brainstorm -->
-    <div id="brainstorm-area" class="brainstorm-area">
-      <h2 id="area-selected" style="text-align:center; font-size:2rem; margin-bottom:30px;"></h2>
-      <textarea id="notes" placeholder="Escreva aqui todas as suas ideias, pendências, problemas, metas..."></textarea>
-      
-      <div class="actions">
-        <button class="back-btn" onclick="backToSelection()">← Voltar</button>
-        <button onclick="sendToMatrix()">Enviar para Matriz UNO →</button>
+      <div class="ub">
+        <div class="ub-num">02</div>
+        <span class="ub-L">N</span>
+        <div class="ub-concept">Necessário</div>
+        <div class="ub-name">O que sustenta o futuro.</div>
+        <div class="ub-def">Alinhado a valores e papéis. Ignorar produz desalinhamento.</div>
+      </div>
+      <div class="ub">
+        <div class="ub-num">03</div>
+        <span class="ub-L">O</span>
+        <div class="ub-concept">Oportuno</div>
+        <div class="ub-name">O que abre janela de avanço.</div>
+        <div class="ub-def">Encontra recursos, capacidade e cenário. Não se repete.</div>
       </div>
     </div>
   </div>
+</section>
 
-  <script>
-    function selectArea(area) {
-      document.getElementById('area-selection').style.display = 'none';
-      document.getElementById('brainstorm-area').style.display = 'block';
-      document.getElementById('area-selected').innerHTML = `Pendências e ideias — <strong>${area}</strong>`;
-      document.getElementById('notes').focus();
-    }
+<!-- O PROBLEMA -->
+<section class="problema reveal" id="problema">
+  <div class="container">
+    <div class="stag">O problema</div>
+    <p class="prob-quote">
+      "Nem toda urgência merece sua energia.<br>
+      Nem toda oportunidade merece sua <strong>agenda.</strong>"
+    </p>
+    <div class="prob-body">
+      <div class="prob-col">
+        <p>Líderes falham, em geral, por escolher a <strong>dimensão errada</strong> da situação. Não por falta de informação.</p>
+        <p>Tratam o oportuno como urgente. O necessário como dispensável. O urgente como rotina.</p>
+      </div>
+      <div class="prob-col">
+        <p>O resultado é previsível: energia desperdiçada no que grita, negligência no que sustenta, paralisia diante do que poderia avançar.</p>
+        <p>O UNO corrige esse erro de leitura. <strong>Antes da ação.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    function backToSelection() {
-      document.getElementById('brainstorm-area').style.display = 'none';
-      document.getElementById('area-selection').style.display = 'block';
-    }
+<!-- O MÉTODO -->
+<section class="metodo reveal" id="metodo">
+  <div class="container">
+    <div class="stag">O método</div>
+    <h2 class="sh">Três pilares. Nove critérios. <em>Uma prioridade clara.</em></h2>
+    <div class="met-grid">
+      <div class="met-card">
+        <span class="mc-L">U</span>
+        <div class="mc-tag">Pilar 01</div>
+        <h3>Urgente</h3>
+        <p class="mc-q">"Isto exige ação agora?"</p>
+        <p>A urgência verdadeira tem janela. O que parece urgente sem janela real é ansiedade alheia atravessando sua agenda.</p>
+        <div class="criteria">
+          <div class="cl">Critérios</div>
+          <div class="ci">Preciso resolver hoje, sob risco real.</div>
+          <div class="ci">A pendência já produz consequências imediatas.</div>
+          <div class="ci">Adiar gera problema maior que executar agora.</div>
+        </div>
+      </div>
+      <div class="met-card">
+        <span class="mc-L">N</span>
+        <div class="mc-tag">Pilar 02</div>
+        <h3>Necessário</h3>
+        <p class="mc-q">"Está alinhado ao que importa?"</p>
+        <p>Necessidade não se confunde com vontade. O necessário sustenta valores e papéis mesmo quando incomoda.</p>
+        <div class="criteria">
+          <div class="cl">Critérios</div>
+          <div class="ci">Alinhado aos meus valores e ao papel que ocupo.</div>
+          <div class="ci">Fará diferença real em médio ou longo prazo.</div>
+          <div class="ci">Ignorar produz desalinhamento persistente.</div>
+        </div>
+      </div>
+      <div class="met-card">
+        <span class="mc-L">O</span>
+        <div class="mc-tag">Pilar 03</div>
+        <h3>Oportuno</h3>
+        <p class="mc-q">"Tenho condições reais agora?"</p>
+        <p>A oportunidade que não encontra recursos vira frustração. Esta é a dimensão que a Eisenhower clássica não captura.</p>
+        <div class="criteria">
+          <div class="cl">Critérios</div>
+          <div class="ci">Tenho recursos disponíveis: tempo, energia, apoio.</div>
+          <div class="ci">Tenho capacidade técnica ou plano viável.</div>
+          <div class="ci">Cenário favorável, sem obstáculos intransponíveis.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- PARA QUEM -->
+<section class="para-quem reveal" id="para-quem">
+  <div class="container">
+    <div class="stag">Para quem</div>
+    <h2 class="sh">O UNO é para quem está diante de <em>muitas escolhas.</em></h2>
+    <div class="pq-grid">
+      <div class="pq-left">
+        <p>Decisões adiadas, excesso de demandas ou sensação de dispersão. O método ajuda a distinguir o que pressiona, o que sustenta e o que pode abrir uma janela real de avanço.</p>
+      </div>
+      <ul class="pq-list">
+        <li class="pq-item"><span class="pq-arrow">→</span><span class="pq-text">Líderes sobrecarregados com agenda que não reflete prioridade.</span></li>
+        <li class="pq-item"><span class="pq-arrow">→</span><span class="pq-text">Profissionais em transição de carreira ou papel.</span></li>
+        <li class="pq-item"><span class="pq-arrow">→</span><span class="pq-text">Empreendedores com muitas frentes abertas e foco difuso.</span></li>
+        <li class="pq-item"><span class="pq-arrow">→</span><span class="pq-text">Executivos diante de decisões estratégicas com janela curta.</span></li>
+        <li class="pq-item"><span class="pq-arrow">→</span><span class="pq-text">Times que precisam priorizar projetos com critério, não intuição.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-function sendToMatrix() {
-    const notes = document.getElementById('notes').value.trim();
-    
-    if (notes === '') {
-        alert("Escreva pelo menos uma ideia antes de continuar.");
-        return;
-    }
+<!-- DEMO GEMINI — controlada -->
+<section class="demo-section reveal" id="demo">
+  <div class="container">
+    <div class="stag">Leitura inicial</div>
+    <h2 class="sh">Descreva sua decisão. A IA faz <em>uma leitura pelo método UNO.</em></h2>
 
-    // Salva o texto do brainstorm para usar na próxima tela
-    localStorage.setItem('uno_brainstorm', notes);
-    
-    // Redireciona para o app completo
-    window.location.href = "matriz.html";
+    <div class="demo-wrap">
+      <div class="demo-context">
+        Esta é uma <strong>leitura inicial</strong>, não a aplicação completa do método. O UNO completo, com scoring, ranking e plano de execução, é conduzido por Arthur Alvarez / Zoraxx.
+      </div>
+
+      <div class="demo-box">
+        <label class="dlabel" for="demoInput">Sua decisão, pendência ou dilema</label>
+        <textarea class="demo-textarea" id="demoInput"
+          placeholder="Ex: Recebi uma proposta para mudar de empresa. O salário é melhor, mas o papel é menos estratégico e terei que abrir mão de um projeto que venho liderando..."></textarea>
+        <button class="demo-run" id="demoBtn" onclick="rodarDemo()">
+          Receber leitura inicial UNO
+        </button>
+
+        <div class="demo-loading" id="demoLoading">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span style="margin-left:.5rem">Analisando pelo método UNO...</span>
+        </div>
+
+        <div class="demo-result" id="demoResult">
+          <div class="dr-head">Leitura inicial UNO · Gemini Pro</div>
+          <div class="dr-body" id="demoBody"></div>
+        </div>
+
+        <!-- CTA pós-resultado — o mais importante -->
+        <div class="demo-cta-box" id="demoCTA">
+          <div class="dcta-eyebrow">Próximo passo</div>
+          <div class="dcta-title">Esta foi uma leitura inicial.</div>
+          <p class="dcta-sub">A aplicação completa do método UNO, com análise dos nove critérios, ranking de prioridade e plano de execução, é conduzida por Arthur Alvarez / Zoraxx.</p>
+          <a href="#contato" class="btn btn-primary">Quero a análise completa</a>
+          <div class="dcta-disclaimer">
+            A análise UNO não substitui acompanhamento psicológico, jurídico, médico, financeiro ou profissional especializado. O método organiza prioridades e apoia decisões. A responsabilidade final permanece com o usuário.
+          </div>
+        </div>
+
+        <div class="demo-aviso">
+          Sua situação não é armazenada. O processamento é feito via Gemini Pro com parâmetros definidos pelo método UNO.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- O QUE VOCÊ RECEBE -->
+<section class="recebe reveal" id="recebe">
+  <div class="container">
+    <div class="stag">O que você recebe</div>
+    <h2 class="sh">Método sem entrega concreta <em>fica abstrato.</em></h2>
+    <div class="rec-grid">
+      <div class="rec-left">
+        <p>Ao aplicar o UNO com Arthur Alvarez, você recebe uma leitura estruturada da sua situação, ranking de prioridade, recomendação de foco e plano inicial de ação.</p>
+      </div>
+      <div class="sc-box">
+        <div class="sc-mark">UNO</div>
+        <div class="sc-head">Tabela de leitura</div>
+        <div class="sc-row"><div class="sc-pts">75+</div><div><div class="sc-lbl">Ação imediata</div><div class="sc-sub">Tudo converge. Execute.</div></div><div class="sc-tag go">Crítica</div></div>
+        <div class="sc-row"><div class="sc-pts">60–74</div><div><div class="sc-lbl">Avance com atenção</div><div class="sc-sub">Identifique o ponto fraco.</div></div><div class="sc-tag go">Alta</div></div>
+        <div class="sc-row"><div class="sc-pts">45–59</div><div><div class="sc-lbl">Reflita antes de seguir</div><div class="sc-sub">Momento pode não ser ideal.</div></div><div class="sc-tag med">Média</div></div>
+        <div class="sc-row"><div class="sc-pts">&lt;45</div><div><div class="sc-lbl">Reformule ou adie</div><div class="sc-sub">Não é agora, nem dessa forma.</div></div><div class="sc-tag">Baixa</div></div>
+      </div>
+    </div>
+    <ul class="rec-list" style="margin-top:3rem;max-width:760px">
+      <li class="rec-item"><span class="rec-num">01</span><span class="rec-text"><strong>Diagnóstico UNO.</strong> Leitura estruturada da situação pelos três pilares.</span></li>
+      <li class="rec-item"><span class="rec-num">02</span><span class="rec-text"><strong>Matriz de prioridade.</strong> Scoring com notas por critério e ranking de ações.</span></li>
+      <li class="rec-item"><span class="rec-num">03</span><span class="rec-text"><strong>Leitura orientada por IA com curadoria humana.</strong> Gemini Pro amplifica, Arthur Alvarez interpreta.</span></li>
+      <li class="rec-item"><span class="rec-num">04</span><span class="rec-text"><strong>Plano de ação.</strong> Primeiros passos, prazos, recursos e indicador de sucesso.</span></li>
+      <li class="rec-item"><span class="rec-num">05</span><span class="rec-text"><strong>Devolutiva com Arthur Alvarez / Zoraxx.</strong> Nas modalidades Estratégico e Executivo.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- MODALIDADES -->
+<section class="modalidades reveal" id="modalidades">
+  <div class="container">
+    <div class="stag">Como contratar</div>
+    <h2 class="sh">Três modalidades. Sem <em>preço público.</em></h2>
+    <p class="mod-intro">Conversa vende melhor do que tabela. Escolha a modalidade que faz sentido para o seu momento e solicite a aplicação.</p>
+    <div class="mod-grid">
+
+      <div class="mod-card">
+        <div class="mod-badge">Entrada</div>
+        <div class="mod-icon">›</div>
+        <h3>UNO Express</h3>
+        <p>Análise de uma decisão ou dilema específico. Ideal para quem precisa de clareza rápida sobre uma situação concreta e com janela de tempo.</p>
+        <div class="mod-details">
+          <div class="mod-detail">Sessão de 60 minutos online</div>
+          <div class="mod-detail">Análise de uma decisão ou ação específica</div>
+          <div class="mod-detail">Scoring UNO com leitura orientada por IA</div>
+          <div class="mod-detail">Relatório sintético com recomendação</div>
+        </div>
+        <div class="mod-cta-note">Solicitar aplicação do método</div>
+        <a href="#contato" class="btn btn-amber">Agendar diagnóstico UNO</a>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-badge">Principal</div>
+        <div class="mod-icon">↗</div>
+        <h3>UNO Estratégico</h3>
+        <p>Priorização de objetivos, plano de ação e devolutiva. Para líderes em transição ou times que precisam reordenar prioridades com critério antes de agir.</p>
+        <div class="mod-details">
+          <div class="mod-detail">Sessão de 90 minutos presencial ou online</div>
+          <div class="mod-detail">Brainstorm estruturado por área da vida ou negócio</div>
+          <div class="mod-detail">Matriz UNO completa com ranking Pareto</div>
+          <div class="mod-detail">Plano de execução com devolutiva</div>
+        </div>
+        <div class="mod-cta-note">Conversar sobre a melhor modalidade</div>
+        <a href="#contato" class="btn btn-amber">Solicitar proposta</a>
+      </div>
+
+      <div class="mod-card">
+        <div class="mod-badge">Premium</div>
+        <div class="mod-icon">◉</div>
+        <h3>UNO Executivo</h3>
+        <p>Aplicação acompanhada para líderes, carreira, negócios ou vida pessoal. Inclui palestra, workshop ou programa de mentorias para times e organizações.</p>
+        <div class="mod-details">
+          <div class="mod-detail">Palestra, workshop ou programa personalizado</div>
+          <div class="mod-detail">Presencial ou online, individual ou coletivo</div>
+          <div class="mod-detail">Acompanhamento com Arthur Alvarez / Zoraxx</div>
+          <div class="mod-detail">Licença do método e material exclusivo</div>
+        </div>
+        <div class="mod-cta-note">Verificar agenda disponível</div>
+        <a href="#contato" class="btn btn-amber">Falar com Arthur Alvarez</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="como reveal" id="como">
+  <div class="container">
+    <div class="stag">Processo</div>
+    <h2 class="sh">Do primeiro contato ao <em>plano em mãos.</em></h2>
+    <div class="como-grid">
+      <div class="como-item"><div class="como-n">1</div><h4>Contato</h4><p>Preencha o formulário com contexto e modalidade de interesse. Retorno em até 24 horas.</p></div>
+      <div class="como-item"><div class="como-n">2</div><h4>Alinhamento</h4><p>Conversa rápida para entender o cenário, definir o formato e agendar a sessão.</p></div>
+      <div class="como-item"><div class="como-n">3</div><h4>Aplicação</h4><p>O método UNO é aplicado ao vivo com Arthur Alvarez. Cada pilar examinado com precisão.</p></div>
+      <div class="como-item"><div class="como-n">4</div><h4>Entrega</h4><p>Diagnóstico, ranking de prioridades, plano de execução e orientações de seguimento.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTHOR -->
+<section class="author reveal" id="autor">
+  <div class="container">
+    <div class="au-grid">
+      <div class="au-portrait">
+        <div class="au-pm">// Autor</div>
+        <div class="au-pn">Zoraxx<span>Arthur Alvarez</span></div>
+      </div>
+      <div class="au-info">
+        <div class="stag">Quem aplica o método</div>
+        <h2>Arthur Alvarez,<br>o <em>Zoraxx.</em></h2>
+        <div class="au-cred">Major PM (Ref.) · Mestre em Ciências Policiais<br>MBA Insper · MBA IA Saint Paul</div>
+        <p>Fundador da Tabula Rasa Consultoria e da ImpulsionAI. Mentor executivo, consultor, professor e palestrante. Mentor voluntário no Insper e no IVG.</p>
+        <p>Contribuiu diretamente para o desenvolvimento de mais de <strong>4.500 líderes</strong> em organizações públicas, privadas e do terceiro setor.</p>
+        <p>UNO nasceu da prática. É o método que Arthur usa nas sessões de mentoria, no planejamento de times e nas palestras para lideranças em transição.</p>
+        <div class="au-book">
+          <div class="au-bm">Origem</div>
+          <div class="au-bt">Do livro <span>A Tríade da Nova Liderança, Pós-IA</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final reveal">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="stag" style="justify-content:center">Próximo passo</div>
+      <h2>Quando a decisão importa,<br><em>o método importa.</em></h2>
+      <p>Sessão individual, programa para o seu time ou palestra no seu evento. Começa com uma conversa.</p>
+      <a href="#contato" class="btn btn-primary">Falar com Arthur Alvarez</a>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD CAPTURE -->
+<section class="capture reveal" id="contato">
+  <div class="container">
+    <div class="cap-inner">
+      <div class="cap-head">
+        <div class="stag">Contato</div>
+        <h2>Aplicar o UNO na <em>minha realidade.</em></h2>
+        <p>Preencha e Arthur Alvarez retorna em até 24 horas para alinhar o formato ideal.</p>
+      </div>
+      <form class="lead-form" id="leadForm" onsubmit="enviarLead(event)">
+        <div class="ig"><label>Nome completo</label><input type="text" id="nome" required></div>
+        <div class="ig"><label>E-mail profissional</label><input type="email" id="email" required></div>
+        <div class="ig"><label>Organização</label><input type="text" id="org"></div>
+        <div class="ig">
+          <label>Modalidade de interesse</label>
+          <select id="modal" required>
+            <option value="">Selecione</option>
+            <option>UNO Express (análise de uma decisão)</option>
+            <option>UNO Estratégico (priorização e plano)</option>
+            <option>UNO Executivo (palestra, workshop ou programa)</option>
+            <option>Ainda não sei, quero conversar</option>
+          </select>
+        </div>
+        <div class="ig lf-full">
+          <label>Contexto</label>
+          <textarea id="contexto" placeholder="Descreva brevemente o cenário ou decisão que motivou o contato."></textarea>
+        </div>
+        <button type="submit" class="lf-submit" id="submitBtn">Enviar contato</button>
+        <div class="lf-status" id="formStatus"></div>
+      </form>
+      <div class="privacy">Dados usados apenas para retorno. Sem repasse a terceiros.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-brand">UNO<b>.</b></div>
+        <p class="ft-tag">O UNO não organiza tarefas. Ele revela prioridade. Método autoral de Arthur Alvarez (Zoraxx), da Tríade da Nova Liderança, Pós-IA.</p>
+      </div>
+      <div class="ft-col">
+        <h4>Método</h4>
+        <ul>
+          <li><a href="#problema">O problema</a></li>
+          <li><a href="#metodo">O método</a></li>
+          <li><a href="#demo">Experimente</a></li>
+          <li><a href="#recebe">O que você recebe</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Contratar</h4>
+        <ul>
+          <li><a href="#modalidades">UNO Express</a></li>
+          <li><a href="#modalidades">UNO Estratégico</a></li>
+          <li><a href="#modalidades">UNO Executivo</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <div>© 2026 Arthur Alvarez · Todos os direitos reservados</div>
+      <div>Atibaia · SP · Brasil</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== SCROLL REVEAL ===== */
+const obs = new IntersectionObserver(e => {
+  e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ===== DEMO — via Cloudflare Worker ===== */
+// URL do seu Worker — substitua depois do deploy
+const WORKER_URL = 'https://uno-gemini.SEU-SUBDOMINIO.workers.dev';
+
+async function rodarDemo() {
+  const text = document.getElementById('demoInput').value.trim();
+  if (!text) { alert('Descreva sua situação antes de continuar.'); return; }
+
+  const btn     = document.getElementById('demoBtn');
+  const loading = document.getElementById('demoLoading');
+  const result  = document.getElementById('demoResult');
+  const body    = document.getElementById('demoBody');
+  const cta     = document.getElementById('demoCTA');
+
+  btn.disabled = true;
+  loading.classList.add('on');
+  result.classList.remove('on');
+  cta.classList.remove('on');
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ situacao: text })
+    });
+
+    if (!res.ok) throw new Error('Serviço temporariamente indisponível.');
+
+    const data = await res.json();
+    const txt  = data.resultado || 'Sem resposta.';
+    const fmt  = txt
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+
+    body.innerHTML = fmt;
+    result.classList.add('on');
+    cta.classList.add('on');
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch(e) {
+    body.innerHTML = `<span style="color:#e07060">${e.message}</span>`;
+    result.classList.add('on');
+  } finally {
+    btn.disabled = false;
+    loading.classList.remove('on');
+  }
 }
 
-  </script>
+/* ===== LEAD FORM -> GOOGLE SHEETS ===== */
+const SHEETS_URL = 'COLE_AQUI_SUA_URL_DO_APPS_SCRIPT';
+
+async function enviarLead(event) {
+  event.preventDefault();
+  const btn    = document.getElementById('submitBtn');
+  const status = document.getElementById('formStatus');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  status.className = 'lf-status';
+
+  const dados = {
+    timestamp:  new Date().toISOString(),
+    nome:       document.getElementById('nome').value,
+    email:      document.getElementById('email').value,
+    org:        document.getElementById('org').value,
+    modalidade: document.getElementById('modal').value,
+    contexto:   document.getElementById('contexto').value,
+    origem:     'UNO Landing'
+  };
+
+  try {
+    await fetch(SHEETS_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(dados)
+    });
+    status.className = 'lf-status ok';
+    status.textContent = 'Contato recebido. Retorno em até 24 horas.';
+    document.getElementById('leadForm').reset();
+    btn.textContent = 'Enviado';
+    setTimeout(() => { btn.disabled=false; btn.textContent='Enviar contato'; }, 4000);
+  } catch {
+    status.className = 'lf-status err';
+    status.textContent = 'Falha no envio. Tente novamente.';
+    btn.disabled = false;
+    btn.textContent = 'Enviar contato';
+  }
+}
+</script>
 </body>
 </html>
