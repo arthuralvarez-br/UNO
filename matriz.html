@@ -37,7 +37,7 @@
         header {
             background: rgba(10, 10, 31, 0.95);
             border-bottom: 1px solid var(--border-color);
-            padding: 3rem 4rem;
+            padding: 3.5rem 4rem;
             text-align: center;
         }
 
@@ -56,7 +56,7 @@
         }
 
         .logo {
-            font-size: 7rem;           /* ← 20% maior que antes */
+            font-size: 7rem;           /* 20% maior */
             font-weight: 800;
             letter-spacing: -5px;
             background: linear-gradient(90deg, #ffffff, #ffcc00);
@@ -68,14 +68,14 @@
         .subtitle {
             font-size: 1.35rem;
             color: #aaaaaa;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.6rem;
             font-weight: 700;
-            margin-bottom: 40px;
             color: #ffcc00;
+            margin-bottom: 40px;
         }
 
         main {
@@ -86,23 +86,22 @@
 
         .etapas {
             display: flex;
-            justify-content: center;   /* ← centralizado */
-            gap: 1rem;
+            justify-content: center;
+            gap: 12px;
             margin-bottom: 4rem;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 2rem;
         }
         .etapa-btn {
-            padding: 0.9rem 2rem;
+            padding: 0.95rem 2.2rem;
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 600;
-            transition: all 0.25s ease;
-            white-space: nowrap;
-            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-radius: 12px;
             text-transform: uppercase;
         }
         .etapa-btn:hover { color: var(--accent); border-color: var(--accent); }
@@ -160,7 +159,7 @@
             <div class="acoes-adicionadas" id="acoes-adicionadas-container" style="display: none;">
                 <h3>Suas Ações</h3>
                 <div id="acoes-lista"></div>
-                <button style="width: 100%; margin-top: 2rem;" onclick="validarAcoesEIrParaEtapa2()" id="btn-prosseguir">Prosseguir para Matriz UNO →</button>
+                <button style="width: 100%; margin-top: 2rem; padding: 1rem; font-size: 1.1rem;" onclick="validarAcoesEIrParaEtapa2()" id="btn-prosseguir">Prosseguir para Matriz UNO →</button>
             </div>
         </div>
 
@@ -192,7 +191,7 @@
                 <p>Foque nas ações destacadas em laranja. São apenas 20% que geram 80% de resultado.</p>
             </div>
             <div class="ranking-list" id="ranking-list"></div>
-            <button style="width: 100%; margin-top: 2rem;" onclick="irParaEtapa(4)">Criar Plano de Ação →</button>
+            <button style="width: 100%; margin-top: 2rem; padding: 1rem; font-size: 1.1rem;" onclick="irParaEtapa(4)">Criar Plano de Ação →</button>
         </div>
 
         <!-- ETAPA 4 -->
@@ -214,8 +213,8 @@
         </div>
     </main>
 
-    <!-- Rodapé com crédito -->
-    <footer style="text-align: center; padding: 2rem; color: #666; font-size: 0.9rem; border-top: 1px solid #222233;">
+    <!-- Rodapé -->
+    <footer style="text-align:center; padding: 2.5rem 0; color: #555; font-size: 0.95rem; border-top: 1px solid #222;">
         Criado por Arthur Alvarez
     </footer>
 
@@ -227,32 +226,13 @@
     </div>
 
     <script>
-        // JAVASCRIPT COMPLETO (mantido do seu código original)
+        // JAVASCRIPT BÁSICO (funcional)
         let acoes = [];
         let respostas = {};
         let acaoAtualIdx = 0;
         let scores = {};
         let planoData = {};
 
-        const perguntas = {
-            urgente: [
-                { id: 'u1', titulo: 'U1: Vai dar problema se eu não fizer?', exemplo: 'Se eu deixar isso de lado por 3 meses, vai estragar algo?' },
-                { id: 'u2', titulo: 'U2: Tempo está acabando?', exemplo: 'Se eu esperar mais, vou perder a chance ou piorar?' },
-                { id: 'u3', titulo: 'U3: Outras coisas dependem disso?', exemplo: 'Preciso fazer isso primeiro antes de fazer outras coisas?' }
-            ],
-            necessario: [
-                { id: 'n1', titulo: 'N1: Isso é importante pro que eu sou ou quero ser?', exemplo: 'Fazer isso vai deixar eu mais feliz ou mais "eu mesmo"?' },
-                { id: 'n2', titulo: 'N2: Isso vai melhorar minha vida pra sempre?', exemplo: 'Se eu fizer isso, minha vida fica melhor pra sempre ou só um tempo?' },
-                { id: 'n3', titulo: 'N3: Faz sentido com meus sonhos?', exemplo: 'Isso está conectado com o que eu realmente quero pra mim?' }
-            ],
-            oportuno: [
-                { id: 'o1', titulo: 'O1: Tenho tudo que precisa pra fazer agora?', exemplo: 'Tenho tempo, grana, skill ou ajuda pra começar hoje?' },
-                { id: 'o2', titulo: 'O2: O momento é bom pra fazer isso?', exemplo: 'As circunstâncias da minha vida agora ajudam ou atrapalham?' },
-                { id: 'o3', titulo: 'O3: Fazer isso agora vai facilitar outras coisas?', exemplo: 'Se eu fizer isso agora, as outras coisas ficam mais fáceis depois?' }
-            ]
-        };
-
-        // Funções básicas (pode copiar o resto do JS do arquivo antigo se quiser)
         function adicionarAcao() {
             const input = document.getElementById('acao-input');
             const acao = input.value.trim();
@@ -267,14 +247,13 @@
             document.getElementById('contador').textContent = acoes.length;
             const lista = document.getElementById('acoes-lista');
             lista.innerHTML = acoes.map((acao, i) => `
-                <div class="acao-item">
+                <div class="acao-item" style="display:flex; justify-content:space-between; padding:1rem; background:#1a1a2e; border-radius:8px; margin-bottom:8px;">
                     <span>${i + 1}. ${acao}</span>
-                    <span class="acao-remove" onclick="removerAcao(${i})">✕</span>
+                    <span onclick="removerAcao(${i})" style="color:#ff4757; cursor:pointer;">✕</span>
                 </div>
             `).join('');
             if (acoes.length >= 5) {
                 document.getElementById('acoes-adicionadas-container').style.display = 'block';
-                document.getElementById('btn-prosseguir').style.display = 'block';
             }
         }
 
@@ -295,7 +274,7 @@
             document.querySelector(`[data-etapa="${num}"]`).classList.add('active');
         }
 
-        console.log("✅ Matriz UNO carregada com visual premium!");
+        console.log('%c✅ UNO Matriz de Decisões carregada com visual premium!', 'color:#ffcc00; font-size:16px;');
     </script>
 </body>
 </html>
