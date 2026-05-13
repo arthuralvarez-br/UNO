@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNO • Brainstorm</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .header {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    .logo {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: linear-gradient(90deg, #ffffff, #a0a0a0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #888;
+      margin-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .description {
+      text-align: center;
+      font-size: 1.15rem;
+      color: #aaa;
+      max-width: 700px;
+      margin: 0 auto 50px;
+    }
+
+    .area-title {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      color: #ddd;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .card {
+      background: #111111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      border-color: #666;
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .card-icon {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+
+    .brainstorm-area {
+      display: none;
+      margin-top: 40px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 320px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 24px;
+      color: #fff;
+      font-size: 1.1rem;
+      resize: vertical;
+    }
+
+    .actions {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    button {
+      background: #ffffff;
+      color: #000;
+      border: none;
+      padding: 16px 48px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ddd;
+      transform: scale(1.05);
+    }
+
+    .back-btn {
+      background: transparent;
+      color: #888;
+      border: 1px solid #444;
+      padding: 12px 28px;
+      margin-right: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">UNO</div>
+      <p class="subtitle">Urgência • Necessidade • Oportunidade</p>
+    </div>
+
+    <h1>Brainstorm</h1>
+    <p class="description">Descarregue tudo que está na sua mente. Sem filtro.</p>
+
+    <!-- Seleção de Áreas -->
+    <div id="area-selection">
+      <p class="area-title">Em qual área da sua vida você quer trabalhar hoje?</p>
+      
+      <div class="grid">
+        <div class="card" onclick="selectArea('Saúde e Energia')">
+          <div class="card-icon">🫀</div>
+          <div class="card-title">Saúde e Energia</div>
+        </div>
+        <div class="card" onclick="selectArea('Relacionamentos')">
+          <div class="card-icon">❤️</div>
+          <div class="card-title">Relacionamentos</div>
+        </div>
+        <div class="card" onclick="selectArea('Finanças')">
+          <div class="card-icon">💰</div>
+          <div class="card-title">Finanças</div>
+        </div>
+        <div class="card" onclick="selectArea('Carreira e Negócios')">
+          <div class="card-icon">💼</div>
+          <div class="card-title">Carreira e Negócios</div>
+        </div>
+        <div class="card" onclick="selectArea('Intelectual e Aprendizado')">
+          <div class="card-icon">📚</div>
+          <div class="card-title">Intelectual e Aprendizado</div>
+        </div>
+        <div class="card" onclick="selectArea('Espiritualidade e Propósito')">
+          <div class="card-icon">🌌</div>
+          <div class="card-title">Espiritualidade e Propósito</div>
+        </div>
+        <div class="card" onclick="selectArea('Lazer e Bem-estar')">
+          <div class="card-icon">🌊</div>
+          <div class="card-title">Lazer e Bem-estar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Área de Brainstorm -->
+    <div id="brainstorm-area" class="brainstorm-area">
+      <h2 id="area-selected" style="margin-bottom: 20px; text-align: center;"></h2>
+      
+      <textarea id="notes" placeholder="Escreva aqui todas as suas ideias, pendências, problemas, metas..."></textarea>
+      
+      <div class="actions">
+        <button class="back-btn" onclick="backToSelection()">← Voltar</button>
+        <button onclick="sendToMatrix()">Enviar para Matriz UNO →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectArea(area) {
+      document.getElementById('area-selection').style.display = 'none';
+      document.getElementById('brainstorm-area').style.display = 'block';
+      document.getElementById('area-selected').textContent = `Pendências e ideias — ${area}`;
+      document.getElementById('notes').focus();
+    }
+
+    function backToSelection() {
+      document.getElementById('brainstorm-area').style.display = 'none';
+      document.getElementById('area-selection').style.display = 'block';
+    }
+
+    function sendToMatrix() {
+      const notes = document.getElementById('notes').value.trim();
+      if (notes === '') {
+        alert("Escreva pelo menos uma ideia antes de continuar.");
+        return;
+      }
+      
+      // Aqui você pode salvar no localStorage ou enviar para a próxima tela
+      localStorage.setItem('uno_brainstorm', notes);
+      alert("Itens enviados para a Matriz UNO! (próxima etapa em desenvolvimento)");
+      // window.location.href = "matriz.html"; // quando você criar a próxima página
+    }
+  </script>
+</body>
+</html>
