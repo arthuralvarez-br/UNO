@@ -216,15 +216,22 @@
       document.getElementById('area-selection').style.display = 'block';
     }
 
-    function sendToMatrix() {
-      const notes = document.getElementById('notes').value.trim();
-      if (notes === '') {
+
+function sendToMatrix() {
+    const notes = document.getElementById('notes').value.trim();
+    
+    if (notes === '') {
         alert("Escreva pelo menos uma ideia antes de continuar.");
         return;
-      }
-      localStorage.setItem('uno_brainstorm', notes);
-      alert("✅ Itens enviados com sucesso para a Matriz UNO!");
     }
+
+    // Salva o texto do brainstorm para usar na próxima tela
+    localStorage.setItem('uno_brainstorm', notes);
+    
+    // Redireciona para o app completo
+    window.location.href = "matriz.html";
+}
+
   </script>
 </body>
 </html>
