@@ -227,73 +227,6 @@ section { padding:8rem 0; }
 .pq-arrow { color:var(--amber); font-family:var(--mono); font-size:.8rem; margin-top:.1rem; flex-shrink:0; }
 .pq-text { font-size:1rem; color:var(--cream-dim); line-height:1.6; }
 
-/* ===== DEMO GEMINI — controlada ===== */
-.demo-section { background:var(--ink); border-top:1px solid var(--line-soft); }
-.demo-wrap { max-width:840px; margin:0 auto; }
-.demo-context {
-  background:rgba(212,160,23,.06); border:1px solid rgba(212,160,23,.2);
-  padding:1.5rem 2rem; margin-bottom:3rem;
-  font-family:var(--serif); font-size:1.15rem; font-style:italic;
-  color:var(--cream-soft); line-height:1.55;
-}
-.demo-context strong { font-style:normal; color:var(--amber); font-weight:500; }
-
-.demo-box { background:var(--ink-2); border:1px solid var(--line); border-top:3px solid var(--amber); padding:2.75rem; }
-.dlabel { font-family:var(--mono); font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--cream-mute); margin-bottom:.75rem; display:block; }
-.demo-textarea {
-  width:100%; min-height:130px; background:var(--ink); border:1px solid var(--line);
-  color:var(--cream); padding:1.2rem 1.35rem; font-family:var(--sans); font-size:1rem;
-  line-height:1.7; resize:vertical; border-radius:8px; transition:border-color .3s; margin-bottom:1.25rem;
-}
-.demo-textarea:focus { outline:none; border-color:var(--amber); }
-.demo-textarea::placeholder { color:var(--cream-mute); font-style:italic; }
-.demo-run {
-  width:100%; background:var(--amber); color:var(--ink); border:none; padding:1.15rem;
-  border-radius:50px; font-family:var(--mono); font-size:.82rem; font-weight:700;
-  letter-spacing:.18em; text-transform:uppercase; cursor:pointer;
-  transition:all .35s cubic-bezier(.2,.8,.2,1);
-}
-.demo-run:hover:not(:disabled) { background:var(--amber-lt); transform:translateY(-2px); box-shadow:0 10px 36px rgba(212,160,23,.28); }
-.demo-run:disabled { opacity:.5; cursor:not-allowed; }
-
-/* loading */
-.demo-loading { display:none; justify-content:center; align-items:center; gap:.5rem; padding:2rem 0; font-family:var(--mono); font-size:.78rem; letter-spacing:.12em; color:var(--cream-mute); }
-.demo-loading.on { display:flex; }
-.dot { width:6px; height:6px; background:var(--amber); border-radius:50%; animation:pulse 1.4s ease-in-out infinite; }
-.dot:nth-child(2) { animation-delay:.2s; } .dot:nth-child(3) { animation-delay:.4s; }
-@keyframes pulse { 0%,80%,100%{opacity:.25;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }
-
-/* resultado controlado */
-.demo-result { display:none; margin-top:2rem; border-top:1px solid var(--line); padding-top:2rem; }
-.demo-result.on { display:block; }
-.dr-head { font-family:var(--mono); font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px dashed var(--line); }
-.dr-body { font-family:var(--serif); font-size:1.12rem; line-height:1.75; color:var(--cream-soft); }
-.dr-body strong { color:var(--amber); font-style:italic; font-weight:500; }
-
-/* CTA pós-demo — o mais importante */
-.demo-cta-box {
-  display:none; margin-top:2.5rem; padding:2.5rem;
-  background:var(--ink-3); border:1px solid var(--amber);
-  text-align:center;
-}
-.demo-cta-box.on { display:block; }
-.dcta-eyebrow { font-family:var(--mono); font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin-bottom:1.25rem; }
-.dcta-title { font-family:var(--serif); font-size:1.75rem; font-weight:300; font-style:italic; color:var(--cream); margin-bottom:.75rem; letter-spacing:-.02em; }
-.dcta-sub { color:var(--cream-dim); font-size:.98rem; max-width:540px; margin:0 auto 2rem; line-height:1.68; }
-.dcta-disclaimer {
-  font-family:var(--mono); font-size:.65rem; color:var(--cream-mute);
-  letter-spacing:.08em; margin-top:1.75rem; padding-top:1.5rem;
-  border-top:1px dashed var(--line); line-height:1.7;
-}
-
-/* aviso ético */
-.demo-aviso {
-  margin-top:1.5rem; padding:1.25rem 1.5rem;
-  background:rgba(212,160,23,.04); border-left:2px solid rgba(212,160,23,.3);
-  font-family:var(--mono); font-size:.65rem; color:var(--cream-mute);
-  letter-spacing:.06em; line-height:1.75;
-}
-
 /* ===== O QUE VOCÊ RECEBE ===== */
 .recebe { background:var(--ink-2); border-top:1px solid var(--line-soft); }
 .rec-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; margin-top:3rem; }
@@ -321,7 +254,7 @@ section { padding:8rem 0; }
 /* ===== MODALIDADES ===== */
 .modalidades { background:var(--ink); border-top:1px solid var(--line-soft); }
 .mod-intro { font-family:var(--serif); font-size:1.3rem; font-style:italic; color:var(--cream-dim); max-width:640px; line-height:1.6; margin-bottom:4rem; }
-.mod-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; }
+.mod-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; max-width:1000px; margin-left:auto; margin-right:auto; }
 .mod-card {
   background:var(--ink-2); border:1px solid var(--line); padding:3rem 2.5rem;
   display:flex; flex-direction:column; position:relative;
@@ -456,7 +389,6 @@ body { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; us
     </a>
     <ul class="nav-links">
       <li><a href="#metodo">Método</a></li>
-      <li><a href="#demo">Experimente</a></li>
       <li><a href="#modalidades">Modalidades</a></li>
       <li><a href="#autor">Autor</a></li>
       <li><a href="#contato" class="nav-cta">Contratar</a></li>
@@ -490,7 +422,6 @@ body { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; us
 
     <div class="hero-cta fu d4">
       <a href="#contato" class="btn btn-primary">Quero contratar</a>
-      <a href="#demo" class="btn btn-ghost">Ver em ação</a>
     </div>
 
     <!-- U N O BLOCOS -->
@@ -610,54 +541,6 @@ body { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; us
   </div>
 </section>
 
-<!-- DEMO GEMINI — controlada -->
-<section class="demo-section reveal" id="demo">
-  <div class="container">
-    <div class="stag">Leitura inicial</div>
-    <h2 class="sh">Descreva sua decisão. A IA faz <em>uma leitura pelo método UNO.</em></h2>
-
-    <div class="demo-wrap">
-      <div class="demo-context">
-        Esta é uma <strong>leitura inicial</strong>, não a aplicação completa do método. O UNO completo, com scoring, ranking e plano de execução, é conduzido por Arthur Alvarez / Zoraxx.
-      </div>
-
-      <div class="demo-box">
-        <label class="dlabel" for="demoInput">Sua decisão, pendência ou dilema</label>
-        <textarea class="demo-textarea" id="demoInput"
-          placeholder="Ex: Recebi uma proposta para mudar de empresa. O salário é melhor, mas o papel é menos estratégico e terei que abrir mão de um projeto que venho liderando..."></textarea>
-        <button class="demo-run" id="demoBtn" onclick="rodarDemo()">
-          Receber leitura inicial UNO
-        </button>
-
-        <div class="demo-loading" id="demoLoading">
-          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span style="margin-left:.5rem">Analisando pelo método UNO...</span>
-        </div>
-
-        <div class="demo-result" id="demoResult">
-          <div class="dr-head">Leitura inicial UNO · Gemini Pro</div>
-          <div class="dr-body" id="demoBody"></div>
-        </div>
-
-        <!-- CTA pós-resultado — o mais importante -->
-        <div class="demo-cta-box" id="demoCTA">
-          <div class="dcta-eyebrow">Próximo passo</div>
-          <div class="dcta-title">Esta foi uma leitura inicial.</div>
-          <p class="dcta-sub">A aplicação completa do método UNO, com análise dos nove critérios, ranking de prioridade e plano de execução, é conduzida por Arthur Alvarez / Zoraxx.</p>
-          <a href="#contato" class="btn btn-primary">Quero a análise completa</a>
-          <div class="dcta-disclaimer">
-            A análise UNO não substitui acompanhamento psicológico, jurídico, médico, financeiro ou profissional especializado. O método organiza prioridades e apoia decisões. A responsabilidade final permanece com o usuário.
-          </div>
-        </div>
-
-        <div class="demo-aviso">
-          Sua situação não é armazenada. O processamento é feito via Gemini Pro com parâmetros definidos pelo método UNO.
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- O QUE VOCÊ RECEBE -->
 <section class="recebe reveal" id="recebe">
   <div class="container">
@@ -690,24 +573,9 @@ body { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; us
 <section class="modalidades reveal" id="modalidades">
   <div class="container">
     <div class="stag">Como contratar</div>
-    <h2 class="sh">Três modalidades. Sem <em>preço público.</em></h2>
+    <h2 class="sh">Duas modalidades. Sem <em>preço público.</em></h2>
     <p class="mod-intro">Conversa vende melhor do que tabela. Escolha a modalidade que faz sentido para o seu momento e solicite a aplicação.</p>
     <div class="mod-grid">
-
-      <div class="mod-card">
-        <div class="mod-badge">Entrada · Autoguiado</div>
-        <div class="mod-icon">›</div>
-        <h3>UNO Express</h3>
-        <p>Você aplica o método sozinho, com orientação da IA. Análise de 1 a 3 decisões com scoring UNO e relatório sintético gerado automaticamente.</p>
-        <div class="mod-details">
-          <div class="mod-detail">Aplicação autoguiada pelo usuário</div>
-          <div class="mod-detail">Análise de 1 a 3 decisões ou ações</div>
-          <div class="mod-detail">Scoring UNO com leitura orientada por IA</div>
-          <div class="mod-detail">Relatório sintético com recomendação</div>
-        </div>
-        <div class="mod-cta-note">Iniciar agora, sem agendamento</div>
-        <a href="#demo" class="btn btn-amber">Usar o UNO Express</a>
-      </div>
 
       <div class="mod-card">
         <div class="mod-badge">Principal · Mentoria pontual</div>
@@ -810,7 +678,6 @@ body { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; us
           <label>Modalidade de interesse</label>
           <select id="modal" required>
             <option value="">Selecione</option>
-            <option>UNO Express (análise de uma decisão)</option>
             <option>UNO Estratégico (priorização e plano)</option>
             <option>UNO Executivo (palestra, workshop ou programa)</option>
             <option>Ainda não sei, quero conversar</option>
@@ -846,14 +713,12 @@ body { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; us
         <ul>
           <li><a href="#problema">O problema</a></li>
           <li><a href="#metodo">O método</a></li>
-          <li><a href="#demo">Experimente</a></li>
           <li><a href="#recebe">O que você recebe</a></li>
         </ul>
       </div>
       <div class="ft-col">
         <h4>Contratar</h4>
         <ul>
-          <li><a href="#modalidades">UNO Express</a></li>
           <li><a href="#modalidades">UNO Estratégico</a></li>
           <li><a href="#modalidades">UNO Executivo</a></li>
           <li><a href="#contato">Contato</a></li>
@@ -873,54 +738,6 @@ const obs = new IntersectionObserver(e => {
   e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-/* ===== DEMO — via Cloudflare Worker ===== */
-// URL do seu Worker — substitua depois do deploy
-const WORKER_URL = 'https://unooficial.arthuralvarezdesouza.workers.dev';
-
-async function rodarDemo() {
-  const text = document.getElementById('demoInput').value.trim();
-  if (!text) { alert('Descreva sua situação antes de continuar.'); return; }
-
-  const btn     = document.getElementById('demoBtn');
-  const loading = document.getElementById('demoLoading');
-  const result  = document.getElementById('demoResult');
-  const body    = document.getElementById('demoBody');
-  const cta     = document.getElementById('demoCTA');
-
-  btn.disabled = true;
-  loading.classList.add('on');
-  result.classList.remove('on');
-  cta.classList.remove('on');
-
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ situacao: text })
-    });
-
-    if (!res.ok) throw new Error('Serviço temporariamente indisponível.');
-
-    const data = await res.json();
-    const txt  = data.resultado || 'Sem resposta.';
-    const fmt  = txt
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n/g, '<br>');
-
-    body.innerHTML = fmt;
-    result.classList.add('on');
-    cta.classList.add('on');
-    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  } catch(e) {
-    body.innerHTML = `<span style="color:#e07060">${e.message}</span>`;
-    result.classList.add('on');
-  } finally {
-    btn.disabled = false;
-    loading.classList.remove('on');
-  }
-}
 
 /* ===== LEAD FORM -> GOOGLE SHEETS ===== */
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxTeMGIOz8jilDlRa6Vr2j9hw9TaRMljmwcpnsEmz3OPwwMKwSMpCkyRIwwWdN400EK/exec';
