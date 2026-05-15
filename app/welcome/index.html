@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNO — Boas-vindas</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #0F2540;
+    --azul-medio: #1A3A5C;
+    --azul-claro: #E8EEF5;
+    --amarelo: #F5C518;
+    --amarelo-escuro: #D9A800;
+    --branco: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--azul);
+    color: var(--branco);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    padding: 32px 24px 80px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(245,197,24,0.08), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(26,58,92,0.6), transparent 50%),
+      var(--azul);
+  }
+
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* TOPO */
+  .topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--amarelo);
+    letter-spacing: -1px;
+  }
+
+  .info-token {
+    text-align: right;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+  }
+
+  .info-token strong {
+    display: block;
+    color: var(--branco);
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  /* HERO */
+  .hero {
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s ease-out;
+  }
+
+  .saudacao {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--amarelo);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--amarelo);
+  }
+
+  .intro {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    max-width: 580px;
+  }
+
+  /* PROCESSO */
+  .processo {
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease-out;
+  }
+
+  .processo-titulo {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+
+  .etapas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+  }
+
+  .etapa {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 18px 16px;
+    transition: all 0.3s ease;
+  }
+
+  .etapa:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(245,197,24,0.2);
+  }
+
+  .etapa-num {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--amarelo);
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .etapa-nome {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--branco);
+    margin-bottom: 4px;
+  }
+
+  .etapa-desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.4;
+  }
+
+  /* AVISO */
+  .aviso {
+    background: rgba(245,197,24,0.08);
+    border: 1px solid rgba(245,197,24,0.2);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    animation: fadeUp 1s ease-out;
+  }
+
+  .aviso-titulo {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--amarelo);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .aviso-texto {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+
+  /* BOTÃO */
+  .btn-wrap {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    animation: fadeUp 1.2s ease-out;
+  }
+
+  .btn {
+    background: var(--amarelo);
+    color: var(--azul);
+    border: none;
+    border-radius: 10px;
+    padding: 18px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn:hover {
+    background: var(--amarelo-escuro);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(245,197,24,0.3);
+  }
+
+  .btn .arrow { transition: transform 0.2s ease; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  .btn-secundario {
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 18px 24px;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secundario:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--branco);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 18px 60px; }
+    h1 { font-size: 32px; }
+    .intro { font-size: 15px; }
+    .btn-wrap { flex-direction: column; align-items: stretch; }
+    .btn, .btn-secundario { width: 100%; justify-content: center; text-align: center; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topo">
+      <div class="logo">UNO</div>
+      <div class="info-token">
+        Token de acesso
+        <strong id="token-display">—</strong>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="saudacao">Bem-vindo</div>
+      <h1>Olá, <em id="nome-cliente">líder</em>.<br>Vamos começar.</h1>
+      <p class="intro">
+        Você está prestes a conduzir uma análise estratégica usando a Matriz UNO,
+        uma ferramenta de priorização inteligente que separa o <strong>Urgente</strong>,
+        o <strong>Necessário</strong> e o <strong>Oportuno</strong>.
+        O processo todo leva de 30 a 45 minutos, sem pressa, e gera um plano de execução personalizado.
+      </p>
+    </section>
+
+    <section class="processo">
+      <div class="processo-titulo">O percurso</div>
+      <div class="etapas">
+        <div class="etapa">
+          <div class="etapa-num">01</div>
+          <div class="etapa-nome">Mapear</div>
+          <div class="etapa-desc">Liste situações reais que demandam decisão.</div>
+        </div>
+        <div class="etapa">
+          <div class="etapa-num">02</div>
+          <div class="etapa-nome">Avaliar</div>
+          <div class="etapa-desc">Pontue cada item nas três dimensões da Matriz.</div>
+        </div>
+        <div class="etapa">
+          <div class="etapa-num">03</div>
+          <div class="etapa-nome">Priorizar</div>
+          <div class="etapa-desc">Veja o ranking e refine os desempates.</div>
+        </div>
+        <div class="etapa">
+          <div class="etapa-num">04</div>
+          <div class="etapa-nome">Executar</div>
+          <div class="etapa-desc">Receba seu plano de ação em PDF.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="aviso">
+      <div class="aviso-titulo">Antes de começar</div>
+      <div class="aviso-texto">
+        Reserve um tempo sem interrupções. Sua sessão fica salva automaticamente,
+        então você pode pausar e retomar quando quiser, usando o mesmo token de acesso.
+      </div>
+    </div>
+
+    <div class="btn-wrap">
+      <button class="btn" onclick="iniciar()">
+        <span>Começar análise</span>
+        <span class="arrow">→</span>
+      </button>
+      <button class="btn-secundario" onclick="sair()">Sair</button>
+    </div>
+
+  </div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  // CONFIGURAÇÃO
+  // ═══════════════════════════════════════════════════════════════
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzZmWzVJh7rF0lcs0AiXc90G2CzJrfVvfnrTJhdKtWxbSaChHPix7eV_ObDGdopqwiPbw/exec';
+
+  // ─── Carrega dados do localStorage ───
+  const token = localStorage.getItem('uno_token');
+  const cliente = JSON.parse(localStorage.getItem('uno_cliente') || '{}');
+
+  // Se não tem token, volta pra tela 1
+  if (!token) {
+    window.location.href = '../';
+  }
+
+  // Preenche tela com dados reais
+  document.getElementById('token-display').textContent = token || '—';
+  document.getElementById('nome-cliente').textContent = (cliente.nome || 'líder').split(' ')[0];
+
+  // ─── Ações ───
+  function iniciar() {
+    // Registra no backend que o cliente avançou para o brainstorm
+    try {
+      fetch(`${BACKEND_URL}?action=atualizarEtapa&token=${encodeURIComponent(token)}&etapa=brainstorm`, { method: 'GET' });
+    } catch (e) { /* segue mesmo se falhar */ }
+
+    window.location.href = '../brainstorm/';
+  }
+
+  function sair() {
+    if (confirm('Sua sessão fica salva. Você pode voltar a qualquer momento usando seu token. Deseja sair?')) {
+      window.location.href = '../';
+    }
+  }
+</script>
+</body>
+</html>
