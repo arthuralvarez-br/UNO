@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNO — Acesso</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #0F2540;
+    --azul-medio: #1A3A5C;
+    --azul-claro: #E8EEF5;
+    --amarelo: #F5C518;
+    --amarelo-escuro: #D9A800;
+    --branco: #FFFFFF;
+    --erro: #C0392B;
+    --sucesso: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--azul);
+    color: var(--branco);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(245,197,24,0.08), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(26,58,92,0.6), transparent 50%),
+      var(--azul);
+  }
+
+  .container { width: 100%; max-width: 440px; }
+
+  .logo-wrap { text-align: center; margin-bottom: 40px; }
+
+  .logo {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--amarelo);
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+
+  .sub-logo {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--branco);
+    opacity: 0.6;
+    margin-top: 8px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 36px 32px;
+    backdrop-filter: blur(10px);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .descricao {
+    color: var(--branco);
+    opacity: 0.7;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--amarelo);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .input-wrap { position: relative; margin-bottom: 24px; }
+
+  input[type="text"] {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: var(--branco);
+    font-family: 'Inter', monospace;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--amarelo);
+    background: rgba(255,255,255,0.1);
+  }
+
+  input[type="text"]::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+
+  .btn {
+    width: 100%;
+    background: var(--amarelo);
+    color: var(--azul);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn:hover { background: var(--amarelo-escuro); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn .arrow { transition: transform 0.2s ease; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  .feedback {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    display: none;
+  }
+
+  .feedback.erro {
+    background: rgba(192,57,43,0.15);
+    border: 1px solid rgba(192,57,43,0.3);
+    color: #FFB4A8;
+    display: block;
+  }
+
+  .feedback.sucesso {
+    background: rgba(39,174,96,0.15);
+    border: 1px solid rgba(39,174,96,0.3);
+    color: #A0E5BC;
+    display: block;
+  }
+
+  .rodape {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 12px;
+    color: var(--branco);
+    opacity: 0.5;
+    line-height: 1.6;
+  }
+
+  .rodape a { color: var(--amarelo); opacity: 0.8; text-decoration: none; }
+  .rodape a:hover { opacity: 1; }
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(15,37,64,0.3);
+    border-top-color: var(--azul);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .btn.loading .spinner { display: block; }
+  .btn.loading .arrow,
+  .btn.loading .label { display: none; }
+
+  @media (max-width: 480px) {
+    .logo { font-size: 44px; }
+    .card { padding: 28px 22px; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-wrap">
+      <div class="logo">UNO</div>
+      <div class="sub-logo">Urgente · Necessário · Oportuno</div>
+    </div>
+
+    <div class="card">
+      <h1>Bem-vindo.</h1>
+      <p class="descricao">Insira o token que você recebeu para iniciar sua análise estratégica.</p>
+
+      <label for="token">Seu token de acesso</label>
+      <div class="input-wrap">
+        <input type="text" id="token" placeholder="UNO-2026-XXXXX" maxlength="14" autocomplete="off" autocapitalize="characters">
+      </div>
+
+      <button class="btn" id="btn-entrar" onclick="validarToken()">
+        <span class="label">Entrar</span>
+        <span class="arrow">→</span>
+        <span class="spinner"></span>
+      </button>
+
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <p class="rodape">
+      Ainda não tem token?<br>
+      Acesse <a href="https://unooficial.com.br" target="_blank">unooficial.com.br</a>
+    </p>
+  </div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  // CONFIGURAÇÃO — TROCAR PELA URL REAL DO APPS SCRIPT (Onda 1)
+  // ═══════════════════════════════════════════════════════════════
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzZmWzVJh7rF0lcs0AiXc90G2CzJrfVvfnrTJhdKtWxbSaChHPix7eV_ObDGdopqwiPbw/exec';
+
+  const inputToken = document.getElementById('token');
+  const btn = document.getElementById('btn-entrar');
+  const feedback = document.getElementById('feedback');
+
+  inputToken.addEventListener('input', (e) => {
+    e.target.value = e.target.value.toUpperCase().replace(/\s+/g, '');
+    feedback.className = 'feedback';
+    feedback.textContent = '';
+  });
+
+  inputToken.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') validarToken();
+  });
+
+  inputToken.focus();
+
+  const tokenSalvo = localStorage.getItem('uno_token');
+  if (tokenSalvo) inputToken.value = tokenSalvo;
+
+  async function validarToken() {
+    const token = inputToken.value.trim().toUpperCase();
+
+    if (!token || token.length < 10) {
+      mostrarErro('Token inválido. Verifique e tente novamente.');
+      return;
+    }
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+    feedback.className = 'feedback';
+
+    try {
+      const url = `${BACKEND_URL}?action=validarToken&token=${encodeURIComponent(token)}`;
+      const resp = await fetch(url, { method: 'GET' });
+      const data = await resp.json();
+
+      if (data.status === 'ok' && data.valido) {
+        localStorage.setItem('uno_token', token);
+        localStorage.setItem('uno_cliente', JSON.stringify({
+          nome: data.nome || '',
+          email: data.email || '',
+          modalidade: data.modalidade || 'Express',
+          analises_usadas: data.analises_usadas || 0,
+          analises_total: data.analises_total || 3,
+          etapa_atual: data.etapa_atual || 'welcome'
+        }));
+
+        mostrarSucesso(`Token validado. Olá, ${data.nome || 'líder'}.`);
+        setTimeout(() => {
+          const etapa = data.etapa_atual || 'welcome';
+          window.location.href = `./${etapa}/`;
+        }, 1200);
+      } else {
+        mostrarErro(data.msg || 'Token não encontrado ou expirado.');
+      }
+    } catch (err) {
+      console.error('[UNO] Erro ao validar:', err);
+      mostrarErro('Não foi possível conectar. Verifique sua internet.');
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  }
+
+  function mostrarErro(msg) {
+    feedback.className = 'feedback erro';
+    feedback.textContent = msg;
+  }
+
+  function mostrarSucesso(msg) {
+    feedback.className = 'feedback sucesso';
+    feedback.textContent = msg;
+  }
+</script>
+</body>
+</html>
