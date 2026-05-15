@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNO Admin · Zoraxx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #0c0c0d;
+  --black-soft: #161618;
+  --black-card: #1a1a1d;
+  --amber: #d4a017;
+  --amber-soft: #b88a14;
+  --cream: #f0ead6;
+  --cream-soft: #e3dcc4;
+  --line: rgba(240, 234, 214, 0.08);
+  --line-strong: rgba(240, 234, 214, 0.18);
+  --text: #f0ead6;
+  --text-dim: rgba(240, 234, 214, 0.55);
+  --text-faint: rgba(240, 234, 214, 0.3);
+  --success: #6b9b6b;
+  --warning: #c9a64c;
+  --danger: #b8625c;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 6px;
+  --radius-lg: 10px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  background: var(--black);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ===== LAYOUT ===== */
+body { display: grid; grid-template-columns: 220px 1fr; }
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  background: var(--black-soft);
+  border-right: 1px solid var(--line);
+  padding: 28px 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.brand {
+  padding: 0 22px 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.brand-mark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+}
+.brand-mark em { font-style: italic; color: var(--amber); font-weight: 300; }
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: 4px;
+}
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 12px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  transition: background .15s, color .15s;
+}
+.nav-item:hover { background: rgba(240,234,214,.04); color: var(--text); }
+.nav-item.active { background: rgba(212,160,23,.08); color: var(--amber); }
+.nav-section {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 14px 12px 6px;
+}
+.user-bar {
+  padding: 14px 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+.avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--amber), var(--amber-soft));
+  color: var(--black);
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 11px;
+  flex-shrink: 0;
+}
+.user-name { font-size: 12px; font-weight: 600; color: var(--text); }
+.user-role { font-size: 10px; color: var(--text-faint); font-family: var(--font-mono); }
+
+/* ===== MAIN ===== */
+.main { padding: 40px 48px; max-width: 1300px; }
+
+/* PAGE HEADER */
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 36px;
+}
+.page-head h1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.page-head h1 em { font-style: italic; color: var(--amber); font-weight: 300; }
+.page-head-sub { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
+
+/* BOTÃO PRINCIPAL */
+.btn-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--amber);
+  color: var(--black);
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  flex-shrink: 0;
+}
+.btn-new:hover { background: var(--cream); transform: translateY(-1px); }
+.btn-new::before { content: '+'; font-size: 16px; font-weight: 400; line-height: 1; }
+
+/* ===== KPIs ===== */
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.kpi {
+  background: var(--black-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  transition: border-color .2s;
+}
+.kpi:hover { border-color: var(--line-strong); }
+.kpi.featured {
+  border-color: rgba(212,160,23,.3);
+  background: linear-gradient(135deg, rgba(212,160,23,.05), transparent 60%);
+}
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--cream);
+}
+.kpi.featured .kpi-value { color: var(--amber); }
+.kpi-value small { font-size: 14px; color: var(--text-faint); margin-left: 3px; }
+.kpi-delta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  margin-top: 10px;
+  color: var(--success);
+}
+.kpi-delta.neutral { color: var(--text-faint); }
+
+/* ===== FILTROS ===== */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.search {
+  flex: 1;
+  min-width: 200px;
+  background: var(--black-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color .15s;
+}
+.search::placeholder { color: var(--text-faint); }
+.search:focus { border-color: var(--amber); }
+.chip {
+  background: var(--black-soft);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 8px 16px;
+  color: var(--text-dim);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.chip:hover { color: var(--text); border-color: var(--line-strong); }
+.chip.active { background: var(--cream); color: var(--black); border-color: var(--cream); font-weight: 600; }
+
+/* ===== TABELA ===== */
+.table-wrap {
+  background: var(--black-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.table-head {
+  display: grid;
+  grid-template-columns: 1.3fr 1.8fr 1fr 1fr 0.8fr 0.7fr 80px;
+  gap: 16px;
+  padding: 13px 24px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.table-body { display: flex; flex-direction: column; }
+.table-row {
+  display: grid;
+  grid-template-columns: 1.3fr 1.8fr 1fr 1fr 0.8fr 0.7fr 80px;
+  gap: 16px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+  transition: background .15s;
+  cursor: pointer;
+}
+.table-row:last-child { border-bottom: none; }
+.table-row:hover { background: rgba(240,234,214,.02); }
+
+.cell-token {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--amber);
+  letter-spacing: .03em;
+}
+.cell-client { line-height: 1.35; }
+.cell-client-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.cell-client-email { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.cell-mod {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+.cell-mod.Express { background: rgba(212,160,23,.1); border-color: rgba(212,160,23,.3); color: var(--amber); }
+.cell-mod.Estratégico { background: rgba(107,155,107,.1); border-color: rgba(107,155,107,.3); color: var(--success); }
+.cell-mod.Executivo { background: rgba(184,98,92,.08); border-color: rgba(184,98,92,.25); color: var(--danger); }
+.cell-date { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+.cell-date strong { color: var(--text); font-weight: 500; display: block; }
+.cell-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.cell-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.cell-status.ATIVO { color: var(--success); }
+.cell-status.ATIVO::before { background: var(--success); animation: pulse 2s infinite; }
+.cell-status.ESGOTADO { color: var(--text-faint); }
+.cell-status.ESGOTADO::before { background: var(--text-faint); }
+.cell-status.EXPIRADO { color: var(--danger); }
+.cell-status.EXPIRADO::before { background: var(--danger); }
+.cell-usage { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--text); }
+.cell-usage small { color: var(--text-faint); }
+.cell-actions { display: flex; gap: 6px; }
+.btn-copy {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .05em;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.btn-copy:hover { color: var(--amber); border-color: rgba(212,160,23,.4); background: rgba(212,160,23,.05); }
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding: 64px 32px;
+  color: var(--text-dim);
+}
+.empty-state-icon { font-family: var(--font-display); font-size: 48px; font-style: italic; color: var(--amber); margin-bottom: 16px; }
+.empty-state p { font-size: 15px; }
+
+/* LOADING */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  gap: 12px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .1em;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--line-strong);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ===== MODAL ===== */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  place-items: center;
+  padding: 20px;
+}
+.overlay.open { display: grid; }
+.modal {
+  background: var(--black-soft);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 520px;
+  animation: slideUp .3s ease-out;
+  overflow: hidden;
+}
+.modal-head {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+.modal-title em { font-style: italic; color: var(--amber); font-weight: 300; }
+.modal-close {
+  background: transparent; border: none;
+  color: var(--text-faint); font-size: 20px;
+  cursor: pointer; padding: 4px 8px;
+  border-radius: 4px;
+  transition: color .15s;
+  line-height: 1;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 28px 32px; display: flex; flex-direction: column; gap: 18px; }
+.form-field { display: flex; flex-direction: column; gap: 8px; }
+.form-field label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.form-input, .form-select {
+  padding: 12px 14px;
+  background: var(--black);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+  width: 100%;
+}
+.form-input:focus, .form-select:focus { border-color: var(--amber); }
+.form-input::placeholder { color: var(--text-faint); }
+.form-select { cursor: pointer; }
+.form-select option { background: var(--black-soft); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.modal-foot {
+  padding: 20px 32px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+.btn-cancel {
+  padding: 11px 20px;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+}
+.btn-cancel:hover { color: var(--text); border-color: var(--line-strong); }
+.btn-submit {
+  padding: 11px 24px;
+  background: var(--amber);
+  border: none;
+  border-radius: var(--radius);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-submit:hover { background: var(--cream); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ===== TOAST DE SUCESSO ===== */
+.toast {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  background: var(--black-soft);
+  border: 1px solid rgba(107,155,107,.4);
+  border-radius: var(--radius-lg);
+  padding: 18px 24px;
+  max-width: 420px;
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  animation: slideUp .3s ease-out;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+.toast.open { display: flex; }
+.toast-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.toast-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--success);
+  letter-spacing: -0.005em;
+}
+.toast-close {
+  background: transparent; border: none;
+  color: var(--text-faint); cursor: pointer;
+  font-size: 16px; padding: 2px 6px; border-radius: 4px;
+  transition: color .15s;
+}
+.toast-close:hover { color: var(--text); }
+.toast-token {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: .08em;
+}
+.toast-msg {
+  background: var(--black);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  font-family: var(--font-body);
+}
+.toast-actions { display: flex; gap: 8px; }
+.btn-toast {
+  flex: 1;
+  padding: 10px;
+  border: none; border-radius: var(--radius);
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+  letter-spacing: .02em;
+}
+.btn-toast.primary { background: var(--amber); color: var(--black); }
+.btn-toast.primary:hover { background: var(--cream); }
+.btn-toast.secondary { background: var(--black); border: 1px solid var(--line-strong); color: var(--text-dim); }
+.btn-toast.secondary:hover { color: var(--text); }
+
+/* PRINCIPLE */
+.principle {
+  margin-top: 48px;
+  padding: 28px 32px;
+  border-left: 2px solid var(--amber);
+  background: linear-gradient(90deg, rgba(212,160,23,.04), transparent 80%);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.principle-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 10px;
+}
+.principle-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+}
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">UNO<em> admin</em></div>
+    <div class="brand-sub">Tabula Rasa · Zoraxx</div>
+  </div>
+  <nav class="nav">
+    <button class="nav-item active" onclick="showSection('tokens')">Tokens</button>
+    <button class="nav-item" onclick="showSection('sessoes')">Sessões UNO</button>
+    <div class="nav-section">Sistema</div>
+    <button class="nav-item" onclick="recarregarDados()">↻ Atualizar dados</button>
+  </nav>
+  <div class="user-bar">
+    <div class="avatar">A</div>
+    <div>
+      <div class="user-name">Arthur Alvarez</div>
+      <div class="user-role">Admin</div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HEADER -->
+  <div class="page-head">
+    <div>
+      <h1>Tokens <em>emitidos</em></h1>
+      <p class="page-head-sub">Cada token autoriza acesso ao Método UNO por 30 dias, com até 3 análises.</p>
+    </div>
+    <button class="btn-new" onclick="abrirModal()">Emitir novo token</button>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis" id="kpis">
+    <div class="kpi featured">
+      <div class="kpi-label">Ativos hoje</div>
+      <div class="kpi-value" id="kpi-ativos">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Análises concluídas</div>
+      <div class="kpi-value" id="kpi-analises">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Total emitido</div>
+      <div class="kpi-value" id="kpi-total">—</div>
+      <div class="kpi-delta neutral" id="kpi-semana">—</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Taxa de uso</div>
+      <div class="kpi-value" id="kpi-taxa">—<small>%</small></div>
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters">
+    <input type="text" class="search" id="busca" placeholder="Buscar por nome, e-mail ou token..." oninput="filtrarTabela()">
+    <button class="chip active" onclick="filtrarStatus('todos', this)">Todos</button>
+    <button class="chip" onclick="filtrarStatus('ATIVO', this)">Ativos</button>
+    <button class="chip" onclick="filtrarStatus('ESGOTADO', this)">Esgotados</button>
+    <button class="chip" onclick="filtrarStatus('EXPIRADO', this)">Expirados</button>
+  </div>
+
+  <!-- TABELA -->
+  <div class="table-wrap">
+    <div class="table-head">
+      <div>Token</div>
+      <div>Cliente</div>
+      <div>Modalidade</div>
+      <div>Emissão / Expira</div>
+      <div>Status</div>
+      <div>Uso</div>
+      <div>Ação</div>
+    </div>
+    <div class="table-body" id="table-body">
+      <div class="loading"><div class="spinner"></div>Carregando tokens...</div>
+    </div>
+  </div>
+
+  <!-- PRINCÍPIO -->
+  <div class="principle">
+    <div class="principle-label">Princípio operacional</div>
+    <div class="principle-text">Cada token é um compromisso. Não com a venda, mas com a clareza que o cliente recebe.</div>
+  </div>
+
+</main>
+
+<!-- MODAL: EMITIR TOKEN -->
+<div class="overlay" id="overlay" onclick="fecharModalOverlay(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Emitir <em>novo token</em></div>
+      <button class="modal-close" onclick="fecharModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label>Nome completo *</label>
+        <input type="text" class="form-input" id="f-nome" placeholder="Ex: Carlos Silveira" required>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>E-mail *</label>
+          <input type="email" class="form-input" id="f-email" placeholder="carlos@empresa.com" required>
+        </div>
+        <div class="form-field">
+          <label>WhatsApp</label>
+          <input type="text" class="form-input" id="f-whatsapp" placeholder="11999998888">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Modalidade *</label>
+          <select class="form-select" id="f-modalidade">
+            <option value="Express">Express</option>
+            <option value="Estratégico">Estratégico</option>
+            <option value="Executivo">Executivo</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Canal de venda</label>
+          <select class="form-select" id="f-canal">
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="PIX">PIX direto</option>
+            <option value="Hotmart">Hotmart</option>
+            <option value="Cortesia">Cortesia</option>
+            <option value="Indicação">Indicação</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Valor pago (R$)</label>
+          <input type="number" class="form-input" id="f-valor" placeholder="497.00" step="0.01">
+        </div>
+        <div class="form-field">
+          <label>Observações</label>
+          <input type="text" class="form-input" id="f-obs" placeholder="Indicação do Rafael, etc.">
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-submit" id="btn-submit" onclick="emitirToken()">Gerar token →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST: TOKEN GERADO -->
+<div class="toast" id="toast">
+  <div class="toast-head">
+    <div class="toast-title">✓ Token gerado com sucesso</div>
+    <button class="toast-close" onclick="fecharToast()">×</button>
+  </div>
+  <div class="toast-token" id="toast-token">—</div>
+  <div class="toast-msg" id="toast-msg">—</div>
+  <div class="toast-actions">
+    <button class="btn-toast primary" onclick="copiarToken()">Copiar token</button>
+    <button class="btn-toast secondary" onclick="copiarWhatsApp()">Copiar msg WhatsApp</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURAÇÃO
+// ============================================================
+const API_URL = 'https://script.google.com/macros/s/AKfycbzZmWzVJh7rF0lcs0AiXc90G2CzJrfVvfnrTJhdKtWxbSaChHPix7eV_ObDGdopqwiPbw/exec';
+
+let todosTokens = [];
+let filtroAtual = 'todos';
+let tokenGerado = null;
+
+// ============================================================
+// API
+// ============================================================
+async function chamarAPI(acao, dados = {}) {
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao, ...dados })
+    });
+    return await res.json();
+  } catch (err) {
+    console.error('Erro na API:', err);
+    return { success: false, erro: err.toString() };
+  }
+}
+
+// ============================================================
+// CARREGAMENTO DE DADOS
+// ============================================================
+async function carregarDados() {
+  // KPIs
+  chamarAPI('relatorio_admin').then(r => {
+    if (r.success) {
+      document.getElementById('kpi-ativos').textContent = r.kpis.ativos_hoje;
+      document.getElementById('kpi-analises').textContent = r.kpis.analises_concluidas;
+      document.getElementById('kpi-total').textContent = r.kpis.total_emitido;
+      document.getElementById('kpi-taxa').innerHTML = r.kpis.taxa_uso + '<small>%</small>';
+      document.getElementById('kpi-semana').textContent = '+' + r.kpis.novos_semana + ' esta semana';
+    }
+  });
+
+  // Tokens
+  const r = await chamarAPI('listar_tokens', { filtro: 'todos' });
+  if (r.success) {
+    todosTokens = r.tokens;
+    renderTabela(todosTokens);
+  } else {
+    document.getElementById('table-body').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">!</div>
+        <p>Erro ao carregar: ${r.erro}</p>
+      </div>`;
+  }
+}
+
+function recarregarDados() {
+  document.getElementById('table-body').innerHTML =
+    '<div class="loading"><div class="spinner"></div>Atualizando...</div>';
+  carregarDados();
+}
+
+// ============================================================
+// RENDERIZAÇÃO DA TABELA
+// ============================================================
+function renderTabela(tokens) {
+  const body = document.getElementById('table-body');
+  if (!tokens || tokens.length === 0) {
+    body.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">UNO</div>
+        <p>Nenhum token encontrado. Emita o primeiro acima.</p>
+      </div>`;
+    return;
+  }
+
+  body.innerHTML = tokens.map(t => `
+    <div class="table-row" title="Clique para copiar o token">
+      <div class="cell-token">${t.token}</div>
+      <div class="cell-client">
+        <div class="cell-client-name">${t.cliente_nome}</div>
+        <div class="cell-client-email">${t.cliente_email}</div>
+      </div>
+      <div><span class="cell-mod ${t.modalidade}">${t.modalidade}</span></div>
+      <div class="cell-date">
+        <strong>${t.data_emissao}</strong>
+        Expira ${t.data_expira}
+      </div>
+      <div><span class="cell-status ${t.status}">${t.status}</span></div>
+      <div class="cell-usage">${t.analises_usadas}<small>/${t.analises_max}</small></div>
+      <div class="cell-actions">
+        <button class="btn-copy" onclick="copiarTokenDireto('${t.token}', event)" title="Copiar token">Copiar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// FILTROS
+// ============================================================
+function filtrarTabela() {
+  const busca = document.getElementById('busca').value.toLowerCase();
+  let lista = todosTokens;
+
+  if (filtroAtual !== 'todos') {
+    lista = lista.filter(t => t.status === filtroAtual);
+  }
+
+  if (busca) {
+    lista = lista.filter(t =>
+      t.token.toLowerCase().includes(busca) ||
+      t.cliente_nome.toLowerCase().includes(busca) ||
+      t.cliente_email.toLowerCase().includes(busca)
+    );
+  }
+
+  renderTabela(lista);
+}
+
+function filtrarStatus(status, btn) {
+  filtroAtual = status;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  filtrarTabela();
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function abrirModal() {
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('f-nome').focus();
+}
+
+function fecharModal() {
+  document.getElementById('overlay').classList.remove('open');
+  limparForm();
+}
+
+function fecharModalOverlay(e) {
+  if (e.target === document.getElementById('overlay')) fecharModal();
+}
+
+function limparForm() {
+  ['f-nome','f-email','f-whatsapp','f-valor','f-obs'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+async function emitirToken() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const whatsapp = document.getElementById('f-whatsapp').value.trim();
+  const modalidade = document.getElementById('f-modalidade').value;
+  const canal = document.getElementById('f-canal').value;
+  const valor = parseFloat(document.getElementById('f-valor').value) || 0;
+  const obs = document.getElementById('f-obs').value.trim();
+
+  if (!nome || !email) {
+    alert('Preencha ao menos o nome e e-mail.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Gerando...';
+
+  const r = await chamarAPI('gerar_token', {
+    cliente_nome: nome,
+    cliente_email: email,
+    cliente_whatsapp: whatsapp,
+    modalidade,
+    canal_venda: canal,
+    valor_pago: valor,
+    observacoes: obs
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Gerar token →';
+
+  if (r.success) {
+    tokenGerado = r;
+    fecharModal();
+    mostrarToast(r);
+    recarregarDados();
+  } else {
+    alert('Erro ao gerar token: ' + r.erro);
+  }
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function mostrarToast(dados) {
+  document.getElementById('toast-token').textContent = dados.token;
+
+  const nome = dados.cliente.nome.split(' ')[0];
+  const msg = `Olá ${nome}, seu acesso ao Método UNO está liberado.\n\nToken: ${dados.token}\nLink: https://www.unooficial.com.br/app\n\nVocê tem 30 dias para usar e pode fazer até ${dados.analises_max} análises completas.\n\nQualquer dúvida, é só me chamar.\nArthur Alvarez (Zoraxx)`;
+
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast').classList.add('open');
+}
+
+function fecharToast() {
+  document.getElementById('toast').classList.remove('open');
+  tokenGerado = null;
+}
+
+function copiarToken() {
+  if (!tokenGerado) return;
+  navigator.clipboard.writeText(tokenGerado.token);
+  mostrarFeedback('Token copiado!');
+}
+
+function copiarWhatsApp() {
+  const msg = document.getElementById('toast-msg').textContent;
+  navigator.clipboard.writeText(msg);
+  mostrarFeedback('Mensagem copiada!');
+}
+
+function copiarTokenDireto(token, e) {
+  e.stopPropagation();
+  navigator.clipboard.writeText(token);
+  const btn = e.currentTarget;
+  btn.textContent = '✓ Copiado';
+  setTimeout(() => btn.textContent = 'Copiar', 1500);
+}
+
+function mostrarFeedback(txt) {
+  const el = document.createElement('div');
+  el.textContent = txt;
+  el.style.cssText = `position:fixed;bottom:100px;right:28px;background:var(--success);color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;font-family:var(--font-mono);z-index:300;animation:fadeIn .2s ease`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function showSection(sec) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { fecharModal(); fecharToast(); }
+});
+
+carregarDados();
+</script>
+
+</body>
+</html>
