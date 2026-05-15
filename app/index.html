@@ -283,24 +283,27 @@
       });
       const data = await resp.json();
 
-      if (data.status === 'ok' && data.valido) {
+      if (data.valid === true) {
+        const cliente = data.cliente || {};
         localStorage.setItem('uno_token', token);
         localStorage.setItem('uno_cliente', JSON.stringify({
-          nome: data.nome || '',
-          email: data.email || '',
+          nome: cliente.nome || '',
+          email: cliente.email || '',
+          whatsapp: cliente.whatsapp || '',
           modalidade: data.modalidade || 'Express',
           analises_usadas: data.analises_usadas || 0,
-          analises_total: data.analises_total || 3,
-          etapa_atual: data.etapa_atual || 'welcome'
+          analises_max: data.analises_max || 3,
+          analises_restantes: data.analises_restantes || 3,
+          data_expira: data.data_expira || ''
         }));
 
-        mostrarSucesso(`Token validado. Olá, ${data.nome || 'líder'}.`);
+        const primeiroNome = (cliente.nome || 'líder').split(' ')[0];
+        mostrarSucesso(`Token validado. Olá, ${primeiroNome}.`);
         setTimeout(() => {
-          const etapa = data.etapa_atual || 'welcome';
-          window.location.href = `./${etapa}/`;
+          window.location.href = './welcome/';
         }, 1200);
       } else {
-        mostrarErro(data.msg || data.mensagem || 'Token não encontrado ou expirado.');
+        mostrarErro(data.motivo || 'Token não encontrado ou expirado.');
       }
     } catch (err) {
       console.error('[UNO] Erro ao validar:', err);
