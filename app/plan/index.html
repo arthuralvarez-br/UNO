@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNO — Plano de Execução</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #0F2540;
+    --azul-medio: #1A3A5C;
+    --amarelo: #F5C518;
+    --amarelo-escuro: #D9A800;
+    --branco: #FFFFFF;
+    --verde: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--azul);
+    color: var(--branco);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    padding: 32px 24px 100px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(245,197,24,0.08), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(26,58,92,0.6), transparent 50%),
+      var(--azul);
+  }
+
+  .container { max-width: 860px; margin: 0 auto; }
+
+  /* TOPO */
+  .topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--amarelo);
+    letter-spacing: -1px;
+  }
+
+  .progresso {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .barra-progresso {
+    width: 120px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .barra-progresso-fill {
+    height: 100%;
+    background: var(--amarelo);
+    width: 100%;
+    transition: width 0.3s ease;
+  }
+
+  /* HEADER */
+  .header { margin-bottom: 28px; }
+
+  .etapa-num {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--amarelo);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .descricao {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+    max-width: 700px;
+  }
+
+  /* PLANO CARD */
+  .plano-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  .plano-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .plano-posicao {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--amarelo);
+    margin-bottom: 8px;
+  }
+
+  .plano-situacao {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--branco);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .plano-scores {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .score-tag {
+    background: rgba(245,197,24,0.1);
+    color: var(--amarelo);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .plano-campos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .campo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .campo label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--amarelo);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--branco);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: all 0.2s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="date"]:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--amarelo);
+    background: rgba(255,255,255,0.08);
+  }
+
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+
+  textarea {
+    grid-column: 1 / -1;
+    min-height: 80px;
+    resize: vertical;
+    max-height: 200px;
+  }
+
+  .dica {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  .plano-completo {
+    background: rgba(39,174,96,0.1);
+    border: 1px solid rgba(39,174,96,0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #A0E5BC;
+    margin-top: 12px;
+  }
+
+  .plano-vazio {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(255,255,255,0.3);
+    font-size: 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* RODAPÉ */
+  .rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, transparent 0%, var(--azul) 20%);
+    padding: 32px 24px 24px;
+    max-width: 100vw;
+  }
+
+  .status-save {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-save .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--verde);
+  }
+
+  .status-save.salvando .dot { background: var(--amarelo); animation: pulse 1s infinite; }
+  .status-save.erro .dot { background: #E74C3C; }
+
+  .btn-grupo { display: flex; gap: 10px; }
+
+  .btn {
+    background: var(--amarelo);
+    color: var(--azul);
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn:hover {
+    background: var(--amarelo-escuro);
+    transform: translateY(-1px);
+  }
+
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secundario {
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secundario:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--branco);
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 18px 120px; }
+    h1 { font-size: 28px; }
+    .container { margin-bottom: 40px; }
+    .plano-campos { grid-template-columns: 1fr; }
+    .rodape {
+      padding: 24px 18px;
+      flex-direction: column-reverse;
+      gap: 12px;
+    }
+    .btn-grupo { width: 100%; }
+    .btn, .btn-secundario { flex: 1; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topo">
+      <div class="logo">UNO</div>
+      <div class="progresso">
+        <span>Resumindo</span>
+        <div class="barra-progresso"><div class="barra-progresso-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="etapa-num">Plano de Ação</div>
+      <h1>Detalhe cada prioridade</h1>
+      <p class="descricao">
+        Para cada item do seu ranking, defina os próximos passos,
+        quem é responsável e quando isso deve acontecer.
+      </p>
+    </div>
+
+    <div id="container-plano"></div>
+
+  </div>
+
+  <div class="rodape">
+    <div class="status-save" id="status-save">
+      <span class="dot"></span>
+      <span id="status-texto">Salvo automaticamente</span>
+    </div>
+    <div class="btn-grupo">
+      <button class="btn-secundario" onclick="voltar()">Voltar</button>
+      <button class="btn" id="btn-avancar" onclick="avancar()">
+        <span>Gerar relatório</span>
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+</body>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  // CONFIGURAÇÃO
+  // ═══════════════════════════════════════════════════════════════
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzZmWzVJh7rF0lcs0AiXc90G2CzJrfVvfnrTJhdKtWxbSaChHPix7eV_ObDGdopqwiPbw/exec';
+
+  // ─── Estado ───
+  const token = localStorage.getItem('uno_token');
+  let situacoes = [];
+  let scoring = {};
+  let ranking = [];
+  let plano = {}; // { 0: {passos: '', responsavel: '', deadline: '', observacoes: ''}, ... }
+  let saveTimeout = null;
+
+  if (!token) {
+    window.location.href = '../';
+  }
+
+  // ─── Elementos ───
+  const containerPlano = document.getElementById('container-plano');
+  const statusSave = document.getElementById('status-save');
+  const statusTexto = document.getElementById('status-texto');
+
+  // ─── Inicialização ───
+  carregarRascunho();
+
+  // ─── Funções ───
+  async function carregarRascunho() {
+    try {
+      const resp = await fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify({ acao: 'carregar_rascunho', token: token })
+      });
+      const data = await resp.json();
+
+      if (data.success && data.rascunho) {
+        const rascunho = data.rascunho.dados || {};
+        situacoes = rascunho.situacoes || [];
+        scoring = rascunho.scoring || {};
+        ranking = rascunho.ranking || [];
+        plano = rascunho.plano || {};
+      }
+
+      if (situacoes.length === 0 || ranking.length === 0) {
+        window.location.href = '../brainstorm/';
+        return;
+      }
+
+      renderizar();
+      setStatus('ok', 'Salvo automaticamente');
+    } catch (err) {
+      console.error('[UNO] Erro ao carregar:', err);
+      setStatus('erro', 'Sem conexão');
+    }
+  }
+
+  function renderizar() {
+    if (ranking.length === 0) {
+      containerPlano.innerHTML = '<div class="plano-vazio">Nenhuma situação prioritária encontrada.</div>';
+      return;
+    }
+
+    containerPlano.innerHTML = ranking.map((idx, pos) => {
+      const s = situacoes[idx];
+      const scores = scoring[idx] || { urgente: 0, necessario: 0, oportuno: 0 };
+      const total = (scores.urgente || 0) + (scores.necessario || 0) + (scores.oportuno || 0);
+      const p = plano[idx] || { passos: '', responsavel: '', deadline: '', observacoes: '' };
+
+      const temTodos = p.passos && p.responsavel && p.deadline;
+
+      return `
+        <div class="plano-item">
+          <div class="plano-header">
+            <div>
+              <div class="plano-posicao">#${pos + 1}</div>
+              <div class="plano-situacao">${escapeHtml(s)}</div>
+            </div>
+            <div class="plano-scores">
+              <span class="score-tag">U:${scores.urgente}</span>
+              <span class="score-tag">N:${scores.necessario}</span>
+              <span class="score-tag">O:${scores.oportuno}</span>
+              <span class="score-tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7)">Total:${total}</span>
+            </div>
+          </div>
+
+          <div class="plano-campos">
+            <div class="campo">
+              <label for="passos-${idx}">Próximos passos</label>
+              <textarea
+                id="passos-${idx}"
+                placeholder="Descreva as ações concretas necessárias..."
+                onchange="atualizarPlano(${idx}, 'passos', this.value)"
+              >${p.passos}</textarea>
+              <div class="dica">Seja específico: o que exatamente precisa ser feito?</div>
+            </div>
+
+            <div class="campo">
+              <label for="responsavel-${idx}">Responsável</label>
+              <input
+                type="text"
+                id="responsavel-${idx}"
+                placeholder="Nome ou cargo"
+                value="${escapeHtml(p.responsavel)}"
+                onchange="atualizarPlano(${idx}, 'responsavel', this.value)"
+              >
+              <div class="dica">Quem vai executar?</div>
+            </div>
+
+            <div class="campo">
+              <label for="deadline-${idx}">Deadline</label>
+              <input
+                type="date"
+                id="deadline-${idx}"
+                value="${p.deadline}"
+                onchange="atualizarPlano(${idx}, 'deadline', this.value)"
+              >
+              <div class="dica">Data esperada de conclusão</div>
+            </div>
+
+            <div class="campo">
+              <label for="observacoes-${idx}">Observações</label>
+              <input
+                type="text"
+                id="observacoes-${idx}"
+                placeholder="Riscos, dependências, contexto..."
+                value="${escapeHtml(p.observacoes)}"
+                onchange="atualizarPlano(${idx}, 'observacoes', this.value)"
+              >
+              <div class="dica">Informações extras que ajudem na execução</div>
+            </div>
+          </div>
+
+          ${temTodos ? '<div class="plano-completo">✓ Plano completo</div>' : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s || '';
+    return div.innerHTML;
+  }
+
+  function atualizarPlano(idx, campo, valor) {
+    if (!plano[idx]) plano[idx] = { passos: '', responsavel: '', deadline: '', observacoes: '' };
+    plano[idx][campo] = valor;
+    salvarRascunho();
+  }
+
+  function salvarRascunho() {
+    clearTimeout(saveTimeout);
+    setStatus('salvando', 'Salvando...');
+    saveTimeout = setTimeout(async () => {
+      try {
+        const resp = await fetch(BACKEND_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            acao: 'salvar_rascunho',
+            token: token,
+            etapa: 'done',
+            dados: { situacoes, scoring, ranking, plano }
+          })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          setStatus('ok', 'Salvo automaticamente');
+        } else {
+          setStatus('erro', 'Erro ao salvar');
+        }
+      } catch (err) {
+        console.error('[UNO] Erro ao salvar:', err);
+        setStatus('erro', 'Sem conexão');
+      }
+    }, 800);
+  }
+
+  function setStatus(tipo, texto) {
+    statusSave.className = 'status-save ' + (tipo === 'salvando' ? 'salvando' : tipo === 'erro' ? 'erro' : '');
+    statusTexto.textContent = texto;
+  }
+
+  function voltar() {
+    window.location.href = '../matrix/';
+  }
+
+  function avancar() {
+    clearTimeout(saveTimeout);
+    setStatus('salvando', 'Salvando antes de avançar...');
+    fetch(BACKEND_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        acao: 'salvar_rascunho',
+        token: token,
+        etapa: 'done',
+        dados: { situacoes, scoring, ranking, plano }
+      })
+    }).finally(() => {
+      window.location.href = '../done/';
+    });
+  }
+</script>
+</body>
+</html>
