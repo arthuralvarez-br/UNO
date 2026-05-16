@@ -392,12 +392,8 @@
   <div class="toast" id="toast"></div>
 
 <script>
-  // ═══════════════════════════════════════════════════════════════
-  // CONFIGURAÇÃO
-  // ═══════════════════════════════════════════════════════════════
-  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzZmWzVJh7rF0lcs0AiXc90G2CzJrfVvfnrTJhdKtWxbSaChHPix7eV_ObDGdopqwiPbw/exec';
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbwb2NHB1Nk1U94fPJZHNwn9HVFMj8UD9JzJb5RC43O-NXDRdhT1AQ0vsadUDFyVOv3icA/exec';
 
-  // ─── Estado ───
   const token = localStorage.getItem('uno_token');
   const cliente = JSON.parse(localStorage.getItem('uno_cliente') || '{}');
   let situacoes = [];
@@ -409,20 +405,20 @@
     window.location.href = '../';
   }
 
-  // ─── Elementos ───
   const statusGerando = document.getElementById('status-gerando');
   const toast = document.getElementById('toast');
   const btnBaixar = document.getElementById('btn-baixar');
   const btnEmail = document.getElementById('btn-email');
 
-  // ─── Inicialização ───
   carregarRascunho();
 
-  // ─── Funções ───
   async function carregarRascunho() {
     try {
       const resp = await fetch(BACKEND_URL, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
         body: JSON.stringify({ acao: 'carregar_rascunho', token: token })
       });
       const data = await resp.json();
@@ -448,10 +444,8 @@
   }
 
   function renderizar() {
-    // Total de itens
     document.getElementById('total-itens').textContent = situacoes.length;
 
-    // Pontuação média
     let somaPontos = 0;
     ranking.forEach(idx => {
       const scores = scoring[idx] || { urgente: 0, necessario: 0, oportuno: 0 };
@@ -460,7 +454,6 @@
     const media = ranking.length > 0 ? Math.round(somaPontos / ranking.length) : 0;
     document.getElementById('pontuacao-media').textContent = media;
 
-    // Plano completo (% de itens com todos os campos preenchidos)
     const planosCompletos = ranking.filter(idx => {
       const p = plano[idx] || {};
       return p.passos && p.responsavel && p.deadline;
@@ -468,7 +461,6 @@
     const percentual = ranking.length > 0 ? Math.round((planosCompletos / ranking.length) * 100) : 0;
     document.getElementById('plano-completo').textContent = percentual + '%';
 
-    // Top 3
     const top3Container = document.getElementById('top3-lista');
     top3Container.innerHTML = ranking.slice(0, 3).map((idx, pos) => {
       const s = situacoes[idx];
@@ -500,6 +492,9 @@
     try {
       const resp = await fetch(BACKEND_URL, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
         body: JSON.stringify({
           acao: 'gerar_pdf',
           token: token,
@@ -516,7 +511,6 @@
       const data = await resp.json();
 
       if (data.success && data.pdf_url) {
-        // Abre o PDF em nova aba
         window.open(data.pdf_url, '_blank');
         mostrarToast('PDF gerado com sucesso!', 'sucesso');
       } else {
@@ -538,6 +532,9 @@
     try {
       const resp = await fetch(BACKEND_URL, {
         method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
         body: JSON.stringify({
           acao: 'enviar_relatorio',
           token: token,
