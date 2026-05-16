@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNO — Conclusão</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #0F2540;
+    --azul-medio: #1A3A5C;
+    --amarelo: #F5C518;
+    --amarelo-escuro: #D9A800;
+    --branco: #FFFFFF;
+    --verde: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--azul);
+    color: var(--branco);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    padding: 32px 24px 80px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(245,197,24,0.08), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(26,58,92,0.6), transparent 50%),
+      var(--azul);
+  }
+
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* TOPO */
+  .topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--amarelo);
+    letter-spacing: -1px;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease-out;
+  }
+
+  .hero-icon {
+    font-size: 80px;
+    margin-bottom: 24px;
+    display: block;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  .hero-titulo {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-subtitulo {
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+    max-width: 580px;
+    margin: 0 auto 32px;
+  }
+
+  /* RESUMO */
+  .resumo {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease-out;
+  }
+
+  .resumo-titulo {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .resumo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+  }
+
+  .resumo-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .resumo-numero {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--amarelo);
+    margin-bottom: 6px;
+  }
+
+  .resumo-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+  }
+
+  /* RANKING TOP 3 */
+  .top3 {
+    margin-bottom: 32px;
+    animation: fadeUp 1s ease-out;
+  }
+
+  .top3-titulo {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .top3-lista {
+    list-style: none;
+  }
+
+  .top3-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .top3-medal {
+    font-size: 20px;
+    min-width: 28px;
+    text-align: center;
+  }
+
+  .top3-conteudo {
+    flex: 1;
+  }
+
+  .top3-situacao {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--branco);
+    margin-bottom: 4px;
+  }
+
+  .top3-score {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* AÇÕES */
+  .acoes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+    animation: fadeUp 1.2s ease-out;
+  }
+
+  .btn {
+    background: var(--amarelo);
+    color: var(--azul);
+    border: none;
+    border-radius: 10px;
+    padding: 16px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .btn:hover {
+    background: var(--amarelo-escuro);
+    transform: translateY(-2px);
+  }
+
+  .btn:active { transform: translateY(0); }
+
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-primario {
+    grid-column: 1 / -1;
+  }
+
+  .btn-secundario {
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .btn-secundario:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--branco);
+  }
+
+  /* STATUS */
+  .status-gerando {
+    background: rgba(245,197,24,0.1);
+    border: 1px solid rgba(245,197,24,0.2);
+    border-radius: 10px;
+    padding: 14px;
+    display: none;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .status-gerando.show { display: block; }
+
+  .spinner-inline {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(245,197,24,0.3);
+    border-top-color: var(--amarelo);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .rodape-info {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .rodape-info a {
+    color: var(--amarelo);
+    text-decoration: none;
+  }
+
+  .rodape-info a:hover { text-decoration: underline; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--azul-medio);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--branco);
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.sucesso { border-color: rgba(39,174,96,0.4); }
+  .toast.erro { border-color: rgba(192,57,43,0.4); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 18px 60px; }
+    .hero-titulo { font-size: 32px; }
+    .acoes { grid-template-columns: 1fr; }
+    .btn-primario { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topo">
+      <div class="logo">UNO</div>
+    </div>
+
+    <div class="hero">
+      <span class="hero-icon">✓</span>
+      <h1 class="hero-titulo">Análise completa</h1>
+      <p class="hero-subtitulo">
+        Sua matriz de priorização foi processada. Agora você tem um plano de ação
+        estruturado baseado em Urgente, Necessário e Oportuno.
+      </p>
+    </div>
+
+    <div class="resumo">
+      <div class="resumo-titulo">Seu resultado</div>
+      <div class="resumo-grid">
+        <div class="resumo-item">
+          <div class="resumo-numero" id="total-itens">0</div>
+          <div class="resumo-label">Situações<br>mapeadas</div>
+        </div>
+        <div class="resumo-item">
+          <div class="resumo-numero" id="pontuacao-media">0</div>
+          <div class="resumo-label">Pontuação<br>média</div>
+        </div>
+        <div class="resumo-item">
+          <div class="resumo-numero" id="plano-completo">0%</div>
+          <div class="resumo-label">Plano<br>detalhado</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="top3">
+      <div class="top3-titulo">Top 3 prioridades</div>
+      <ul class="top3-lista" id="top3-lista"></ul>
+    </div>
+
+    <div class="status-gerando" id="status-gerando">
+      <span class="spinner-inline"></span>
+      Gerando PDF...
+    </div>
+
+    <div class="acoes">
+      <button class="btn btn-primario" id="btn-baixar" onclick="gerarPDF()">
+        <span>📥 Baixar PDF</span>
+      </button>
+      <button class="btn btn-secundario" id="btn-email" onclick="enviarEmail()">
+        <span>📧 Enviar por e-mail</span>
+      </button>
+      <button class="btn btn-secundario" onclick="voltar()">
+        <span>← Voltar</span>
+      </button>
+    </div>
+
+    <div class="rodape-info">
+      <p>
+        Seu relatório contém: análise de priorização, scores detalhados,
+        ranking visual e plano de ação.<br>
+        <a href="https://unooficial.com.br" target="_blank">Saiba mais sobre a Matriz UNO</a>
+      </p>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  // CONFIGURAÇÃO
+  // ═══════════════════════════════════════════════════════════════
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzZmWzVJh7rF0lcs0AiXc90G2CzJrfVvfnrTJhdKtWxbSaChHPix7eV_ObDGdopqwiPbw/exec';
+
+  // ─── Estado ───
+  const token = localStorage.getItem('uno_token');
+  const cliente = JSON.parse(localStorage.getItem('uno_cliente') || '{}');
+  let situacoes = [];
+  let scoring = {};
+  let ranking = [];
+  let plano = {};
+
+  if (!token) {
+    window.location.href = '../';
+  }
+
+  // ─── Elementos ───
+  const statusGerando = document.getElementById('status-gerando');
+  const toast = document.getElementById('toast');
+  const btnBaixar = document.getElementById('btn-baixar');
+  const btnEmail = document.getElementById('btn-email');
+
+  // ─── Inicialização ───
+  carregarRascunho();
+
+  // ─── Funções ───
+  async function carregarRascunho() {
+    try {
+      const resp = await fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify({ acao: 'carregar_rascunho', token: token })
+      });
+      const data = await resp.json();
+
+      if (data.success && data.rascunho) {
+        const rascunho = data.rascunho.dados || {};
+        situacoes = rascunho.situacoes || [];
+        scoring = rascunho.scoring || {};
+        ranking = rascunho.ranking || [];
+        plano = rascunho.plano || {};
+      }
+
+      if (situacoes.length === 0) {
+        window.location.href = '../brainstorm/';
+        return;
+      }
+
+      renderizar();
+    } catch (err) {
+      console.error('[UNO] Erro ao carregar:', err);
+      mostrarToast('Erro ao carregar dados', 'erro');
+    }
+  }
+
+  function renderizar() {
+    // Total de itens
+    document.getElementById('total-itens').textContent = situacoes.length;
+
+    // Pontuação média
+    let somaPontos = 0;
+    ranking.forEach(idx => {
+      const scores = scoring[idx] || { urgente: 0, necessario: 0, oportuno: 0 };
+      somaPontos += (scores.urgente || 0) + (scores.necessario || 0) + (scores.oportuno || 0);
+    });
+    const media = ranking.length > 0 ? Math.round(somaPontos / ranking.length) : 0;
+    document.getElementById('pontuacao-media').textContent = media;
+
+    // Plano completo (% de itens com todos os campos preenchidos)
+    const planosCompletos = ranking.filter(idx => {
+      const p = plano[idx] || {};
+      return p.passos && p.responsavel && p.deadline;
+    }).length;
+    const percentual = ranking.length > 0 ? Math.round((planosCompletos / ranking.length) * 100) : 0;
+    document.getElementById('plano-completo').textContent = percentual + '%';
+
+    // Top 3
+    const top3Container = document.getElementById('top3-lista');
+    top3Container.innerHTML = ranking.slice(0, 3).map((idx, pos) => {
+      const s = situacoes[idx];
+      const scores = scoring[idx] || { urgente: 0, necessario: 0, oportuno: 0 };
+      const total = (scores.urgente || 0) + (scores.necessario || 0) + (scores.oportuno || 0);
+      const medals = ['🥇', '🥈', '🥉'];
+      return `
+        <li class="top3-item">
+          <div class="top3-medal">${medals[pos]}</div>
+          <div class="top3-conteudo">
+            <div class="top3-situacao">${escapeHtml(s)}</div>
+            <div class="top3-score">U:${scores.urgente} | N:${scores.necessario} | O:${scores.oportuno} | Total:${total}</div>
+          </div>
+        </li>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s || '';
+    return div.innerHTML;
+  }
+
+  async function gerarPDF() {
+    btnBaixar.disabled = true;
+    statusGerando.classList.add('show');
+
+    try {
+      const resp = await fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          acao: 'gerar_pdf',
+          token: token,
+          dados: {
+            situacoes,
+            scoring,
+            ranking,
+            plano,
+            cliente: cliente
+          }
+        })
+      });
+
+      const data = await resp.json();
+
+      if (data.success && data.pdf_url) {
+        // Abre o PDF em nova aba
+        window.open(data.pdf_url, '_blank');
+        mostrarToast('PDF gerado com sucesso!', 'sucesso');
+      } else {
+        mostrarToast(data.erro || 'Erro ao gerar PDF', 'erro');
+      }
+    } catch (err) {
+      console.error('[UNO] Erro ao gerar PDF:', err);
+      mostrarToast('Erro ao conectar com o servidor', 'erro');
+    } finally {
+      btnBaixar.disabled = false;
+      statusGerando.classList.remove('show');
+    }
+  }
+
+  async function enviarEmail() {
+    btnEmail.disabled = true;
+    statusGerando.classList.add('show');
+
+    try {
+      const resp = await fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          acao: 'enviar_relatorio',
+          token: token,
+          dados: {
+            situacoes,
+            scoring,
+            ranking,
+            plano,
+            cliente: cliente
+          }
+        })
+      });
+
+      const data = await resp.json();
+
+      if (data.success) {
+        mostrarToast(`Relatório enviado para ${cliente.email}`, 'sucesso');
+      } else {
+        mostrarToast(data.erro || 'Erro ao enviar', 'erro');
+      }
+    } catch (err) {
+      console.error('[UNO] Erro ao enviar:', err);
+      mostrarToast('Erro ao conectar com o servidor', 'erro');
+    } finally {
+      btnEmail.disabled = false;
+      statusGerando.classList.remove('show');
+    }
+  }
+
+  function voltar() {
+    window.location.href = '../plan/';
+  }
+
+  function mostrarToast(msg, tipo) {
+    toast.textContent = msg;
+    toast.className = 'toast show ' + tipo;
+    setTimeout(() => { toast.className = 'toast ' + tipo; }, 3000);
+  }
+</script>
+</body>
+</html>
