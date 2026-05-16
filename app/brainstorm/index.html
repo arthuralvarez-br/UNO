@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNO — Brainstorm</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #0F2540;
+    --azul-medio: #1A3A5C;
+    --amarelo: #F5C518;
+    --amarelo-escuro: #D9A800;
+    --branco: #FFFFFF;
+    --erro: #C0392B;
+    --sucesso: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--azul);
+    color: var(--branco);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    padding: 32px 24px 100px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(245,197,24,0.08), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(26,58,92,0.6), transparent 50%),
+      var(--azul);
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  /* TOPO */
+  .topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--amarelo);
+    letter-spacing: -1px;
+  }
+
+  .progresso {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .barra-progresso {
+    width: 120px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .barra-progresso-fill {
+    height: 100%;
+    background: var(--amarelo);
+    width: 33%;
+    transition: width 0.3s ease;
+  }
+
+  /* HEADER */
+  .header { margin-bottom: 32px; }
+
+  .etapa-num {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--amarelo);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .descricao {
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+    max-width: 620px;
+    margin-bottom: 8px;
+  }
+
+  .descricao strong { color: var(--amarelo); }
+
+  /* INPUT */
+  .input-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 24px;
+    transition: border-color 0.2s ease;
+  }
+
+  .input-card:focus-within {
+    border-color: rgba(245,197,24,0.4);
+  }
+
+  .input-card label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--amarelo);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  textarea {
+    flex: 1;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 14px 16px;
+    color: var(--branco);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 60px;
+    max-height: 200px;
+    transition: all 0.2s ease;
+  }
+
+  textarea:focus {
+    outline: none;
+    border-color: var(--amarelo);
+    background: rgba(255,255,255,0.08);
+  }
+
+  textarea::placeholder { color: rgba(255,255,255,0.3); }
+
+  .btn-add {
+    background: var(--amarelo);
+    color: var(--azul);
+    border: none;
+    border-radius: 10px;
+    padding: 0 22px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    align-self: stretch;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .btn-add:hover { background: var(--amarelo-escuro); }
+
+  .btn-add:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .dica {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  /* LISTA */
+  .lista-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+    padding: 0 4px;
+  }
+
+  .lista-titulo {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+
+  .lista-contador {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 600;
+  }
+
+  .lista-contador strong { color: var(--amarelo); }
+
+  .lista {
+    list-style: none;
+    margin-bottom: 28px;
+  }
+
+  .item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  .item:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  .item-num {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--amarelo);
+    min-width: 28px;
+    line-height: 1.5;
+  }
+
+  .item-texto {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--branco);
+    word-break: break-word;
+  }
+
+  .item-acoes {
+    display: flex;
+    gap: 4px;
+  }
+
+  .btn-icone {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-icone:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--branco);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  .btn-icone.deletar:hover {
+    background: rgba(192,57,43,0.15);
+    color: #FFB4A8;
+    border-color: rgba(192,57,43,0.3);
+  }
+
+  .vazio {
+    text-align: center;
+    padding: 40px 20px;
+    color: rgba(255,255,255,0.3);
+    font-size: 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 10px;
+  }
+
+  /* RODAPÉ */
+  .rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .status-save {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-save .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sucesso);
+  }
+
+  .status-save.salvando .dot { background: var(--amarelo); animation: pulse 1s infinite; }
+  .status-save.erro .dot { background: var(--erro); }
+
+  .btn-grupo { display: flex; gap: 10px; }
+
+  .btn {
+    background: var(--amarelo);
+    color: var(--azul);
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn:hover {
+    background: var(--amarelo-escuro);
+    transform: translateY(-1px);
+  }
+
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secundario {
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-secundario:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--branco);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--azul-medio);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--branco);
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.erro { border-color: rgba(192,57,43,0.4); }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 24px 18px 80px; }
+    h1 { font-size: 28px; }
+    .topo { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .input-row { flex-direction: column; }
+    .btn-add { width: 100%; padding: 14px; }
+    .rodape { flex-direction: column-reverse; align-items: stretch; }
+    .btn-grupo { width: 100%; }
+    .btn, .btn-secundario { flex: 1; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topo">
+      <div class="logo">UNO</div>
+      <div class="progresso">
+        <span>Etapa 1 de 3</span>
+        <div class="barra-progresso"><div class="barra-progresso-fill"></div></div>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="etapa-num">Brainstorm</div>
+      <h1>O que precisa de decisão agora?</h1>
+      <p class="descricao">
+        Liste as situações, projetos ou decisões que estão na sua mesa.
+        Vale tudo que demanda movimento, escolha ou priorização.
+        Mínimo <strong>5</strong>, máximo <strong>15</strong> itens.
+      </p>
+    </div>
+
+    <div class="input-card">
+      <label for="entrada">Adicionar situação</label>
+      <div class="input-row">
+        <textarea
+          id="entrada"
+          placeholder="Ex: Decidir se vamos contratar o novo gerente de operações..."
+          maxlength="280"
+        ></textarea>
+        <button class="btn-add" id="btn-add" onclick="adicionarItem()">
+          <span>Adicionar</span>
+        </button>
+      </div>
+      <p class="dica">Pressione <strong>Ctrl + Enter</strong> para adicionar rapidamente. Máximo 280 caracteres por item.</p>
+    </div>
+
+    <div class="lista-header">
+      <div class="lista-titulo">Sua lista</div>
+      <div class="lista-contador"><strong id="contador">0</strong> / 15 itens</div>
+    </div>
+
+    <ul class="lista" id="lista"></ul>
+
+    <div class="vazio" id="vazio">
+      Nenhuma situação adicionada ainda. Comece pelo campo acima.
+    </div>
+
+    <div class="rodape">
+      <div class="status-save" id="status-save">
+        <span class="dot"></span>
+        <span id="status-texto">Salvo automaticamente</span>
+      </div>
+      <div class="btn-grupo">
+        <button class="btn-secundario" onclick="voltar()">Voltar</button>
+        <button class="btn" id="btn-avancar" onclick="avancar()" disabled>
+          <span>Avançar</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ═══════════════════════════════════════════════════════════════
+  // CONFIGURAÇÃO
+  // ═══════════════════════════════════════════════════════════════
+  const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzZmWzVJh7rF0lcs0AiXc90G2CzJrfVvfnrTJhdKtWxbSaChHPix7eV_ObDGdopqwiPbw/exec';
+  const MIN_ITENS = 5;
+  const MAX_ITENS = 15;
+
+  // ─── Estado ───
+  const token = localStorage.getItem('uno_token');
+  let situacoes = []; // array de strings
+  let saveTimeout = null;
+
+  if (!token) {
+    window.location.href = '../';
+  }
+
+  // ─── Elementos ───
+  const entrada = document.getElementById('entrada');
+  const btnAdd = document.getElementById('btn-add');
+  const btnAvancar = document.getElementById('btn-avancar');
+  const lista = document.getElementById('lista');
+  const vazio = document.getElementById('vazio');
+  const contador = document.getElementById('contador');
+  const statusSave = document.getElementById('status-save');
+  const statusTexto = document.getElementById('status-texto');
+  const toast = document.getElementById('toast');
+
+  // ─── Inicialização ───
+  entrada.focus();
+  carregarRascunho();
+
+  entrada.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      adicionarItem();
+    }
+  });
+
+  // ─── Funções ───
+  function adicionarItem() {
+    const texto = entrada.value.trim();
+    if (!texto) return;
+    if (texto.length < 5) {
+      mostrarToast('Descreva a situação com pelo menos 5 caracteres.', 'erro');
+      return;
+    }
+    if (situacoes.length >= MAX_ITENS) {
+      mostrarToast(`Limite de ${MAX_ITENS} situações atingido.`, 'erro');
+      return;
+    }
+    situacoes.push(texto);
+    entrada.value = '';
+    entrada.focus();
+    renderizar();
+    salvarRascunho();
+  }
+
+  function removerItem(idx) {
+    situacoes.splice(idx, 1);
+    renderizar();
+    salvarRascunho();
+  }
+
+  function moverItem(idx, direcao) {
+    const novoIdx = idx + direcao;
+    if (novoIdx < 0 || novoIdx >= situacoes.length) return;
+    [situacoes[idx], situacoes[novoIdx]] = [situacoes[novoIdx], situacoes[idx]];
+    renderizar();
+    salvarRascunho();
+  }
+
+  function renderizar() {
+    contador.textContent = situacoes.length;
+
+    if (situacoes.length === 0) {
+      lista.innerHTML = '';
+      vazio.style.display = 'block';
+    } else {
+      vazio.style.display = 'none';
+      lista.innerHTML = situacoes.map((s, idx) => `
+        <li class="item">
+          <div class="item-num">${String(idx + 1).padStart(2, '0')}</div>
+          <div class="item-texto">${escapeHtml(s)}</div>
+          <div class="item-acoes">
+            ${idx > 0 ? `<button class="btn-icone" onclick="moverItem(${idx}, -1)" title="Mover para cima">↑</button>` : ''}
+            ${idx < situacoes.length - 1 ? `<button class="btn-icone" onclick="moverItem(${idx}, 1)" title="Mover para baixo">↓</button>` : ''}
+            <button class="btn-icone deletar" onclick="removerItem(${idx})" title="Remover">×</button>
+          </div>
+        </li>
+      `).join('');
+    }
+
+    // Habilita avançar com mínimo de itens
+    btnAvancar.disabled = situacoes.length < MIN_ITENS;
+    if (situacoes.length < MIN_ITENS) {
+      btnAvancar.title = `Adicione pelo menos ${MIN_ITENS} situações para avançar.`;
+    } else {
+      btnAvancar.title = '';
+    }
+
+    // Desabilita add se atingiu máximo
+    btnAdd.disabled = situacoes.length >= MAX_ITENS;
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  async function carregarRascunho() {
+    try {
+      const resp = await fetch(BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify({ acao: 'carregar_rascunho', token: token })
+      });
+      const data = await resp.json();
+
+      if (data.success && data.rascunho) {
+        const dados = data.rascunho.dados || {};
+        if (Array.isArray(dados.situacoes)) {
+          situacoes = dados.situacoes;
+        }
+      }
+      renderizar();
+      setStatus('ok', 'Salvo automaticamente');
+    } catch (err) {
+      console.warn('[UNO] Sem rascunho prévio:', err);
+      renderizar();
+    }
+  }
+
+  function salvarRascunho() {
+    clearTimeout(saveTimeout);
+    setStatus('salvando', 'Salvando...');
+    saveTimeout = setTimeout(async () => {
+      try {
+        const resp = await fetch(BACKEND_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            acao: 'salvar_rascunho',
+            token: token,
+            etapa: 'brainstorm',
+            dados: { situacoes: situacoes }
+          })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          setStatus('ok', 'Salvo automaticamente');
+        } else {
+          setStatus('erro', 'Erro ao salvar');
+        }
+      } catch (err) {
+        console.error('[UNO] Erro ao salvar:', err);
+        setStatus('erro', 'Sem conexão');
+      }
+    }, 800);
+  }
+
+  function setStatus(tipo, texto) {
+    statusSave.className = 'status-save ' + (tipo === 'salvando' ? 'salvando' : tipo === 'erro' ? 'erro' : '');
+    statusTexto.textContent = texto;
+  }
+
+  function mostrarToast(msg, tipo) {
+    toast.textContent = msg;
+    toast.className = 'toast show' + (tipo === 'erro' ? ' erro' : '');
+    setTimeout(() => { toast.className = 'toast' + (tipo === 'erro' ? ' erro' : ''); }, 3000);
+  }
+
+  function voltar() {
+    window.location.href = '../welcome/';
+  }
+
+  function avancar() {
+    if (situacoes.length < MIN_ITENS) return;
+    // Garante que o último save terminou antes de avançar
+    clearTimeout(saveTimeout);
+    setStatus('salvando', 'Salvando antes de avançar...');
+    fetch(BACKEND_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        acao: 'salvar_rascunho',
+        token: token,
+        etapa: 'scoring',
+        dados: { situacoes: situacoes }
+      })
+    }).finally(() => {
+      window.location.href = '../scoring/';
+    });
+  }
+</script>
+</body>
+</html>
